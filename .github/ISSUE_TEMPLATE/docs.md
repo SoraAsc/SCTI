@@ -8,6 +8,7 @@ assignees: ''
 ---
 
 **Você quer adicionar ou mudar documentação**
+- [ ] Criar
 - [ ] Adicionar
 - [ ] Mudar
 
