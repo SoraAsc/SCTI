@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Ajuda a manter todas os bugs/erros ratreados
-title: ''
+title: "[BUG]"
 labels: bug
 assignees: ''
 

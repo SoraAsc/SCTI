@@ -1,7 +1,7 @@
 ---
 name: Generic Issue
 about: Placeholder while we don't have more issue types
-title: ''
+title: "[GENERIC]"
 labels: ''
 assignees: ''
 
