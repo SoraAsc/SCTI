@@ -2,7 +2,7 @@
 name: Bug report
 about: Ajuda a manter todas os bugs/erros ratreados
 title: "[BUG]"
-labels: bug
+labels: bug, project
 assignees: ''
 
 ---

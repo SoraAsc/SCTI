@@ -11,6 +11,7 @@ assignees: ''
 - [ ] Criar
 - [ ] Adicionar
 - [ ] Mudar
+- [ ] Corrigir
 
 **Motivo da Issue**
 
