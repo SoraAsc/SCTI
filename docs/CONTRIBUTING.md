@@ -127,7 +127,7 @@ Crie uma Issue com a tag apropriada para a situação e descreva bem o que quer,
 possível causa do erro caso tenha alguma ideia.
 
 <a name="PR"></a>
-## Fazendo uma pull-request
+# Fazendo uma pull-request
 
 Acabou a feature? concertou o bug? Faça o commit com todas as mudanças para a sua branch, e inicie uma pull request, nela explique tudo feito, removido e adicionado, mencione as Issues pertinentes com `#ISSUE_NUMBER` caso tenha mexido em alguma
 e mande a PR para o repositório, antes dela ser aceita pelo menos 2 pessoa vão ter que fazer code-review e caso algum problema seja achado ela não será aceita até o mesmo ser concertado por quem autorou a PR. Após a PR não ter problemas
