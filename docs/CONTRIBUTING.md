@@ -120,7 +120,7 @@ Caso você tenha mais de uma branch e deseje mudar de branch use `git checkout N
 Evite ter mais de uma feature branch para não se sobrecarregar
 
 <a name="ISSUES"></a>
-## Criando e Contribuindo Issues
+# Criando e Contribuindo Issues
 
 Achou um bug, erro, ou problema em algum lugar do código que não pode concertar agora? Tem alguma ideia ou sugestão de feature? Quer propor uma mudança?
 Crie uma Issue com a tag apropriada para a situação e descreva bem o que quer, no caso de um bug/problema/erro descreva bem o erro, etapas para reproduzir, branch que você estava trabalhando quando o erro ocorreu,
