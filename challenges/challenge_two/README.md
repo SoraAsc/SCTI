@@ -8,6 +8,10 @@ O aplicativo terá a mesma base que o seu app atual ou seja:
 
 - Um slice com dois usuários pre-existentes e um struct pessoa.
 
+`Nome: Sophia, Idade: 21, Cadastrado: true, Id: 10`
+
+`Nome: Teste, Idade: 32, Cadastrado: false, Id: 11`
+
 Mas o app também terá funcionalidades diferentes, como:
 
 - Usuários agora possuem Id
@@ -24,7 +28,7 @@ O servidor terá os seguintes endpoints:
 
 **O que fazer**
 
-> Quando se receber a request para criar um novo usuário cria-lo em um id não existente e com os dados fornecidos pela request e adiciona-lo no slice
+> Quando se receber a request para criar um novo usuário cria-lo em um id não existente maior que 10 e com os dados fornecidos pela request e adiciona-lo no slice
 
 - `/app/user/list-users` Onde se retornam todos os usuários existentes em JSON
 
