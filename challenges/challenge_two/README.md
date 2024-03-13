@@ -20,7 +20,7 @@ Todas as requisições devem ser feitas através de CURL
 
 O servidor terá os seguintes endpoints:
 
-- `/app/create-user`
+- `/app/user/create-user`
 
 **O que fazer**
 
