@@ -25,4 +25,7 @@ Tenho uma pessoa chamada marcos:
 
 O meu print só podera ter `print(Marcos)`, o texto do stringer pode ser o que você quiser.
 
+Se você tem alguma dúvida sobre como contribuir olhe [aqui](https://github.com/MintzyG/SCTI/blob/main/docs/CONTRIBUTING.md)
+E qualquer dúvida em geral e direcionamento sinta-se livre para me mandar uma mensagem no privado :)
+
 ### Happy coding!
