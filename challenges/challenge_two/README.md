@@ -92,4 +92,5 @@ Invoke-RestMethod -Uri "http://localhost:8080/create-user" -Method Post -Headers
 
 Sinta-se livre para pedir ajuda para mim a qualquer momento :3
 
+Ou para apontar falta de informação necessária para resolver o problema aqui
 
