@@ -50,7 +50,7 @@ O servidor terá os seguintes endpoints:
 ### Curl no Linux:
 
 ```
-curl -i(Inclui qual server) -X(Metodos) Tipo-Do-Metodo -H(Cabeçalho) "Dados do Cabeçalho" -d(Dados) "Dados da request em JSON" Server
+curl -i(informações do resultado) -X(Metodos) Tipo-Do-Metodo -H(Cabeçalho) "Dados do Cabeçalho" -d(Dados) "Dados da request em JSON" Server
 ```
 
 **Exemplo de GET**
