@@ -90,6 +90,11 @@ Invoke-RestMethod -Uri "http://localhost:8080/create-user" -Method Post -Headers
 [Go http server](https://gobyexample.com/http-server)
 [Retornar JSON](https://golangbyexample.com/json-response-body-http-go/)
 
+### Bibliotecas que vão ser usadas
+
+[net/http](https://pkg.go.dev/net/http)
+[encoding/json](https://pkg.go.dev/encoding/json)
+
 Sinta-se livre para pedir ajuda para mim a qualquer momento :3
 
 Ou para apontar falta de informação necessária para resolver o problema aqui
