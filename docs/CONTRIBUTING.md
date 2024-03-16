@@ -106,10 +106,10 @@ Por favor use snake_case na hora de dar nomes para suas branchs
 
 #### Nomes a serem usados para branches:
 
-- Se você estiver criando funcionalidade use `feat:NAME`
-- Se você está corrigindo uma Issue/bug use `issue:NAME`
-- Se você está escrevendo documentação use `doc:NAME`
-- Se a mudança é puramente no design da aplicação use `design:NAME`
+- Se você estiver criando funcionalidade use `feat/NAME`
+- Se você está corrigindo uma Issue/bug use `issue/NAME`
+- Se você está escrevendo documentação use `doc/NAME`
+- Se a mudança é puramente no design da aplicação use `design/NAME`
 
 Sintam-se livres para sugerir mais.
 
