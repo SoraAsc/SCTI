@@ -10,7 +10,7 @@
         name = "SCTI-Web";
         packages = with pkgs; [
           go
-        ]
+        ];
       };
   };
 }
