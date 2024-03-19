@@ -4,20 +4,20 @@ import (
 	"log"
 	"net/http"
   "html/template"
+  "SCTI/about"
+  "SCTI/fileserver"
 )
 
-var t *template.Template
-
 func main() {
-  fs := http.FileServer(http.Dir("./static"))
-  http.Handle("/static/", http.StripPrefix("/static/", fs))
+  fileserver.RunFileServer()
 
   http.HandleFunc("/", HomeHandler)
+  http.HandleFunc("/home/", about.Endpoint)
 
   log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-  t := template.Must(template.ParseFiles("template/index.gohtml"))
-  t.Execute(w, nil)
+  fileserver.T = template.Must(template.ParseFiles("template/index.gohtml"))
+  fileserver.T.Execute(w, nil)
 }
