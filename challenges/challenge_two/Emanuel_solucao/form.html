@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<div>
+  <form method="POST" action="/app/user/create-user">
+    <table>
+      <tr>
+        <td><label>Nome</label></td>
+        <td><input name="Nome" type="text"></td>
+      </tr>
+
+      <tr>
+        <td><label>Idade</label></td>
+        <td><input name="Idade" type="number"></td>
+      </tr>
+
+      <tr>
+        <td><label>Cadastrado</label></td>
+        <td><select name="Cadastrado">
+          <option value="true">Sim</option>
+          <option value="false" selected>Não</option>
+        </select></td>
+      </tr>
+
+    </table><p>
+    <input type="submit" value="Enviar">
+  </form>
+</div>
+</body>
+</html>
