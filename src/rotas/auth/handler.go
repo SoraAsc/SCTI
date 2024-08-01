@@ -117,6 +117,12 @@ func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
+  cookie, err := r.Cookie("accessToken")
+  if err == nil && cookie != nil {
+    http.Redirect(w, r, "/cookies", http.StatusSeeOther)
+    return
+  }
+
   var t = fileserver.Execute("template/login.gohtml")
   t.Execute(w, nil)
 }
