@@ -22,5 +22,5 @@ func CloseDatabase() error {
 }
 
 func CreateUser() error {
-
+  return nil
 }

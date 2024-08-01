@@ -7,7 +7,6 @@ import (
   "log"
   "net/http"
   "github.com/joho/godotenv"
-  "os"
   "fmt"
 )
 
