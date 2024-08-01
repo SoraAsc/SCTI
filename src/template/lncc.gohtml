@@ -6,13 +6,31 @@
 		<title>My Website</title>
 		<link rel="stylesheet" href="/static/css/lncc.css">
 		<link rel="stylesheet" href="/static/css/style.css">
+		<link rel="stylesheet" href="/static/css/header.css">
+		<link href="https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<div class="header_style_form_container">
 			<div class="header_style_form"></div>
 		</div>
 		<header>
-			<div>LOGO</div>
+			<div class="header">
+				<img src="/static/assets/logo.svg">	
+				<div id="menuToggle">
+					<input type="checkbox" />
+
+					<span></span>
+					<span></span>
+					<span></span>
+
+					<ul id="menu">
+						<a href="#"><li>Home</li></a>
+						<a href="#"><li>About</li></a>
+						<a href="#"><li>Info</li></a>
+						<a href="#"><li>Contact</li></a>
+				</div>
+			</div>
+
 		</header>
 		<main>	
 			<div class="top_lncc_container">
@@ -27,7 +45,7 @@
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Etiam erat velit scelerisque in dictum non consectetur a erat. Et ligula ullamcorper malesuada proin libero nunc consequat	
 					</p>
 					<div class="container_button">
-					<button class="main_button" data="Participe" onclick="window.location.href='https://forms.gle/7j2Y5qGAtn8h8BjbA';"></button>
+						<button class="main_button" data="Participe" onclick="window.location.href='https://forms.gle/7j2Y5qGAtn8h8BjbA';"></button>
 					</div>
 				</div>
 				<div class="top_lncc_itens">
@@ -36,13 +54,9 @@
 
 			</div>								   
 			<div class="about" align="center">
-				<h2>Sobre a visita</h2>
-				<p>
-				explicação detalhada da viagem data de partida
-				preço, tempo, horas, rotina, etc
-				</p>
-				<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Etiam erat velit scelerisque in dictum non consectetur a erat. Et ligula ullamcorper malesuada proin libero nunc consequat. Tincidunt eget nullam non nisi est sit amet facilisis. Amet nisl suscipit adipiscing bibendum est ultricies integer. Ornare quam viverra orci sagittis eu. Amet mattis vulputate enim nulla aliquet porttitor. Commodo ullamcorper a lacus vestibulum sed arcu. Nisi quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus. Sit amet porttitor eget dolor morbi non arcu. Sed egestas egestas fringilla phasellus faucibus. Sed ullamcorper morbi tincidunt ornare massa eget. Natoque penatibus et magnis dis parturient montes nascetur. Nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis.
+				<hr class="hr_color">
+				<h2 class="title_color">Sobre a visita</h2>
+				<p class="caption"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Etiam erat velit scelerisque in dictum non consectetur a erat. Et ligula ullamcorper malesuada proin libero nunc consequat. Tincidunt eget nullam non nisi est sit amet facilisis. Amet nisl suscipit adipiscing bibendum est ultricies integer. Ornare quam viverra orci sagittis eu. Amet mattis vulputate enim nulla aliquet porttitor. Commodo ullamcorper a lacus vestibulum sed arcu. Nisi quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus. Sit amet porttitor eget dolor morbi non arcu. Sed egestas egestas fringilla phasellus faucibus. Sed ullamcorper morbi tincidunt ornare massa eget. Natoque penatibus et magnis dis parturient montes nascetur. Nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis.
 				</p>
 			</div>
 		</main>

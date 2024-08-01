@@ -47,8 +47,29 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: red;
+  min-height: 40px;
+  background-color: #B3B3B3;
   color: white;
   text-align: center;
 }
 
+.about{
+	display: flex;
+	flex-direction: column;
+}
+.about .hr_color{
+	margin-left: 5%;
+	position: absolute;
+  	margin-top: 5%;
+}
+.about h2{
+	position: relative;
+	margin-left: 5%;
+}
+
+.about p{
+	position: relative;
+	margin-left: 5%;
+	margin-right: 5%;
+	text-align: left;
+}
