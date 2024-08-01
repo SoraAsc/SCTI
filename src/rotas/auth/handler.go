@@ -9,22 +9,19 @@ import (
   "net/http"
   "os"
   "strings"
+  "time"
 
-  "golang.org/x/crypto/bcrypt"
   "github.com/google/uuid"
+  "golang.org/x/crypto/bcrypt"
 )
 
 type Handler struct{}
 
-func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
-  var t = fileserver.Execute("template/signup.gohtml")
-  t.Execute(w, nil)
+type User struct {
+  Email string
+  Password string 
 }
 
-func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
-  var t = fileserver.Execute("template/login.gohtml")
-  t.Execute(w, nil)
-}
 
 func UserExists(Email string)(userExists bool) {
   file, err := os.Open("passwords.txt")
@@ -50,7 +47,7 @@ func UserExists(Email string)(userExists bool) {
   return userExists
 }
 
-func VerifyLogin(user User)(login bool) {
+func VerifyLogin(user User, w http.ResponseWriter)(login bool) {
   file, err := os.Open("passwords.txt")
   if err != nil && !os.IsNotExist(err) {
     log.Fatal(err)
@@ -63,12 +60,15 @@ func VerifyLogin(user User)(login bool) {
   if file == nil {
     return false
   }
+
+  var uuid string
   scanner := bufio.NewScanner(file)
   for scanner.Scan() {
     line := scanner.Text()
     parts := strings.SplitN(line, ":", 3)
     if len(parts) == 3 && parts[0] == user.Email {
       storedHash = parts[1]
+      uuid = parts[2]
       found = true
       break
     }
@@ -87,15 +87,18 @@ func VerifyLogin(user User)(login bool) {
 
   if CheckPasswordHash(user.Password, storedHash) {
     login = true
+    cookie := http.Cookie{}
+    cookie.Name = "accessToken"
+    cookie.Value = uuid
+    cookie.Expires = time.Now().Add(2 * 24 * time.Hour)
+    cookie.Secure = false
+    cookie.HttpOnly = true
+    cookie.Path = "/"
+    http.SetCookie(w, &cookie)
   } else {
     login = false
   }
   return login
-}
-
-type User struct {
-  Email string
-  Password string 
 }
 
 func HashPassword(password string) (string, error) {
@@ -106,6 +109,16 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
   err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
   return err == nil
+}
+
+func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
+  var t = fileserver.Execute("template/signup.gohtml")
+  t.Execute(w, nil)
+}
+
+func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
+  var t = fileserver.Execute("template/login.gohtml")
+  t.Execute(w, nil)
 }
 
 func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
@@ -169,9 +182,17 @@ func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
-  if VerifyLogin(user) {
+  if VerifyLogin(user, w) {
     println("Successful Login")
   } else {
     println("Login Failed")
   }
+}
+
+func (h *Handler) GetPrintCookies(w http.ResponseWriter, req *http.Request) {
+  var returnStr string
+  for _, cookie := range req.Cookies() {
+    returnStr = returnStr + cookie.Name + ":" + cookie.Value + "\n"
+  }
+  fmt.Fprintf(w, returnStr)
 }
