@@ -1,17 +1,33 @@
 package main
 
 import (
-	"SCTI/fileserver"
-	"SCTI/middleware"
-	"log"
-	"net/http"
+  "SCTI/fileserver"
+  "SCTI/middleware"
+  "SCTI/database"
+  "log"
+  "net/http"
+  "github.com/joho/godotenv"
+  "os"
+  "fmt"
 )
 
 func main() {
-	fileserver.RunFileServer()
+  err := godotenv.Load(".env")
+  if err != nil {
+    log.Fatal("Error loading .env file")
+  }
+  
+  err = database.OpenDatabase()
+  if err != nil {
+    log.Printf("Error connecting to postgres database\n%v", err)
+  }
+  defer database.CloseDatabase()
+  
+  fileserver.RunFileServer()
 
-	mux := http.NewServeMux()
-	LoadRoutes(mux)
+  fmt.Println("Server Started")
+  mux := http.NewServeMux()
+  LoadRoutes(mux)
 
 	server := http.Server{
 		Addr:    ":8080",
