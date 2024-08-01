@@ -11,6 +11,7 @@ import (
   "strings"
 
   "golang.org/x/crypto/bcrypt"
+  "github.com/google/uuid"
 )
 
 type Handler struct{}
@@ -36,8 +37,8 @@ func UserExists(Email string)(userExists bool) {
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
       line := scanner.Text()
-      parts := strings.SplitN(line, ":", 2)
-      if len(parts) == 2 && parts[0] == Email {
+      parts := strings.SplitN(line, ":", 3)
+      if len(parts) == 3 && parts[0] == Email {
         userExists = true
         break
       }
@@ -65,8 +66,8 @@ func VerifyLogin(user User)(login bool) {
   scanner := bufio.NewScanner(file)
   for scanner.Scan() {
     line := scanner.Text()
-    parts := strings.SplitN(line, ":", 2)
-    if len(parts) == 2 && parts[0] == user.Email {
+    parts := strings.SplitN(line, ":", 3)
+    if len(parts) == 3 && parts[0] == user.Email {
       storedHash = parts[1]
       found = true
       break
@@ -139,7 +140,7 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
   }
   defer file.Close()
 
-  _, err = file.WriteString(fmt.Sprintf("%s:%s\n", user.Email, hash))
+  _, err = file.WriteString(fmt.Sprintf("%s:%s:%s\n", user.Email, hash, uuid.NewString()))
   if err != nil {
     log.Fatal(err)
     return
