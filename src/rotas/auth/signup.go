@@ -2,12 +2,13 @@ package auth
 
 import (
   "SCTI/fileserver"
+  "SCTI/database"
   "encoding/json"
   "net/http"
   "log"
   "fmt"
   "os"
-
+  
   "github.com/google/uuid"
 )
 
@@ -53,7 +54,8 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
     log.Fatal(err)
     return
   }
-
+  
+  database.CreateUser(user.Email, hash)
   fmt.Println("E-Mail: ", user.Email)
   fmt.Println("Password: ", user.Password)
   fmt.Println("Hash: ", hash)
