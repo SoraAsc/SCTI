@@ -2,14 +2,11 @@ package auth
 
 import (
   "SCTI/fileserver"
-  "SCTI/database"
+  DB "SCTI/database"
   "encoding/json"
   "net/http"
   "log"
   "fmt"
-  "os"
-  
-  "github.com/google/uuid"
 )
 
 func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
@@ -18,10 +15,7 @@ func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
-  println("In PostSignup")
-
   var user User
-
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
@@ -36,28 +30,22 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
     user.Password = r.FormValue("Senha")
   }
 
-  if UserExists(user.Email) {
-    println("User already exists")
+  found, err := DB.UserExists(user.Email)
+  if err != nil {
+    fmt.Println("DB UserExists Failed")
+    return
+  }
+
+  if found {
+    fmt.Println("User already exists")
     return
   }
 
   hash, _ := HashPassword(user.Password)
-
-  file, err := os.OpenFile("passwords.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
+  err = DB.CreateUser(user.Email, hash)
   if err != nil {
-    log.Fatal(err)
-  }
-  defer file.Close()
-
-  _, err = file.WriteString(fmt.Sprintf("%s:%s:%s\n", user.Email, hash, uuid.NewString()))
-  if err != nil {
-    log.Fatal(err)
+    fmt.Println("Creating user in DB failed")
     return
   }
-  
-  database.CreateUser(user.Email, hash)
-  fmt.Println("E-Mail: ", user.Email)
-  fmt.Println("Password: ", user.Password)
-  fmt.Println("Hash: ", hash)
 }
 
