@@ -1,15 +1,13 @@
 package auth
 
 import (
+  DB "SCTI/database"
   "SCTI/fileserver"
   "encoding/json"
   "net/http"
-  "strings"
-  "bufio"
   "time"
   "log"
   "fmt"
-  "os"
 )
 
 func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
@@ -24,10 +22,7 @@ func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
-  println("In PostLogin")
-
   var user User
-
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
@@ -42,58 +37,33 @@ func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Password = r.FormValue("Senha")
   }
   if VerifyLogin(user, w) {
-    println("Successful Login")
-  } else {
-    println("Login Failed")
+    http.Redirect(w, r, "/cookies", http.StatusSeeOther)
   }
 }
 
 func VerifyLogin(user User, w http.ResponseWriter)(login bool) {
-  file, err := os.Open("passwords.txt")
-  if err != nil && !os.IsNotExist(err) {
-    log.Fatal(err)
-  }
-  if file == nil {
+  found, err := DB.UserExists(user.Email)
+
+  if err != nil {
+    println("DB check: Query Failed")
     return false
   }
-  defer file.Close()
-
-  var storedHash string
-  var found bool
-  var uuid string
-
-  scanner := bufio.NewScanner(file)
-  for scanner.Scan() {
-    line := scanner.Text()
-    parts := strings.SplitN(line, ":", 3)
-    if len(parts) == 3 && parts[0] == user.Email {
-      storedHash = parts[1]
-      uuid = parts[2]
-      found = true
-      break
-    }
-  }
-
-  if err := scanner.Err(); err != nil {
-    log.Fatal(err)
-  }
-
+  
   if !found {
-    println("Verify Password: User not found")
+    println("Verify Login: User not found")
     return false
-  } else {
-    println("Verify Pasword: User found")
   }
 
-  if CheckPasswordHash(user.Password, storedHash) {
+  if CheckPasswordHash(user.Password, DB.GetHash(user.Email)) {
     login = true
     cookie := http.Cookie{
       Name: "accessToken",
-      Value: uuid,
+      Value: "Logged in",
       Expires: time.Now().Add(2 * 24 * time.Hour),
       Secure: false,
       HttpOnly: true,
       Path: "/",
+      SameSite: http.SameSiteLaxMode,
     }
     http.SetCookie(w, &cookie)
   } else {
