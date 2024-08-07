@@ -30,7 +30,7 @@ func LoadRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /login", loginHandler.GetLogin)
   mux.HandleFunc("POST /login", loginHandler.PostLogin)
 
-  mux.HandleFunc("GET /cookies", loginHandler.GetPrintCookies)
+  mux.HandleFunc("GET /dashboard", loginHandler.GetPrintCookies)
 
   mux.HandleFunc("GET /about", aboutHandler.GetAbout)
 

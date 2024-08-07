@@ -115,3 +115,24 @@ func GetHash(email string) (string) {
 
     return hash
 }
+
+func GetId(email string) (int) {
+    query := `
+    SELECT id
+    FROM users
+    WHERE users.email = $1
+    `
+
+    var id int
+    err := DB.QueryRow(query, email).Scan(&id)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with email: %s\n", email)
+            return -1
+        }
+        fmt.Printf("could not retrieve id: %v\n", err)
+        return -1
+    }
+
+    return id
+}
