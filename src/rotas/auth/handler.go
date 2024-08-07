@@ -1,7 +1,6 @@
 package auth
 
 import (
-  "fmt"
   "net/http"
 
   "golang.org/x/crypto/bcrypt"
@@ -24,10 +23,10 @@ func CheckPasswordHash(password, hash string) bool {
   return err == nil
 }
 
-func (h *Handler) GetPrintCookies(w http.ResponseWriter, req *http.Request) {
-  var returnStr string
-  for _, cookie := range req.Cookies() {
-    returnStr = returnStr + cookie.Name + ":" + cookie.Value + "\n"
-  }
-  fmt.Fprint(w, returnStr)
+func RegisterRoutes(mux *http.ServeMux) {
+  handler := &Handler{}
+  mux.HandleFunc("GET /login", handler.GetLogin)
+  mux.HandleFunc("POST /login", handler.PostLogin)
+  mux.HandleFunc("GET /signup", handler.GetSignup)
+  mux.HandleFunc("POST /signup", handler.PostSignup)
 }
