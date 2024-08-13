@@ -36,6 +36,17 @@ func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) PostDashboard(w http.ResponseWriter, r *http.Request) {
+  auth, err := r.Cookie("accessToken")
+  if err != nil {
+    // fmt.Println("Error Getting cookie:", err)
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
+  }
+
+  if auth.Value == "-1" {
+    // fmt.Println("Invalid accessToken")
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+  }
   var courses Courses
   if r.Header.Get("Content-Type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&courses)
@@ -57,7 +68,6 @@ func (h *Handler) PostDashboard(w http.ResponseWriter, r *http.Request) {
     courses.Qui = r.FormValue("qui")
     courses.Sex = r.FormValue("sex")
     fmt.Fprintf(w, "%s\n%s\n%s\n%s\n%s", courses.Seg, courses.Ter, courses.Qua, courses.Qui, courses.Sex)
-
   }
 }
 
