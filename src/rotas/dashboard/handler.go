@@ -75,19 +75,4 @@ func RegisterRoutes(mux *http.ServeMux) {
   handler := &Handler{}
   mux.HandleFunc("GET /dashboard", handler.GetDashboard)
   mux.HandleFunc("POST /dashboard", handler.PostDashboard)
-  mux.HandleFunc("GET /logoff", handler.GetLogoff)
-}
-func(h *Handler) GetLogoff(w http.ResponseWriter, r *http.Request) {
-  http.SetCookie(w, &http.Cookie{
-    Name:   "accessToken",
-    Value:  "",
-    MaxAge: -1,
-    Secure: false,
-    HttpOnly: true,
-    Path: "/",
-    SameSite: http.SameSiteLaxMode,
-  })
-  http.Redirect(w, r, "/login", http.StatusSeeOther)
-
-  w.WriteHeader(http.StatusOK)
 }
