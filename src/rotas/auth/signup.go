@@ -1,12 +1,14 @@
 package auth
 
 import (
-  "SCTI/fileserver"
-  DB "SCTI/database"
-  "encoding/json"
-  "net/http"
-  "log"
-  "fmt"
+	DB "SCTI/database"
+	"SCTI/fileserver"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"net/smtp"
+	"os"
 )
 
 func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
@@ -45,6 +47,26 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
   err = DB.CreateUser(user.Email, hash)
   if err != nil {
     fmt.Println("Creating user in DB failed")
+    return
+  }
+
+  code := DB.GetCode(user.Email)
+  if code == "" {
+    fmt.Println("Error Getting the code")
+    return
+  }
+
+  from := os.Getenv("GMAIL_SENDER")
+  pass := os.Getenv("GMAIL_PASS")
+
+  body := "Seu código de verificação é:\n" + code
+
+  msg := "From: " + from + "\n" + "To: " + user.Email + "\n" + "Subject: Verificação de email SCTI\n\n" + body
+
+  err = smtp.SendMail("smtp.gmail.com:587", smtp.PlainAuth("", from, pass, "smtp.gmail.com"), from, []string{user.Email}, []byte(msg))
+
+  if err != nil {
+    fmt.Printf("smtp error: %s\n", err)
     return
   }
 }
