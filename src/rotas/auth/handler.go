@@ -29,6 +29,7 @@ func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("POST /login", handler.PostLogin)
   mux.HandleFunc("GET /signup", handler.GetSignup)
   mux.HandleFunc("POST /signup", handler.PostSignup)
+  mux.HandleFunc("GET /logoff", handler.GetLogoff)
   mux.HandleFunc("GET /verify", handler.GetVerify)
   mux.HandleFunc("POST /verify", handler.PostVerify)
 }
