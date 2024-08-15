@@ -5,6 +5,7 @@ import (
   "fmt"
   "log"
   _ "github.com/lib/pq"
+  "github.com/google/uuid"
 )
 
 var DB *sql.DB
@@ -46,13 +47,17 @@ func CreateUser(Email string, hash string) error {
   }
 
   query := `
-  INSERT INTO users (email)
-  VALUES ($1)
+  INSERT INTO users (email, uuid, verificationCode)
+  VALUES ($1, $2, $3)
   RETURNING id
   `
 
+  UUID := uuid.New()
+  UUIDString := UUID.String()
+  fmt.Println(UUIDString[:6])
+
   var userID int
-  err = tx.QueryRow(query, Email).Scan(&userID)
+  err = tx.QueryRow(query, Email, UUID, UUIDString[:6]).Scan(&userID)
   if err != nil {
     tx.Rollback()
     return fmt.Errorf("não foi possível inserir o usuário: %v", err)
@@ -135,4 +140,46 @@ func GetId(email string) (int) {
     }
 
     return id
+}
+
+func GetCode(email string) (string) {
+    query := `
+    SELECT verificationCode
+    FROM users
+    WHERE users.email = $1
+    `
+
+    var code string
+    err := DB.QueryRow(query, email).Scan(&code)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with email: %s\n", email)
+            return ""
+        }
+        fmt.Printf("could not retrieve id: %v\n", err)
+        return ""
+    }
+
+    return code
+}
+
+func GetStanding(email string) (bool) {
+    query := `
+    SELECT isVerified
+    FROM users
+    WHERE users.email = $1
+    `
+
+    var accStatus bool
+    err := DB.QueryRow(query, email).Scan(&accStatus)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with email: %s\n", email)
+            return false
+        }
+        fmt.Printf("could not retrieve id: %v\n", err)
+        return false
+    }
+
+    return accStatus
 }

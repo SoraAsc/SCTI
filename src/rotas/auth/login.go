@@ -36,41 +36,45 @@ func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
-  if VerifyLogin(user, w) {
-    http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+  login, id := VerifyLogin(user, w)
+  if  login {
+    standing := DB.GetStanding(user.Email)
+    if standing {
+      cookie := http.Cookie{
+        Name: "accessToken",
+        Value: id,
+        Expires: time.Now().Add(2 * 24 * time.Hour),
+        Secure: false,
+        HttpOnly: true,
+        Path: "/",
+        SameSite: http.SameSiteLaxMode,
+      }
+      http.SetCookie(w, &cookie)
+      http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+    } else {
+      http.Redirect(w, r, "/verify", http.StatusSeeOther)
+    }
   }
 }
 
-func VerifyLogin(user User, w http.ResponseWriter)(login bool) {
+func VerifyLogin(user User, w http.ResponseWriter)(login bool, id string) {
   found, err := DB.UserExists(user.Email)
 
   if err != nil {
     println("DB check: Query Failed")
-    return false
+    return false, "-1"
   }
   
   if !found {
     // println("Verify Login: User not found")
-    return false
+    return false, "-1"
   }
 
-  id := fmt.Sprint(DB.GetId(user.Email))
+  id = fmt.Sprint(DB.GetId(user.Email))
   if CheckPasswordHash(user.Password, DB.GetHash(user.Email)) && id != "-1" {
-    login = true
-    cookie := http.Cookie{
-      Name: "accessToken",
-      Value: id,
-      Expires: time.Now().Add(2 * 24 * time.Hour),
-      Secure: false,
-      HttpOnly: true,
-      Path: "/",
-      SameSite: http.SameSiteLaxMode,
-    }
-    http.SetCookie(w, &cookie)
-  } else {
-    login = false
+    return true, id
   }
-  return login
+  return false, "-1"
 }
 
 func(h *Handler) GetLogoff(w http.ResponseWriter, r *http.Request) {

@@ -12,3 +12,12 @@ CREATE TABLE courses (
     course_name VARCHAR(255) UNIQUE NOT NULL,
     available_spots INT NOT NULL
 );
+
+ALTER TABLE users
+ADD COLUMN uuid UUID UNIQUE NOT NULL;
+
+ALTER TABLE users
+ADD COLUMN isVerified BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE users
+ADD COLUMN verificationCode VARCHAR(255);
