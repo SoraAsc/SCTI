@@ -39,20 +39,20 @@ func CloseDatabase() error {
   return DB.Close()
 }
 
-func CreateUser(Email string, hash string, UUIDString string) error {
+func CreateUser(Email string, hash string, UUIDString string, name string) error {
   tx, err := DB.Begin()
   if err != nil {
     log.Fatal(err)
   }
 
   query := `
-  INSERT INTO users (email, uuid, verificationCode)
-  VALUES ($1, $2, $3)
+  INSERT INTO users (email, uuid, verificationCode, name)
+  VALUES ($1, $2, $3, $4)
   RETURNING id
   `
 
   var userID int
-  err = tx.QueryRow(query, Email, UUIDString, UUIDString[:5]).Scan(&userID)
+  err = tx.QueryRow(query, Email, UUIDString, UUIDString[:5], name).Scan(&userID)
   if err != nil {
     tx.Rollback()
     return fmt.Errorf("não foi possível inserir o usuário: %v", err)

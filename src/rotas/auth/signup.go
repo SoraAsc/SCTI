@@ -20,6 +20,7 @@ func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
   var user User
+  var name string
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
@@ -30,6 +31,7 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
       fmt.Println("r.Form dentro if: ", r.Form)
       log.Fatal(err)
     }
+    name = r.FormValue("Nome")
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
@@ -50,7 +52,7 @@ func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
   UUIDString := UUID.String()
 
   hash, _ := HashPassword(user.Password)
-  err = DB.CreateUser(user.Email, hash, UUIDString)
+  err = DB.CreateUser(user.Email, hash, UUIDString, name)
   if err != nil {
     fmt.Printf("Creating user in DB failed: %v\n", err)
     return
