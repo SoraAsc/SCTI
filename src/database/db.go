@@ -5,7 +5,6 @@ import (
   "fmt"
   "log"
   _ "github.com/lib/pq"
-  "github.com/google/uuid"
 )
 
 var DB *sql.DB
@@ -40,7 +39,7 @@ func CloseDatabase() error {
   return DB.Close()
 }
 
-func CreateUser(Email string, hash string) error {
+func CreateUser(Email string, hash string, UUIDString string) error {
   tx, err := DB.Begin()
   if err != nil {
     log.Fatal(err)
@@ -52,12 +51,8 @@ func CreateUser(Email string, hash string) error {
   RETURNING id
   `
 
-  UUID := uuid.New()
-  UUIDString := UUID.String()
-  fmt.Println(UUIDString[:6])
-
   var userID int
-  err = tx.QueryRow(query, Email, UUID, UUIDString[:6]).Scan(&userID)
+  err = tx.QueryRow(query, Email, UUIDString, UUIDString[:5]).Scan(&userID)
   if err != nil {
     tx.Rollback()
     return fmt.Errorf("não foi possível inserir o usuário: %v", err)
@@ -121,46 +116,63 @@ func GetHash(email string) (string) {
     return hash
 }
 
-func GetId(email string) (int) {
+func GetId(uuid string) (int, error) {
     query := `
     SELECT id
     FROM users
-    WHERE users.email = $1
+    WHERE users.uuid = $1
     `
 
     var id int
-    err := DB.QueryRow(query, email).Scan(&id)
+    err := DB.QueryRow(query, uuid).Scan(&id)
     if err != nil {
         if err == sql.ErrNoRows {
-            fmt.Printf("no user found with email: %s\n", email)
-            return -1
+            return -1, fmt.Errorf("no user found with uuid: %s\n", uuid)
         }
-        fmt.Printf("could not retrieve id: %v\n", err)
-        return -1
+        return -1, fmt.Errorf("could not retrieve id: %v\n", err)
     }
 
-    return id
+    return id, nil
 }
 
-func GetCode(email string) (string) {
+func GetCode(uuid string) (string, error) {
     query := `
     SELECT verificationCode
+    FROM users
+    WHERE users.uuid = $1
+    `
+
+    var code string
+    err := DB.QueryRow(query, uuid).Scan(&code)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return "", fmt.Errorf("no user found with uuid: %s\n", uuid)
+        }
+        return "", fmt.Errorf("could not retrieve id: %v\n", err)
+    }
+
+    return code, nil
+}
+
+func GetUUID(email string) (string) {
+    query := `
+    SELECT uuid
     FROM users
     WHERE users.email = $1
     `
 
-    var code string
-    err := DB.QueryRow(query, email).Scan(&code)
+    var uuid string
+    err := DB.QueryRow(query, email).Scan(&uuid)
     if err != nil {
         if err == sql.ErrNoRows {
             fmt.Printf("no user found with email: %s\n", email)
             return ""
         }
-        fmt.Printf("could not retrieve id: %v\n", err)
+        fmt.Printf("could not retrieve uuid: %v\n", err)
         return ""
     }
 
-    return code
+    return uuid
 }
 
 func GetStanding(email string) (bool) {
@@ -182,4 +194,31 @@ func GetStanding(email string) (bool) {
     }
 
     return accStatus
+}
+
+func SetStanding(uuid string, standing bool) (error) {
+  tx, err := DB.Begin()
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  query := `
+  UPDATE users 
+  SET isVerified = $1
+  WHERE uuid = $2
+  `
+
+  _, err = tx.Exec(query, standing, uuid)
+  if err != nil {
+    tx.Rollback()
+    return fmt.Errorf("não foi possível verificar o usuário: %v", err)
+  }
+
+  err = tx.Commit()
+  if err != nil {
+    return fmt.Errorf("não foi possível confirmar a transação de verificação: %v", err)
+  }
+
+  fmt.Println("Usuário verificado")
+  return nil
 }

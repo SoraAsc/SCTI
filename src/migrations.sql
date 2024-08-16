@@ -21,3 +21,6 @@ ADD COLUMN isVerified BOOLEAN DEFAULT FALSE;
 
 ALTER TABLE users
 ADD COLUMN verificationCode VARCHAR(255);
+
+ALTER TABLE users
+ADD COLUMN tokens INT CHECK (tokens <= 5) DEFAULT 0;
