@@ -1,3 +1,11 @@
-body {
-  background-color: blue;
+html, body{
+	height: 100%;
+	max-width: 100%;
 }
+
+.header_logo{
+	height: 300px;
+}
+
+
+
