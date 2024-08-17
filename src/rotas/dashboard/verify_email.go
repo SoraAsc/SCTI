@@ -87,4 +87,11 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
     fmt.Printf("smtp error: %s\n", err)
     return
   }
+
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div>
+          Verification email sent! Please check your inbox.
+      </div>
+  `))
 }
