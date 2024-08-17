@@ -36,7 +36,6 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
-  fmt.Println("Got form values")
   login, uuid := VerifyLogin(user, w)
   if login {
     cookie := http.Cookie{
@@ -49,7 +48,6 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
       SameSite: http.SameSiteLaxMode,
     }
     http.SetCookie(w, &cookie)
-    fmt.Println("waiting for redirect")
     http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
   }
   http.Error(w, "Couldn't login", http.StatusUnauthorized)
