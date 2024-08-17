@@ -10,7 +10,7 @@ import (
   "fmt"
 )
 
-func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
+func GetLogin(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err == nil && cookie != nil {
     http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
@@ -21,7 +21,7 @@ func (h *Handler) GetLogin(w http.ResponseWriter, r *http.Request) {
   t.Execute(w, nil)
 }
 
-func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
+func PostLogin(w http.ResponseWriter, r *http.Request) {
   var user User
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
@@ -72,7 +72,7 @@ func VerifyLogin(user User, w http.ResponseWriter)(login bool, uuid string) {
   return false, ""
 }
 
-func(h *Handler) GetLogoff(w http.ResponseWriter, r *http.Request) {
+func GetLogoff(w http.ResponseWriter, r *http.Request) {
   http.SetCookie(w, &http.Cookie{
     Name:   "accessToken",
     Value:  "",

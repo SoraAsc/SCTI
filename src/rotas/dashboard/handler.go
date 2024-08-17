@@ -8,8 +8,6 @@ import (
   "net/http"
 )
 
-type Handler struct{}
-
 type Courses struct {
   Seg string `json:"seg"`
   Ter string `json:"ter"`
@@ -18,7 +16,7 @@ type Courses struct {
   Sex string `json:"sex"`
 }
 
-func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
+func GetDashboard(w http.ResponseWriter, r *http.Request) {
   auth, err := r.Cookie("accessToken")
   if err != nil {
     // fmt.Println("Error Getting cookie:", err)
@@ -35,7 +33,7 @@ func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
   // fmt.Fprintf(w, "User ID: %v", auth.Value)
 }
 
-func (h *Handler) PostDashboard(w http.ResponseWriter, r *http.Request) {
+func PostDashboard(w http.ResponseWriter, r *http.Request) {
   auth, err := r.Cookie("accessToken")
   if err != nil {
     // fmt.Println("Error Getting cookie:", err)
@@ -72,7 +70,6 @@ func (h *Handler) PostDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
-  handler := &Handler{}
-  mux.HandleFunc("GET /dashboard", handler.GetDashboard)
-  mux.HandleFunc("POST /dashboard", handler.PostDashboard)
+  mux.HandleFunc("GET /dashboard", GetDashboard)
+  mux.HandleFunc("POST /dashboard", PostDashboard)
 }

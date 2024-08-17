@@ -2,17 +2,21 @@ package home
 
 import (
   "SCTI/fileserver"
+  "SCTI/rotas/notfound"
   "net/http"
 )
 
-type Handler struct{}
+func GetHome(w http.ResponseWriter, r *http.Request) {
+  //404 page handler
+  if r.URL.Path != "/"{
+    notfound.NotFound(w, r)
+    return
+  }
 
-func (h *Handler) GetHome(w http.ResponseWriter, r *http.Request) {
   var t = fileserver.Execute("template/index.gohtml")
   t.Execute(w, nil)
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
-  handler := &Handler{}
-  mux.HandleFunc("/", handler.GetHome)
+  mux.HandleFunc("/", GetHome)
 }
