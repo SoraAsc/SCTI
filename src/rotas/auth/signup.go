@@ -13,12 +13,12 @@ import (
   "github.com/google/uuid"
 )
 
-func (h *Handler) GetSignup(w http.ResponseWriter, r *http.Request) {
+func GetSignup(w http.ResponseWriter, r *http.Request) {
   var t = fileserver.Execute("template/signup.gohtml")
   t.Execute(w, nil)
 }
 
-func (h *Handler) PostSignup(w http.ResponseWriter, r *http.Request) {
+func PostSignup(w http.ResponseWriter, r *http.Request) {
   var user User
   var name string
   if r.Header.Get("Content-type") == "application/json" {

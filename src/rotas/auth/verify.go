@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetVerify(w http.ResponseWriter, r *http.Request) {
+func GetVerify(w http.ResponseWriter, r *http.Request) {
   code := r.URL.Query().Get("code")
   uuid := r.URL.Query().Get("uuid")
 

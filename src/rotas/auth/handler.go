@@ -6,8 +6,6 @@ import (
   "golang.org/x/crypto/bcrypt"
 )
 
-type Handler struct{}
-
 type User struct {
   Email string
   Password string 
@@ -24,10 +22,10 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
-  handler := &Handler{}
-  mux.HandleFunc("GET /login", handler.GetLogin)
-  mux.HandleFunc("POST /login", handler.PostLogin)
-  mux.HandleFunc("GET /signup", handler.GetSignup)
-  mux.HandleFunc("POST /signup", handler.PostSignup)
-  mux.HandleFunc("GET /verify", handler.GetVerify)
+  mux.HandleFunc("GET /login", GetLogin)
+  mux.HandleFunc("POST /login", PostLogin)
+  mux.HandleFunc("GET /signup", GetSignup)
+  mux.HandleFunc("POST /signup", PostSignup)
+  mux.HandleFunc("GET /logoff", GetLogoff)
+  mux.HandleFunc("GET /verify", GetVerify)
 }
