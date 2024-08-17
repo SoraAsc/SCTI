@@ -2,21 +2,28 @@ package auth
 
 import (
   "SCTI/fileserver"
-	DB "SCTI/database"
-	"fmt"
-	"net/http"
+  DB "SCTI/database"
+  "fmt"
+  "net/http"
+  "net/url"
 )
 
 func GetVerify(w http.ResponseWriter, r *http.Request) {
   code := r.URL.Query().Get("code")
-  uuid := r.URL.Query().Get("uuid")
+  encodedEmail := r.URL.Query().Get("email")
 
-  if code == "" || uuid == "" {
-    http.Error(w, "Code or UUID parameter is missing", http.StatusBadRequest)
+  if code == "" || encodedEmail == "" {
+    http.Error(w, "Code or email parameter is missing", http.StatusBadRequest)
     return
   }
 
-  DB_Code, err := DB.GetCode(uuid)
+  email, err := url.QueryUnescape(encodedEmail)
+  if err != nil {
+    http.Error(w, "Invalid email format", http.StatusBadRequest)
+    return
+  }
+
+  DB_Code, err := DB.GetCodeByEmail(email)
   if err != nil {
     http.Error(w, "Database error", http.StatusInternalServerError)
     return
@@ -32,7 +39,7 @@ func GetVerify(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  err = DB.SetStanding(uuid, true)
+  err = DB.SetStanding(DB.GetUUID(email), true)
   if err != nil {
     fmt.Printf("Error setting standing: %v", err)
   }

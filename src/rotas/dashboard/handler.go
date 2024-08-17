@@ -1,11 +1,12 @@
 package dashboard
 
 import (
-  "SCTI/fileserver"
+  DB "SCTI/database"
   "encoding/json"
   "fmt"
   "log"
   "net/http"
+  "html/template"
 )
 
 type Courses struct {
@@ -16,21 +17,37 @@ type Courses struct {
   Sex string `json:"sex"`
 }
 
+type DashboardData struct {
+    IsVerified bool
+}
+
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
-  auth, err := r.Cookie("accessToken")
+  cookie, err := r.Cookie("accessToken")
   if err != nil {
     // fmt.Println("Error Getting cookie:", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
-  if auth.Value == "-1" {
+  if cookie.Value == "-1" {
     // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
-  var t = fileserver.Execute("template/dashboard.gohtml")
-  t.Execute(w, nil)
-  // fmt.Fprintf(w, "User ID: %v", auth.Value)
+
+
+  email := DB.GetEmail(cookie.Value)
+  standing := DB.GetStanding(email)
+
+  data := DashboardData{
+    IsVerified: standing,
+  }
+
+  tmpl, err := template.ParseFiles("template/dashboard.gohtml")
+  if err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+  }
+  tmpl.ExecuteTemplate(w, "dashboard", data)
 }
 
 func PostDashboard(w http.ResponseWriter, r *http.Request) {
@@ -72,4 +89,5 @@ func PostDashboard(w http.ResponseWriter, r *http.Request) {
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
+  mux.HandleFunc("POST /send-verification-email", VerifyEmail)
 }

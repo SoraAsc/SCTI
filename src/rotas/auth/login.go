@@ -50,6 +50,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
     http.SetCookie(w, &cookie)
     http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
   }
+  http.Error(w, "Couldn't login", http.StatusUnauthorized)
 }
 
 func VerifyLogin(user User, w http.ResponseWriter)(login bool, uuid string) {

@@ -1,9 +1,11 @@
+{{ define "dashboard" }}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <title>SCTI - Dashboard</title>
   </head>
   <body>
@@ -86,6 +88,17 @@
       <button type="submit">Enviar</button>
     </form>
 
+    {{ if not .IsVerified }}
+    <button hx-post="/send-verification-email"
+            hx-trigger="click"
+            hx-target="#message-container"
+            hx-swap="innerHTML">
+      Verify Email
+    </button>
+    <div id="message-container"></div>
+    {{ end }}
+
     <a href="/logoff"><button>logoff</button></a>
   </body>
 </html>
+{{ end }}
