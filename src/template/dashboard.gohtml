@@ -91,11 +91,10 @@
     {{ if not .IsVerified }}
     <button hx-post="/send-verification-email"
             hx-trigger="click"
-            hx-target="#message-container"
-            hx-swap="innerHTML">
+            hx-target="this"
+            hx-swap="outerHTML">
       Verify Email
     </button>
-    <div id="message-container"></div>
     {{ end }}
 
     <a href="/logoff"><button>logoff</button></a>
