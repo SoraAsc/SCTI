@@ -7,8 +7,6 @@ import (
   "fmt"
   "log"
   "net/http"
-  "net/smtp"
-  "os"
 
   "github.com/google/uuid"
 )
@@ -58,30 +56,6 @@ func PostSignup(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  code, err := DB.GetCode(UUIDString)
-  if err != nil {
-    fmt.Println("Error Getting the code")
-    return
-  }
-
-  from := os.Getenv("GMAIL_SENDER")
-  pass := os.Getenv("GMAIL_PASS")
-
-  verificationLink := fmt.Sprintf("localhost:8080/verify?code=%s&uuid=%s", code, UUIDString)
-  body := "Clique aqui para verificar seu email:\n" + verificationLink
-
-  msg := "From: " + from + "\n" + 
-         "To: " + user.Email + "\n" + 
-         "Subject: Verificação de email SCTI\n\n" + 
-         body
-
-  err = smtp.SendMail("smtp.gmail.com:587", smtp.PlainAuth("", from, pass, "smtp.gmail.com"), from, []string{user.Email}, []byte(msg))
-
-  if err != nil {
-    fmt.Printf("smtp error: %s\n", err)
-    return
-  }
 
   http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
-

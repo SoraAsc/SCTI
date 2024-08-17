@@ -154,6 +154,25 @@ func GetCode(uuid string) (string, error) {
     return code, nil
 }
 
+func GetCodeByEmail(email string) (string, error) {
+    query := `
+    SELECT verificationCode
+    FROM users
+    WHERE users.email = $1
+    `
+
+    var code string
+    err := DB.QueryRow(query, email).Scan(&code)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return "", fmt.Errorf("no user found with email: %s\n", email)
+        }
+        return "", fmt.Errorf("could not retrieve id: %v\n", err)
+    }
+
+    return code, nil
+}
+
 func GetUUID(email string) (string) {
     query := `
     SELECT uuid
@@ -163,6 +182,27 @@ func GetUUID(email string) (string) {
 
     var uuid string
     err := DB.QueryRow(query, email).Scan(&uuid)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with email: %s\n", email)
+            return ""
+        }
+        fmt.Printf("could not retrieve uuid: %v\n", err)
+        return ""
+    }
+
+    return uuid
+}
+
+func GetEmail(uuid string) (string) {
+    query := `
+    SELECT email
+    FROM users
+    WHERE users.uuid = $1
+    `
+
+    var email string
+    err := DB.QueryRow(query, uuid).Scan(&uuid)
     if err != nil {
         if err == sql.ErrNoRows {
             fmt.Printf("no user found with email: %s\n", email)
