@@ -10,6 +10,15 @@ import (
   gomail "gopkg.in/mail.v2"
 )
 
+func SentError(w http.ResponseWriter) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div>
+          Falha ao enviar o email de verificação.
+      </div>
+  `))
+}
+
 func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
@@ -28,6 +37,7 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   code, err := DB.GetCode(cookie.Value)
   if err != nil {
     fmt.Printf("Error Getting the code: %v\n", err)
+    SentError(w)
     return
   }
 
@@ -85,13 +95,14 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 
   if err := dialer.DialAndSend(msg); err != nil {
     fmt.Printf("smtp error: %s\n", err)
+    SentError(w)
     return
   }
 
   w.Header().Set("Content-Type", "text/html")
   w.Write([]byte(`
       <div>
-          Verification email sent! Please check your inbox.
+          Email de verificação enviado com sucesso!!
       </div>
   `))
 }
