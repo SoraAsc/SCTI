@@ -6,9 +6,7 @@ import (
   "net/http"
 )
 
-type Handler struct{}
-
-func (h *Handler) GetLoja(w http.ResponseWriter, r *http.Request) {
+func GetLoja(w http.ResponseWriter, r *http.Request) {
   auth, err := r.Cookie("accessToken")
   if err != nil {
     // fmt.Println("Error Getting cookie:", err)
@@ -25,6 +23,5 @@ func (h *Handler) GetLoja(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
-  handler := &Handler{}
-  mux.HandleFunc("GET /loja", handler.GetLoja)
+  mux.HandleFunc("GET /loja", GetLoja)
 }
