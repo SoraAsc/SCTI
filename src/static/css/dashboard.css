@@ -46,3 +46,13 @@ body {
   border-style: solid;
   border-width: 1px;
 }
+
+.htmx-indicator{
+  display:none;
+}
+.htmx-request .htmx-indicator{
+  display:inline-block;
+}
+.htmx-request.verify-email-button{
+  display:none;
+}
