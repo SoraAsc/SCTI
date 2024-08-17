@@ -89,12 +89,31 @@
     </form>
 
     {{ if not .IsVerified }}
-    <button hx-post="/send-verification-email"
-            hx-trigger="click"
-            hx-target="this"
-            hx-swap="outerHTML">
-      Verify Email
-    </button>
+      <div>
+        <button hx-post="/send-verification-email"
+                hx-trigger="click"
+                hx-target="this"
+                hx-swap="outerHTML"
+                hx-indicator="#loading-indicator">
+          Verify Email
+        </button>
+        <div id="loading-indicator" class="htmx-indicator">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .spinner_P7sC{animation:spinner_YpZS .8s linear infinite;animation-delay:-.8s}
+              .spinner_MJg4{animation-delay:-.65s}
+              .spinner_riZA{animation-delay:-.5s}
+              @keyframes spinner_YpZS{
+                0%{r:1.5px}
+                94%,100%{r:3px}
+              }
+            </style>
+            <circle class="spinner_P7sC" cx="4" cy="12" r="3"/>
+            <circle class="spinner_P7sC spinner_MJg4" cx="12" cy="12" r="3"/>
+            <circle class="spinner_P7sC spinner_riZA" cx="20" cy="12" r="3"/>
+          </svg>
+        </div>
+      </div>
     {{ end }}
 
     <a href="/logoff"><button>logoff</button></a>
