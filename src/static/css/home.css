@@ -7,7 +7,12 @@ html, body{
 	height: 300px;
 }
 
-
+h1{
+	color: #fff;
+	font-size: 44px;
+	font-weight: 600;
+	line-height: 64px;
+}
 footer {
 	position: fixed; 
 	bottom: 0px; 

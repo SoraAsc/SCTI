@@ -1,7 +1,7 @@
 *{
-	font-family: "League Spartan", sans-serif;;
+	font-family: "League Spartan", sans-serif;
 }
-header_style_form_container {
+.header_style_form_container {
 	height: 100%;
 
 	overflow: hidden;
@@ -95,7 +95,7 @@ button{
 	box-shadow: 2px 2px 5px black;
 	font-Size: 20px;
 	cursor: pointer;
-	postion: relative;
+	position: relative;
 	box-sizing: border-box;
 }
 
