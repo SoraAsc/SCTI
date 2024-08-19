@@ -1,0 +1,58 @@
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  border-color: #000000;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.title {
+  font-size: 30px;
+  text-align: center;
+}
+
+.week {
+  display: flex;
+  flex-direction: row;
+  border-color: #00FF00;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.weekday {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  border-color: #FF0000;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.courses {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  border-color: #0000FF;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.course {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  border-color: #FFFF00;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.htmx-indicator{
+  display:none;
+}
+.htmx-request .htmx-indicator{
+  display:inline-block;
+}
+.htmx-request.verify-email-button{
+  display:none;
+}

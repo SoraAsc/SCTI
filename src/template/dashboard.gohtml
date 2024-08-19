@@ -1,0 +1,122 @@
+{{ define "dashboard" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>SCTI - Dashboard</title>
+  </head>
+  <body>
+    <div class="title">LOJA</div>
+
+    <form method="POST" action="/dashboard">
+      <div class="week">
+
+        <div class="weekday">
+          <div class="wtitle">Segunda</div>
+          <div class="courses">
+            <div class="course">
+              <input type="radio" id="seg-course1" name="seg" value="Programação">
+              <label for="seg-course1">Programação</label>
+            </div>
+            <div class="course">
+              <input type="radio" id="seg-course2" name="seg" value="Redes de Computadores">
+              <label for="seg-course2">Redes de Computadores</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekday">
+          <div class="wtitle">Terça</div>
+          <div class="courses">
+            <div class="course">
+              <input type="radio" id="ter-course1" name="ter" value="Estruturas de Dados">
+              <label for="ter-course1">Estruturas de Dados</label>
+            </div>
+            <div class="course">
+              <input type="radio" id="ter-course2" name="ter" value="Sistemas Operacionais">
+              <label for="ter-course2">Sistemas Operacionais</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekday">
+          <div class="wtitle">Quarta</div>
+          <div class="courses">
+            <div class="course">
+              <input type="radio" id="qua-course1" name="qua" value="Engenharia de Software">
+              <label for="qua-course1">Engenharia de Software</label>
+            </div>
+            <div class="course">
+              <input type="radio" id="qua-course2" name="qua" value="Banco de Dados">
+              <label for="qua-course2">Banco de Dados</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekday">
+          <div class="wtitle">Quinta</div>
+          <div class="courses">
+            <div class="course">
+              <input type="radio" id="qui-course1" name="qui" value="Inteligência Artificial">
+              <label for="qui-course1">Inteligência Artificial</label>
+            </div>
+            <div class="course">
+              <input type="radio" id="qui-course2" name="qui" value="Desenvolvimento Web">
+              <label for="qui-course2">Desenvolvimento Web</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekday">
+          <div class="wtitle">Sexta</div>
+          <div class="courses">
+            <div class="course">
+              <input type="radio" id="sex-course1" name="sex" value="Segurança da Informação">
+              <label for="sex-course1">Segurança da Informação</label>
+            </div>
+            <div class="course">
+              <input type="radio" id="sex-course2" name="sex" value="Computação Gráfica">
+              <label for="sex-course2">Computação Gráfica</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <button type="submit">Enviar</button>
+    </form>
+
+    {{ if not .IsVerified }}
+      <div>
+        <button hx-post="/send-verification-email"
+                hx-trigger="click"
+                hx-target="this"
+                hx-swap="outerHTML"
+                hx-indicator="#loading-indicator">
+          Verificar Email
+        </button>
+        <div id="loading-indicator" class="htmx-indicator">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .spinner_P7sC{animation:spinner_YpZS .8s linear infinite;animation-delay:-.8s}
+              .spinner_MJg4{animation-delay:-.65s}
+              .spinner_riZA{animation-delay:-.5s}
+              @keyframes spinner_YpZS{
+                0%{r:1.5px}
+                94%,100%{r:3px}
+              }
+            </style>
+            <circle class="spinner_P7sC" cx="4" cy="12" r="3"/>
+            <circle class="spinner_P7sC spinner_MJg4" cx="12" cy="12" r="3"/>
+            <circle class="spinner_P7sC spinner_riZA" cx="20" cy="12" r="3"/>
+          </svg>
+        </div>
+      </div>
+    {{ end }}
+
+    <a href="/logoff"><button>logoff</button></a>
+  </body>
+</html>
+{{ end }}

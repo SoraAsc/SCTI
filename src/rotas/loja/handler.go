@@ -1,12 +1,27 @@
 package loja
 
 import (
-	"fmt"
-	"net/http"
+  "SCTI/fileserver"
+
+  "net/http"
 )
 
-type Handler struct{}
+func GetLoja(w http.ResponseWriter, r *http.Request) {
+  auth, err := r.Cookie("accessToken")
+  if err != nil {
+    // fmt.Println("Error Getting cookie:", err)
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
+  }
 
-func (h *Handler) GetLoja(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Loja")
+  if auth.Value == "-1" {
+    // fmt.Println("Invalid accessToken")
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+  }
+  var t = fileserver.Execute("template/loja.gohtml")
+  t.Execute(w, nil)
+}
+
+func RegisterRoutes(mux *http.ServeMux) {
+  mux.HandleFunc("GET /loja", GetLoja)
 }
