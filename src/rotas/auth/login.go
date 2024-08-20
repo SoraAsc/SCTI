@@ -36,7 +36,12 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
-  login, uuid := VerifyLogin(user, w)
+  login, uuid, err := VerifyLogin(user, w)
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusUnauthorized)
+  }
+
   if login {
     cookie := http.Cookie{
       Name: "accessToken",
@@ -50,27 +55,24 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
     http.SetCookie(w, &cookie)
     http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
   }
-  http.Error(w, "Couldn't login", http.StatusUnauthorized)
 }
 
-func VerifyLogin(user User, w http.ResponseWriter)(login bool, uuid string) {
+func VerifyLogin(user User, w http.ResponseWriter)(login bool, uuid string, err error) {
   found, err := DB.UserExists(user.Email)
 
   if err != nil {
-    println("DB check: Query Failed")
-    return false, ""
+    return false, "", fmt.Errorf("DB check: Query Failed")
   }
   
   if !found {
-    // println("Verify Login: User not found")
-    return false, ""
+    return false, "", fmt.Errorf("Verify Login: User not found")
   }
 
   uuid = fmt.Sprint(DB.GetUUID(user.Email))
   if CheckPasswordHash(user.Password, DB.GetHash(user.Email)) && uuid != "" {
-    return true, uuid
+    return true, uuid, nil
   }
-  return false, ""
+  return false, "", fmt.Errorf("Verify Login: Senha inválida")
 }
 
 func GetLogoff(w http.ResponseWriter, r *http.Request) {
