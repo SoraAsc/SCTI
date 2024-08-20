@@ -83,6 +83,21 @@ func GetActivity(id int) (a Activity, err error) {
   return a, nil
 }
 
+func CreateActivity(a Activity) (int, error) {
+    query := `
+    INSERT INTO activities
+    (spots, activity_type, room, speaker, topic, description, time, day)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    RETURNING id
+    `
+    var id int
+    err := DB.QueryRow(query, a.Spots, a.Activity_type, a.Room, a.Speaker, a.Topic, a.Description, a.Time, a.Day).Scan(&id)
+    if err != nil {
+        return 0, fmt.Errorf("could not create activity: %v", err)
+    }
+    return id, nil
+}
+
 func (a Activity) String() string {
   return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v", 
     a.Activity_id,
@@ -94,5 +109,5 @@ func (a Activity) String() string {
     a.Speaker,
     a.Topic,
     a.Description,
-    )
+  )
 }
