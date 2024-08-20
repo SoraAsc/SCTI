@@ -100,7 +100,7 @@ func MakeHTML()string{
     fmt.Print(err.Error())
   } else {
     for _, a := range activities {
-      html += fmt.Sprintf("<li class=\"atividades\"> ID: %v | hora: %v | sala: %v | descrição: %v | dia: %v | palestrante: %v | vagas: %v | tópico: %v tipo de atividade: %v </li>\n",
+      html += fmt.Sprintf("<li class=\"atividades\"> ID: %v | hora: %v | sala: %v | descrição: %v | dia: %v | palestrante: %v | vagas: %v | tópico: %v tipo de atividade: %v <button class=\"cadastrar\" value=\"%v\" hx-post=\"/cadastrar\" hx-trigger=\"click\" hx-swap=\"none\">Cadastrar</button></li>\n",
       a.Activity_id,
       a.Time,
       a.Room,
@@ -110,6 +110,7 @@ func MakeHTML()string{
       a.Spots,
       a.Topic,
       a.Activity_type,
+      a.Activity_id,
     )
   }
 }
@@ -120,6 +121,7 @@ return html
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
+  mux.HandleFunc("POST /cadastrar", PostCadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
   mux.HandleFunc("POST /set-admin", SetAdmin)
   mux.HandleFunc("POST /add_activity", PostActivity)
