@@ -19,6 +19,7 @@ type Courses struct {
 
 type DashboardData struct {
     IsVerified bool
+    IsAdmin bool
 }
 
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
@@ -35,11 +36,13 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   }
 
 
+  admin := DB.GetAdmin(cookie.Value)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
   data := DashboardData{
     IsVerified: standing,
+    IsAdmin: admin,
   }
 
   tmpl, err := template.ParseFiles("template/dashboard.gohtml")
