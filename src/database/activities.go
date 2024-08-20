@@ -6,15 +6,15 @@ import (
 )
 
 type Activity struct {
-  activity_id int
-  spots int
-  activity_type string
-  room string
-  speaker string
-  topic string
-  description string
-  time string
-  day int
+  Activity_id int
+  Spots int
+  Activity_type string
+  Room string
+  Speaker string
+  Topic string
+  Description string
+  Time string
+  Day int
 }
 
 func GetAllActivities() (activities []Activity, err error) {
@@ -31,7 +31,17 @@ func GetAllActivities() (activities []Activity, err error) {
 
   for rows.Next() {
     var a Activity
-    err := rows.Scan(&a.activity_id, &a.spots, &a.activity_type, &a.room, &a.speaker, &a.topic, &a.description, &a.time, &a.day)
+    err := rows.Scan(
+      &a.Activity_id,
+      &a.Spots,
+      &a.Activity_type,
+      &a.Room,
+      &a.Speaker,
+      &a.Topic,
+      &a.Description,
+      &a.Time,
+      &a.Day,
+    )
     if err != nil {
       return nil, fmt.Errorf("could not scan activity: %v", err)
     }
@@ -52,7 +62,17 @@ func GetActivity(id int) (a Activity, err error) {
   WHERE activities.id = $1
   `
 
-  err = DB.QueryRow(query, id).Scan(&a.activity_id, &a.spots, &a.activity_type, &a.room, &a.speaker, &a.topic, &a.description, &a.time, &a.day)
+  err = DB.QueryRow(query, id).Scan(
+      &a.Activity_id,
+      &a.Spots,
+      &a.Activity_type,
+      &a.Room,
+      &a.Speaker,
+      &a.Topic,
+      &a.Description,
+      &a.Time,
+      &a.Day,
+    )
   if err != nil {
     if err == sql.ErrNoRows {
       return a, fmt.Errorf("No activity found with id: %v\n", id)
@@ -65,14 +85,14 @@ func GetActivity(id int) (a Activity, err error) {
 
 func (a Activity) String() string {
   return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v", 
-    a.activity_id,
-    a.spots,
-    a.day,
-    a.time,
-    a.room,
-    a.activity_type,
-    a.speaker,
-    a.topic,
-    a.description,
+    a.Activity_id,
+    a.Spots,
+    a.Day,
+    a.Time,
+    a.Room,
+    a.Activity_type,
+    a.Speaker,
+    a.Topic,
+    a.Description,
     )
 }
