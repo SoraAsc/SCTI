@@ -88,6 +88,42 @@
       <button type="submit">Enviar</button>
     </form>
 
+    {{ if .IsAdmin }}
+      <div>
+        <form method="POST" action="/adm">
+          <label for="spots">Vagas</label><br>
+          <input name="spots" type="number"><br>
+          <label for="type">Tipo</label><br>
+          <input name="type" type="text"><br>
+          <label for="room">Sala</label><br>
+          <input name="room" type="text"><br>
+          <label for="speaker">Palestrante</label><br>
+          <input name="speaker" type="text"><br>
+          <label for="topic">Tópico</label><br>
+          <input name="topic" type="text"><br>
+          <label for="description">Descrição</label><br>
+          <input name="description" type="text"><br>
+          <label for="time">Hora</label><br>
+          <input name="time" type="datetime"><br>
+          <label for="day">Dia</label><br>
+          <input name="day" type="number"><br>
+          <button hx-post="/add_activity" hx-trigger="click">
+            Enviar
+          </button>
+        </form>
+      </div>
+      <br>
+      <div>
+        <form>
+          <label for="Email">Transformar usuário em admin</label><br>
+          <input type="email" name="Email"><br>
+          <button hx-post="/set-admin" hx-trigger="click">
+             Enviar
+          </button>
+        </form>
+      </div>
+    {{ end }}
+
     {{ if not .IsVerified }}
       <div>
         <button hx-post="/send-verification-email"
@@ -115,6 +151,17 @@
         </div>
       </div>
     {{ end }}
+
+		{{ if .IsAdmin }}
+			<div>
+				<form>
+					<input type="email" name="Email">
+					<button hx-post="/set-admin" hx-trigger="click">
+						ADMIN BUTTON
+					</button>
+				</form>
+			</div>
+		{{ end }}
 
     <a href="/logoff"><button>logoff</button></a>
     {{ .HTMLContent }}

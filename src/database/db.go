@@ -259,3 +259,51 @@ func SetStanding(uuid string, standing bool) (error) {
   fmt.Println("Usuário verificado")
   return nil
 }
+
+func GetAdmin(uuid string) (bool) {
+    query := `
+    SELECT isAdmin
+    FROM users
+    WHERE users.uuid = $1
+    `
+
+    var admStatus bool
+    err := DB.QueryRow(query, uuid).Scan(&admStatus)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with uuid: %s\n", uuid)
+            return false
+        }
+        fmt.Printf("could not retrieve admin status: %v\n", err)
+        return false
+    }
+
+    return admStatus
+}
+
+func SetAdmin(uuid string, admStatus bool) (error) {
+  tx, err := DB.Begin()
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  query := `
+  UPDATE users 
+  SET isAdmin = $1
+  WHERE uuid = $2
+  `
+
+  _, err = tx.Exec(query, admStatus, uuid)
+  if err != nil {
+    tx.Rollback()
+    return fmt.Errorf("não foi possível alterar o estado de administrador do usuário: %v", err)
+  }
+
+  err = tx.Commit()
+  if err != nil {
+    return fmt.Errorf("não foi possível confirmar a transação de alterar o estado de administrador: %v", err)
+  }
+
+  fmt.Println("Estado de administrador do usuário alterado")
+  return nil
+}
