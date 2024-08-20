@@ -93,4 +93,5 @@ func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
+  mux.HandleFunc("POST /set-admin", SetAdmin)
 }
