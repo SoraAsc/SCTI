@@ -55,18 +55,3 @@ CREATE TABLE credits (
   purchase_id INT NOT NULL,
   FOREIGN KEY (purchase_id) REFERENCES purchases(purchase_id)
 );
-
-ALTER TABLE users
-ADD COLUMN uuid UUID UNIQUE NOT NULL;
-
-ALTER TABLE users
-ADD COLUMN isVerified BOOLEAN DEFAULT FALSE;
-
-ALTER TABLE users
-ADD COLUMN verificationCode VARCHAR(255);
-
-ALTER TABLE users
-ADD COLUMN tokens INT CHECK (tokens <= 5) DEFAULT 0;
-
-ALTER TABLE users
-ADD COLUMN name VARCHAR(255);

@@ -34,6 +34,15 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
+  activities, err := DB.GetAllActivities()
+  if err != nil {
+    fmt.Print(err.Error())
+  } else {
+    for _, a := range activities {
+      fmt.Println(a)
+    }
+  }
+
 
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
