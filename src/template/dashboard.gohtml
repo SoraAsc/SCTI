@@ -112,7 +112,16 @@
           </button>
         </form>
       </div>
-      <div id="success"></div>
+      <br>
+      <div>
+        <form>
+          <label for="Email">Transformar usuário em admin</label><br>
+          <input type="email" name="Email"><br>
+          <button hx-post="/set-admin" hx-trigger="click">
+             Enviar
+          </button>
+        </form>
+      </div>
     {{ end }}
 
     {{ if not .IsVerified }}
