@@ -18,8 +18,9 @@ type Courses struct {
 }
 
 type DashboardData struct {
-    IsVerified bool
-    IsAdmin bool
+  HTMLContent template.HTML
+  IsVerified bool
+  IsAdmin bool
 }
 
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
@@ -35,20 +36,23 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
+  MakeHTML();
 
   admin := DB.GetAdmin(cookie.Value)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
+  htmlContent := template.HTML(MakeHTML())
 
   data := DashboardData{
     IsVerified: standing,
+    HTMLContent: htmlContent,
     IsAdmin: admin,
   }
 
   tmpl, err := template.ParseFiles("template/dashboard.gohtml")
   if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
   }
   tmpl.ExecuteTemplate(w, "dashboard", data)
 }
@@ -89,9 +93,34 @@ func PostDashboard(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+func MakeHTML()string{
+  activities, err := DB.GetAllActivities()
+  html := "<ul class=\"courses\">\n"
+  if err != nil {
+    fmt.Print(err.Error())
+  } else {
+    for _, a := range activities {
+      html += fmt.Sprintf("<li class=\"atividades\"> ID: %v | hora: %v | sala: %v | descrição: %v | dia: %v | palestrante: %v | vagas: %v | tópico: %v tipo de atividade: %v </li>\n",
+      a.Activity_id,
+      a.Time,
+      a.Room,
+      a.Description,
+      a.Day,
+      a.Speaker,
+      a.Spots,
+      a.Topic,
+      a.Activity_type,
+    )
+  }
+}
+html += "</ul>"
+return html
+}
+
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
   mux.HandleFunc("POST /set-admin", SetAdmin)
+  mux.HandleFunc("POST /add_activity", PostActivity)
 }

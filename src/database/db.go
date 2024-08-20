@@ -4,23 +4,20 @@ import (
   "database/sql"
   "fmt"
   "log"
+  "os"
   _ "github.com/lib/pq"
 )
 
 var DB *sql.DB
 
-const (
-  host     = "127.0.0.1"
-  port     = 5432
-  user     = "postgres"
-  password = "root"
-  dbname   = "scti-db"
-)
-
-
 func OpenDatabase() error {
-  psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-    host, port, user, password, dbname)
+  psqlInfo := fmt.Sprintf("host=%s port=%v user=%s password=%s dbname=%s sslmode=disable",
+    os.Getenv("PG_HOST"),
+    os.Getenv("PG_PORT"),
+    os.Getenv("PG_USER"),
+    os.Getenv("PG_PASSWD"),
+    os.Getenv("DB_NAME"),
+  )
 
   var err error
   DB, err = sql.Open("postgres", psqlInfo)
