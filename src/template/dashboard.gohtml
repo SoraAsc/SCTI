@@ -143,6 +143,17 @@
       </div>
     {{ end }}
 
+		{{ if .IsAdmin }}
+			<div>
+				<form>
+					<input type="email" name="Email">
+					<button hx-post="/set-admin" hx-trigger="click">
+						ADMIN BUTTON
+					</button>
+				</form>
+			</div>
+		{{ end }}
+
     <a href="/logoff"><button>logoff</button></a>
     {{ .HTMLContent }}
   </body>

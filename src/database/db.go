@@ -280,3 +280,30 @@ func GetAdmin(uuid string) (bool) {
 
     return admStatus
 }
+
+func SetAdmin(uuid string, admStatus bool) (error) {
+  tx, err := DB.Begin()
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  query := `
+  UPDATE users 
+  SET isAdmin = $1
+  WHERE uuid = $2
+  `
+
+  _, err = tx.Exec(query, admStatus, uuid)
+  if err != nil {
+    tx.Rollback()
+    return fmt.Errorf("não foi possível alterar o estado de administrador do usuário: %v", err)
+  }
+
+  err = tx.Commit()
+  if err != nil {
+    return fmt.Errorf("não foi possível confirmar a transação de alterar o estado de administrador: %v", err)
+  }
+
+  fmt.Println("Estado de administrador do usuário alterado")
+  return nil
+}
