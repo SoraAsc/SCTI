@@ -259,3 +259,24 @@ func SetStanding(uuid string, standing bool) (error) {
   fmt.Println("Usuário verificado")
   return nil
 }
+
+func GetAdmin(uuid string) (bool) {
+    query := `
+    SELECT isAdmin
+    FROM users
+    WHERE users.uuid = $1
+    `
+
+    var admStatus bool
+    err := DB.QueryRow(query, uuid).Scan(&admStatus)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Printf("no user found with uuid: %s\n", uuid)
+            return false
+        }
+        fmt.Printf("could not retrieve admin status: %v\n", err)
+        return false
+    }
+
+    return admStatus
+}
