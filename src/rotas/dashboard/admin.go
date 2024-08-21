@@ -1,10 +1,22 @@
 package dashboard
 
 import (
+	"fmt"
   "strconv"
   "net/http"
   DB "SCTI/database"
 )
+
+func SetAdmin(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("Email")
+
+	err := DB.SetAdmin(DB.GetUUID(email), true)
+  if err != nil {
+    fmt.Printf("Error setting admin status: %v", err)
+  }
+
+	fmt.Printf("Success")
+}
 
 func ActiError(w http.ResponseWriter, err error) {
   w.Header().Set("Content-Type", "text/html")

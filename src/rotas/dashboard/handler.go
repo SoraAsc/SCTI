@@ -59,13 +59,14 @@ func PostDashboard(w http.ResponseWriter, r *http.Request) {
     // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
-
   fmt.Fprintf(w, "POST /dashboard")
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
+  mux.HandleFunc("POST /cadastrar", PostCadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
+  mux.HandleFunc("POST /set-admin", SetAdmin)
   mux.HandleFunc("POST /add_activity", PostActivity)
 }
