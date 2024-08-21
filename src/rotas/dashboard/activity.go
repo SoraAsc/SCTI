@@ -10,7 +10,7 @@ func ActiError(w http.ResponseWriter, err error) {
   w.Header().Set("Content-Type", "text/html")
   w.Write([]byte(`
       <div>
-          Falha ao enviar o email de verificação.
+          Falha ao criar atividade.
     ` + err.Error() + `
       </div>
   `))
