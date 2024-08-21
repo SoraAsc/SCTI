@@ -9,84 +9,7 @@
     <title>SCTI - Dashboard</title>
   </head>
   <body>
-    <div class="title">LOJA</div>
-
-    <form method="POST" action="/dashboard">
-      <div class="week">
-
-        <div class="weekday">
-          <div class="wtitle">Segunda</div>
-          <div class="courses">
-            <div class="course">
-              <input type="radio" id="seg-course1" name="seg" value="Programação">
-              <label for="seg-course1">Programação</label>
-            </div>
-            <div class="course">
-              <input type="radio" id="seg-course2" name="seg" value="Redes de Computadores">
-              <label for="seg-course2">Redes de Computadores</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="weekday">
-          <div class="wtitle">Terça</div>
-          <div class="courses">
-            <div class="course">
-              <input type="radio" id="ter-course1" name="ter" value="Estruturas de Dados">
-              <label for="ter-course1">Estruturas de Dados</label>
-            </div>
-            <div class="course">
-              <input type="radio" id="ter-course2" name="ter" value="Sistemas Operacionais">
-              <label for="ter-course2">Sistemas Operacionais</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="weekday">
-          <div class="wtitle">Quarta</div>
-          <div class="courses">
-            <div class="course">
-              <input type="radio" id="qua-course1" name="qua" value="Engenharia de Software">
-              <label for="qua-course1">Engenharia de Software</label>
-            </div>
-            <div class="course">
-              <input type="radio" id="qua-course2" name="qua" value="Banco de Dados">
-              <label for="qua-course2">Banco de Dados</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="weekday">
-          <div class="wtitle">Quinta</div>
-          <div class="courses">
-            <div class="course">
-              <input type="radio" id="qui-course1" name="qui" value="Inteligência Artificial">
-              <label for="qui-course1">Inteligência Artificial</label>
-            </div>
-            <div class="course">
-              <input type="radio" id="qui-course2" name="qui" value="Desenvolvimento Web">
-              <label for="qui-course2">Desenvolvimento Web</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="weekday">
-          <div class="wtitle">Sexta</div>
-          <div class="courses">
-            <div class="course">
-              <input type="radio" id="sex-course1" name="sex" value="Segurança da Informação">
-              <label for="sex-course1">Segurança da Informação</label>
-            </div>
-            <div class="course">
-              <input type="radio" id="sex-course2" name="sex" value="Computação Gráfica">
-              <label for="sex-course2">Computação Gráfica</label>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <button type="submit">Enviar</button>
-    </form>
+    <div class="title">Painel do Usuário</div>
 
     {{ if .IsAdmin }}
       <div>
@@ -152,19 +75,23 @@
       </div>
     {{ end }}
 
-		{{ if .IsAdmin }}
-			<div>
-				<form>
-					<input type="email" name="Email">
-					<button hx-post="/set-admin" hx-trigger="click">
-						ADMIN BUTTON
-					</button>
-				</form>
-			</div>
-		{{ end }}
+    {{ if .IsAdmin }}
+      <div>
+        <form>
+          <label for="Email">Fazer admin</label>
+          <input type="email" name="Email">
+          <button hx-post="/set-admin" hx-trigger="click">
+            Enviar
+          </button>
+        </form>
+      </div>
+    {{ end }}
 
     <a href="/logoff"><button>logoff</button></a>
+
+    <!-- LIST HERE -->
     {{ .HTMLContent }}
+
   </body>
 </html>
 {{ end }}

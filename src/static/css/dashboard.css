@@ -50,9 +50,51 @@ body {
 .htmx-indicator{
   display:none;
 }
+
 .htmx-request .htmx-indicator{
   display:inline-block;
 }
+
 .htmx-request.verify-email-button{
   display:none;
+}
+
+.atividades {
+  display: flex;
+  flex-direction: column;
+}
+
+.atividade {
+  display: flex;
+  flex-direction: row;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.upper_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.upper_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.a_title {
+  display: flex;
+  flex-direction: row;
+}
+
+.sub_header {
+  display: flex;
+  flex-direction: row;
 }
