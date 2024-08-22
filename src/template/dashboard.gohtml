@@ -27,7 +27,7 @@
           <label for="description">Descrição</label><br>
           <input name="description" type="text"><br>
           <label for="time">Hora</label><br>
-          <input name="time" type="datetime"><br>
+          <input name="time" type="text"><br>
           <label for="day">Dia</label><br>
           <input name="day" type="number"><br>
           <button hx-post="/add_activity" hx-trigger="click">
@@ -110,8 +110,11 @@
           </div>
           <div class="descricao">{{ .Description }}</div>
         </div>
+        <button class="cadastrar" hx-post="/cadastrar" hx-trigger="click" hx-target="#activity_{{ .Activity_id }}" hx-swap="delete" hx-vals='{"id": "{{ .Activity_id }}"}'>
+          Cadastrar
+        </button>
       </div>
-    {{ end}}
+      {{ end}}
 
   </body>
 </html>
