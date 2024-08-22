@@ -90,25 +90,25 @@
     <a href="/logoff"><button>logoff</button></a>
 
     {{ range .Activities }}
-      <div class="atividade" id="activity_{{ .Activity_id}}">
+      <div class="atividade" id="activity_{{ .Activity_id }}">
         <div class="info">
-          <div class="id">ID: %v</div>
-          <div class="tipo">%v</div>
+          <div class="id">ID: {{ .Activity_id }}</div>
+          <div class="tipo">{{ .Activity_type }}</div>
         </div>
         <div class="content">
           <div class="upper_content">
             <div class="a_title">
               <div class="topico">{{ .Topic }}</div>
-              <div class="palestrante">%v</div>
+              <div class="palestrante">{{ .Speaker }}</div>
             </div>
             <div class="sub_header">
-              <div class="dia">%v</div>
-              <div class="hora">%v</div>
-              <div class="sala">%v</div>
-              <div class="vagas">%v</div>
+              <div class="dia">{{ .Day }}</div>
+              <div class="hora">{{ .Time }}</div>
+              <div class="sala">{{ .Room }}</div>
+              <div class="vagas">{{ .Spots }}</div>
             </div>
           </div>
-          <div class="descricao">%v</div>
+          <div class="descricao">{{ .Description }}</div>
         </div>
       </div>
     {{ end}}
