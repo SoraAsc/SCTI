@@ -11,6 +11,7 @@ type DashboardData struct {
   IsVerified bool
   IsAdmin bool
   Activities []DB.Activity
+  RegisteredActivities []DB.Activity
 }
 
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +27,9 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
-  a, _ := DB.GetAllActivities()
+  all_activities, _ := DB.GetAllActivities()
+  registered_activities, _ := DB.GetUserActivities(cookie.Value)
+  available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
 
   admin := DB.GetAdmin(cookie.Value)
   email := DB.GetEmail(cookie.Value)
@@ -35,7 +38,8 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   data := DashboardData{
     IsVerified: standing,
     IsAdmin: admin,
-    Activities: a,
+    Activities: available_activities,
+    RegisteredActivities: registered_activities,
   }
 
   tmpl, err := template.ParseFiles("template/dashboard.gohtml")
@@ -65,6 +69,7 @@ func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("POST /dashboard", PostDashboard)
   mux.HandleFunc("POST /cadastrar", PostCadastros)
+  mux.HandleFunc("POST /descadastrar", PostDescadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
   mux.HandleFunc("POST /set-admin", SetAdmin)
   mux.HandleFunc("POST /add_activity", PostActivity)
