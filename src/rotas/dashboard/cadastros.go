@@ -27,4 +27,3 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
   fmt.Println(activityID)
   w.WriteHeader(http.StatusOK)
 }
-
