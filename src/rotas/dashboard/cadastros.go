@@ -1,26 +1,30 @@
 package dashboard
 
 import (
-  "encoding/json"
   "fmt"
-  "log"
+  "strconv"
   "net/http"
 )
 
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
-  var id string
-  if r.Header.Get("Content-type") == "application/json" {
-    err := json.NewDecoder(r.Body).Decode(&id)
-    if err != nil {
-      log.Fatal(err)
-    }
-  } else {
-    if err := r.ParseForm(); err != nil {
-      fmt.Println("r.Form dentro if: ", r.Form)
-      log.Fatal(err)
-    }
-    id = r.FormValue("ID")
+  cookie, err := r.Cookie("accessToken")
+  if err != nil {
+    // fmt.Println("Error Getting cookie:", err)
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
   }
-  fmt.Fprintf(w, "O ID é %s", id)
+
+  if cookie.Value == "-1" {
+    // fmt.Println("Invalid accessToken")
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+  }
+  activityID, err := strconv.Atoi(r.FormValue("id"))
+  if err != nil {
+    http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
+    return
+  }
+
+  fmt.Println(activityID)
+  w.WriteHeader(http.StatusOK)
 }
 
