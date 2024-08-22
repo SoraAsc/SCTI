@@ -111,7 +111,7 @@
           </div>
           <div class="descricao">{{ .Description }}</div>
         </div>
-        <button class="cadastrar" hx-post="/descadastrar" hx-trigger="click" hx-target="#registrada_{{ .Activity_id }}" hx-swap="delete" hx-vals='{"id": "{{ .Activity_id }}"}'>
+        <button class="cadastrar" hx-refresh="true" hx-post="/descadastrar" hx-trigger="click" hx-target="#registrada_{{ .Activity_id }}" hx-swap="delete" hx-vals='{"id": "{{ .Activity_id }}"}'>
           Sair
         </button>
 
