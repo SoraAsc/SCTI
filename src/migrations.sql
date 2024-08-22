@@ -30,7 +30,7 @@ CREATE TABLE activities (
   speaker VARCHAR(255) NOT NULL,
   topic VARCHAR(255) NOT NULL,
   description VARCHAR(255),
-  time TIMESTAMP NOT NULL,
+  time VARCHAR(255) NOT NULL,
   day INT NOT NULL
 );
 
