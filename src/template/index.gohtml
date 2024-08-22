@@ -1,32 +1,59 @@
+{{ define "index" }}
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/home.css">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=League+Spartan&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan&display=swap" rel="stylesheet">
+  </head>
+  <body>
     <div class="header_style_form"></div>
     <!-- Your content here -->
     <header>
-	    <div class="header_home">
-		<div class="header_home_items">
-			<img class="header_logo" src="/static/assets/placeholder.jpg">
-		</div>
-	    </div>
+      <div class="header_home">
+        <div class="header_home_items">
+          <img class="header_logo" src="/static/assets/placeholder.jpg">
+        </div>
+      </div>
     </header>
     <div class="home_top">
-	    <div class="top_info">
-		    <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
-		    <hr class="white_hr">
-		    <p class="caption">Uma semana inteira de conteúdos, que acontecerá entre os dias 8 a 13 de novembro, sendo transmitido por uma plataforma privada no Discord!</p>
-	    </div>
+      <div class="top_info">
+        <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
+        <hr class="white_hr">
+        <p class="caption">Uma semana inteira de conteúdos, que acontecerá entre os dias 8 a 13 de novembro, sendo transmitido por uma plataforma privada no Discord!</p>
+      </div>
     </div>
-	<footer>
-	<p>Copyright © 2024 SCTI - Todos os direitos reservados</p>
-	</footer>
-</body>
+    <div class="atividades">
+    {{ range .Activities }}
+      <div class="atividade">
+        <div class="info">
+          <div class="id">{{ .Activity_id }}</div>
+          <div class="tipo">{{ .Activity_type }}</div>
+        </div>
+        <div class="content">
+          <div class="upper_content">
+            <div class="a_title">
+              <div class="topico">{{ .Topic }}</div>
+              <div class="palestrante">{{ .Speaker }}</div>
+            </div>
+            <div class="sub_header">
+              <div class="dia">{{ .Day }}</div>
+              <div class="hora">{{ .Time }}</div>
+              <div class="sala">{{ .Room }}</div>
+              <div class="vagas">{{ .Spots }}</div>
+            </div>
+          </div>
+          <div class="descricao">{{ .Description }}</div>
+        </div>
+      </div>
+    {{ end }}
+    </div>
+    <footer>
+      <p>Copyright © 2024 SCTI - Todos os direitos reservados</p>
+    </footer>
+  </body>
 </html>
+{{ end }}

@@ -165,6 +165,29 @@
 
     <a href="/logoff"><button>logoff</button></a>
     {{ .HTMLContent }}
+    {{ range .Activities }}
+      <div class="atividade" id="activity_">
+        <div class="info">
+          <div class="id">ID: %v</div>
+          <div class="tipo">%v</div>
+        </div>
+        <div class="content">
+          <div class="upper_content">
+            <div class="a_title">
+              <div class="topico">%v</div>
+              <div class="palestrante">%v</div>
+            </div>
+            <div class="sub_header">
+              <div class="dia">%v</div>
+              <div class="hora">%v</div>
+              <div class="sala">%v</div>
+              <div class="vagas">%v</div>
+            </div>
+          </div>
+          <div class="descricao">%v</div>
+        </div>
+      </div>
+    {{ end}}
   </body>
 </html>
 {{ end }}
