@@ -1,10 +1,16 @@
 package home
 
 import (
-  "SCTI/fileserver"
-  "SCTI/rotas/notfound"
-  "net/http"
+	DB "SCTI/database"
+	"SCTI/rotas/notfound"
+	"fmt"
+	"html/template"
+	"net/http"
 )
+
+type HomeData struct {
+  Activities []DB.Activity
+}
 
 func GetHome(w http.ResponseWriter, r *http.Request) {
   //404 page handler
@@ -13,8 +19,21 @@ func GetHome(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  var t = fileserver.Execute("template/index.gohtml")
-  t.Execute(w, nil)
+  a, err := DB.GetAllActivities()
+  if err != nil {
+    fmt.Println("Couldn't get Activities")
+  }
+
+  data := HomeData {
+    Activities: a,
+  }
+
+  tmpl, err := template.ParseFiles("template/index.gohtml")
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  tmpl.ExecuteTemplate(w, "index", data)
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
