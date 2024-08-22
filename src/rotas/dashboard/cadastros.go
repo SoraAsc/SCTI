@@ -60,6 +60,7 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
   }
 
   fmt.Println(activityID)
+  w.Header().Set("HX-Refresh", "true")
   w.WriteHeader(http.StatusOK)
 }
 
