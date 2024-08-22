@@ -8,9 +8,9 @@ import (
 )
 
 type DashboardData struct {
-  HTMLContent template.HTML
   IsVerified bool
   IsAdmin bool
+  Activities []DB.Activity
 }
 
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
@@ -26,17 +26,16 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
-  html, _ := ActivitiesList()
+  a, _ := DB.GetAllActivities()
 
   admin := DB.GetAdmin(cookie.Value)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
-  htmlContent := template.HTML(html)
 
   data := DashboardData{
     IsVerified: standing,
-    HTMLContent: htmlContent,
     IsAdmin: admin,
+    Activities: a,
   }
 
   tmpl, err := template.ParseFiles("template/dashboard.gohtml")
