@@ -3,6 +3,7 @@ html, body{
 	height: 100vh;
 }
 
+
 .header_logo{
 	height: 300px;
 }
@@ -13,19 +14,4 @@ h1{
 	font-weight: 600;
 	line-height: 64px;
 }
-footer {
-	position: fixed; 
-	bottom: 0px; 
-	left: 0; 
-	width: 100%; 
-	text-align: center; 
-	background-color: #B3B3B3; 
-	font-weight: 300;
-	font-size: 14px;
-	color:  #364651	;
-	line-height: 22px;
-	padding: 10px; /* Espaçamento interno opcional para o footer */
-	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional para o footer */
-	z-index: 5; 
-  }
-  
+
