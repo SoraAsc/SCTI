@@ -1,0 +1,29 @@
+name: Create Trello Cards for PRs
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  create-cards:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run script to create Trello cards
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
+          TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+          TRELLO_LIST_ID: ${{ secrets.TRELLO_LIST_ID }}
+        run: python3 .github/scripts/trello.py
