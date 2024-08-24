@@ -73,6 +73,7 @@
 
     <div class="atividades">
     {{ range .Activities }}
+      <div class="response" id="hx-return-{{ .Activity_id }}"></div>
       <div class="atividade" id="activity_{{ .Activity_id }}">
         <div class="info">
           <div class="id">ID: {{ .Activity_id }}</div>
@@ -93,7 +94,12 @@
           </div>
           <div class="descricao">{{ .Description }}</div>
         </div>
-        <button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click" hx-target="#activity_{{ .Activity_id }}" hx-swap="delete" hx-vals='{"id": "{{ .Activity_id }}"}'>
+        <button class="cadastrar" hx-refresh="true"
+                                  hx-post="/cadastrar"
+                                  hx-trigger="click"
+                                  hx-target="#hx-return-{{ .Activity_id }}"
+                                  hx-swap="innerHTML"
+                                  hx-vals='{"id": "{{ .Activity_id }}"}'>
           Cadastrar
         </button>
       </div>

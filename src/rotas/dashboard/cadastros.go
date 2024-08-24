@@ -7,6 +7,16 @@ import (
   DB "SCTI/database"
 )
 
+func AtividadeCheia(w http.ResponseWriter, err error) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div class="failure">
+        Falha ao se cadastrar: 
+    ` + err.Error() + `
+      </div>
+  `))
+}
+
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
@@ -19,6 +29,13 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
     // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
+
+  email := DB.GetEmail(cookie.Value)
+  if !DB.GetStanding(email) {
+    AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
+    return
+  }
+
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
     http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
@@ -27,7 +44,8 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 
   state, err := DB.SignupUserForActivity(cookie.Value, activityID)
   if err != nil {
-    w.WriteHeader(http.StatusBadRequest)
+    AtividadeCheia(w, err)
+    return
   }
 
   fmt.Println(state)
@@ -70,14 +88,11 @@ func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activit
     for _, activity := range registeredActivities {
         registeredMap[activity.Activity_id] = true
     }
-
     filteredActivities := make([]DB.Activity, 0, len(allActivities))
-
     for _, activity := range allActivities {
-        if !registeredMap[activity.Activity_id] {
+        if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
             filteredActivities = append(filteredActivities, activity)
         }
     }
-
     return filteredActivities
 }
