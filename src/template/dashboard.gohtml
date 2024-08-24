@@ -15,9 +15,10 @@
       <div>
         <button hx-post="/send-verification-email"
                 hx-trigger="click"
-                hx-target="this"
-                hx-swap="outerHTML"
-                hx-indicator="#loading-indicator">
+                hx-target="#email_message"
+                hx-swap="innerHTML"
+                hx-indicator="#loading-indicator"
+                hx-refresh="true">
           Verificar Email
         </button>
         <div id="loading-indicator" class="htmx-indicator">
@@ -37,6 +38,7 @@
           </svg>
         </div>
       </div>
+      <div id="email_message"></div>
     {{ end }}
 
     <a href="/logoff"><button>logoff</button></a>
@@ -125,9 +127,10 @@
           <input name="time" type="text"><br>
           <label for="day">Dia</label><br>
           <input name="day" type="number"><br>
-          <button hx-post="/add_activity" hx-trigger="click">
+          <button hx-post="/add_activity" hx-trigger="click" hx-target="#admatividade" hx-swap="innerHTML">
             Enviar
           </button>
+          <div id="admatividade"></div>
         </form>
       </div>
       <br>
@@ -135,24 +138,13 @@
         <form>
           <label for="Email">Transformar usuário em admin</label><br>
           <input type="email" name="Email"><br>
-          <button hx-post="/set-admin" hx-trigger="click">
+          <button hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
              Enviar
           </button>
         </form>
-      </div>
-      <div>
-        <form>
-          <label for="Email">Fazer admin</label>
-          <input type="email" name="Email">
-          <button hx-post="/set-admin" hx-trigger="click">
-            Enviar
-          </button>
-        </form>
+        <div id="admcriar"></div>
       </div>
     {{ end }}
-
-
-
   </body>
 </html>
 {{ end }}
