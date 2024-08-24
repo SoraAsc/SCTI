@@ -10,33 +10,32 @@ import (
   gomail "gopkg.in/mail.v2"
 )
 
-func SentError(w http.ResponseWriter) {
+func SentError(w http.ResponseWriter, err error) {
   w.Header().Set("Content-Type", "text/html")
   w.Write([]byte(`
-      <div>
-          Falha ao enviar o email de verificação.
-      </div>
+      <div class="failure">
+        Falha ao enviar o email de verificação: ` + err.Error() + `
+    </div>
   `))
 }
 
 func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    fmt.Println("Error Getting cookie:", err)
+    // fmt.Println("Error Getting cookie:", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
   if cookie.Value == "-1" {
-    fmt.Println("Invalid accessToken")
+    // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
   email := DB.GetEmail(cookie.Value)
   code, err := DB.GetCode(cookie.Value)
   if err != nil {
-    fmt.Printf("Error Getting the code: %v\n", err)
-    SentError(w)
+    SentError(w, err)
     return
   }
 
@@ -95,14 +94,13 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
 
   if err := dialer.DialAndSend(msg); err != nil {
-    fmt.Printf("smtp error: %s\n", err)
-    SentError(w)
+    SentError(w, err)
     return
   }
 
   w.Header().Set("Content-Type", "text/html")
   w.Write([]byte(`
-      <div>
+      <div class="success">
           Email de verificação enviado com sucesso!!
       </div>
   `))
