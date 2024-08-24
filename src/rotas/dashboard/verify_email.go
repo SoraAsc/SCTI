@@ -32,7 +32,6 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
-  // Mover para a dashboard com butão de verificar email
   email := DB.GetEmail(cookie.Value)
   code, err := DB.GetCode(cookie.Value)
   if err != nil {
@@ -46,6 +45,7 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 
   encodedEmail := url.QueryEscape(email)
   verificationLink := fmt.Sprintf("http://localhost:8080/verify?code=%s&email=%s", code, encodedEmail)
+  notMeLink := fmt.Sprintf("http://localhost:8080/delete?code=%s&email=%s", code, encodedEmail)
 
   htmlBody := `
     <!DOCTYPE html>
@@ -77,6 +77,7 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
     <body>
         <p>Clique no botão abaixo para verificar seu email:</p>
         <a href="` + verificationLink + `" class="button">Verificar Email</a>
+        <a href="` + notMeLink + `" class="button">Não fui eu</a>
     </body>
     </html>
   `

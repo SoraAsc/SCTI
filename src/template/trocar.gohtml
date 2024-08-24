@@ -1,0 +1,34 @@
+{{ define "trocar" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/credentials.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>Trocar Senha</title>
+  </head>
+  <body>
+    <div class="container-form">
+      <form>
+        <table>
+          <tr>
+            <p> SCTI </p>
+          </tr>
+          <tr>
+            <td><label>Nova Senha</label></td>
+            <td><input name="Senha" type="password"></td>
+          </tr>
+        </table>
+        <br>
+        <div id="mensagem"></div>
+        <button class="button-submmit" hx-post="/trocar" hx-trigger="click" hx-target="#mensagem" hx-swap="innerHTML" hx-vals='{"Email": "{{ .Email }}"}'>
+          Enviar
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
+{{ end }}
