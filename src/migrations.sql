@@ -15,6 +15,7 @@ CREATE TABLE users (
   isVerified BOOLEAN DEFAULT FALSE,
   verificationCode VARCHAR(255),
   isAdmin BOOLEAN DEFAULT FALSE
+  isPaid BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE passwd (

@@ -89,6 +89,10 @@ func GetActivity(id int) (a Activity, err error) {
 }
 
 func CreateActivity(a Activity) (int, error) {
+  if a.Activity_type != "MC" && a.Activity_type != "PL" {
+    return 0, fmt.Errorf("could not create activity, invalid type, not MC or PL")
+  }
+
   query := `
   INSERT INTO activities
   (spots, activity_type, room, speaker, topic, description, time, day)
@@ -157,11 +161,11 @@ func SignupUserForActivity(userUUID string, activityID int) (bool, error) {
     return false, err
   }
   if conflictingActivities > 0 {
-    return false, errors.New("user already has an activity on this day")
+    return false, errors.New("Você já tem uma atividade nesse dia")
   }
 
   if activitySpots <= 0 {
-    return false, errors.New("no spots available")
+    return false, errors.New("Sem vagas disponiveis")
   }
 
   query = `
