@@ -5,11 +5,20 @@ import (
   "SCTI/fileserver"
   "encoding/json"
   "fmt"
-  "log"
   "net/http"
 
   "github.com/google/uuid"
 )
+
+func SignupFailed(w http.ResponseWriter, err error) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+    <div class="failure">
+    Falha no Signup:
+    ` + err.Error() + `
+    </div>
+    `))
+}
 
 func GetSignup(w http.ResponseWriter, r *http.Request) {
   var t = fileserver.Execute("template/signup.gohtml")
@@ -22,12 +31,13 @@ func PostSignup(w http.ResponseWriter, r *http.Request) {
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
-      log.Fatal(err)
+      SignupFailed(w, err)
+      return
     }
   } else {
     if err := r.ParseForm(); err != nil {
-      fmt.Println("r.Form dentro if: ", r.Form)
-      log.Fatal(err)
+      SignupFailed(w, err)
+      return
     }
     name = r.FormValue("Nome")
     user.Email = r.FormValue("Email")
@@ -36,15 +46,14 @@ func PostSignup(w http.ResponseWriter, r *http.Request) {
 
   found, err := DB.UserExists(user.Email)
   if err != nil {
-    fmt.Println("DB UserExists Failed")
+    SignupFailed(w, err)
     return
   }
 
   if found {
-    fmt.Println("User already exists")
+    SignupFailed(w, fmt.Errorf("Usuário já existe"))
     return
   }
-
 
   UUID := uuid.New()
   UUIDString := UUID.String()
@@ -52,10 +61,15 @@ func PostSignup(w http.ResponseWriter, r *http.Request) {
   hash, _ := HashPassword(user.Password)
   err = DB.CreateUser(user.Email, hash, UUIDString, name)
   if err != nil {
-    fmt.Printf("Creating user in DB failed: %v\n", err)
+    SignupFailed(w, err)
     return
   }
 
+  if r.Header.Get("HX-Request") == "true" {
+    w.Header().Set("HX-Redirect", "/login")
+    w.WriteHeader(http.StatusOK)
+    return
+  }
 
   http.Redirect(w, r, "/login", http.StatusSeeOther)
 }

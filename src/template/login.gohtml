@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-     <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/credentials.css">
-     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 
     <title>SCTI - Login</title>
   </head>
   <body>
     <div class="container-form">
-      <form method="POST" action="/login">
-      <p> SCTI </p>
+      <form hx-post="/login" hx-target="#error-messages" hx-swap="innerHTML">
+        <p>SCTI</p>
+        <div id="error-messages"></div>
         <table>
           <tr>
             <td><label>Email</label></td>
             <td><input name="Email" type="email"></td>
           </tr>
-
           <tr>
             <td><label>Senha</label></td>
             <td><input name="Senha" type="password"></td>

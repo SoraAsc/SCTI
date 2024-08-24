@@ -6,9 +6,18 @@ import (
   "encoding/json"
   "net/http"
   "time"
-  "log"
   "fmt"
 )
+
+func LoginFailed(w http.ResponseWriter, err error) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div class="failure">
+        Falha no Login:
+    ` + err.Error() + `
+      </div>
+  `))
+}
 
 func GetLogin(w http.ResponseWriter, r *http.Request) {
   var t = fileserver.Execute("template/login.gohtml")
@@ -20,12 +29,13 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
-      log.Fatal(err)
+      LoginFailed(w, err)
+      return
     }
   } else {
     if err := r.ParseForm(); err != nil {
-      fmt.Println("r.Form dentro if: ", r.Form)
-      log.Fatal(err)
+      LoginFailed(w, err)
+      return
     }
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
@@ -33,40 +43,52 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
   login, uuid, err := VerifyLogin(user, w)
 
   if err != nil {
-    http.Error(w, err.Error(), http.StatusUnauthorized)
+    LoginFailed(w, err)
+    return
   }
 
-  if login {
-    cookie := http.Cookie{
-      Name: "accessToken",
-      Value: uuid,
-      Expires: time.Now().Add(2 * 24 * time.Hour),
-      Secure: false,
-      HttpOnly: true,
-      Path: "/",
-      SameSite: http.SameSiteLaxMode,
-    }
-    http.SetCookie(w, &cookie)
-    http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+  if !login {
+    LoginFailed(w, fmt.Errorf("Somehow login failed"))
+    return
   }
+
+  cookie := http.Cookie{
+    Name: "accessToken",
+    Value: uuid,
+    Expires: time.Now().Add(2 * 24 * time.Hour),
+    Secure: false,
+    HttpOnly: true,
+    Path: "/",
+    SameSite: http.SameSiteLaxMode,
+  }
+
+  http.SetCookie(w, &cookie)
+
+  if r.Header.Get("HX-Request") == "true" {
+    w.Header().Set("HX-Redirect", "/dashboard")
+    w.WriteHeader(http.StatusOK)
+    return
+  }
+
+  http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func VerifyLogin(user User, w http.ResponseWriter)(login bool, uuid string, err error) {
   found, err := DB.UserExists(user.Email)
 
   if err != nil {
-    return false, "", fmt.Errorf("DB check: Query Failed")
+    return false, "", fmt.Errorf("DB check query Failed")
   }
-  
+ 
   if !found {
-    return false, "", fmt.Errorf("Verify Login: User not found")
+    return false, "", fmt.Errorf("User not found")
   }
 
   uuid = fmt.Sprint(DB.GetUUID(user.Email))
   if CheckPasswordHash(user.Password, DB.GetHash(user.Email)) && uuid != "" {
     return true, uuid, nil
   }
-  return false, "", fmt.Errorf("Verify Login: Senha inválida")
+  return false, "", fmt.Errorf("Senha inválida")
 }
 
 func GetLogoff(w http.ResponseWriter, r *http.Request) {

@@ -3,19 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
     <link rel="stylesheet" href="/static/css/style.css">
-      <link rel="stylesheet" href="/static/css/credentials.css">
+    <link rel="stylesheet" href="/static/css/credentials.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
     <title>Sign-up</title>
   </head>
   <body>
     <div class="container-form">
-      <form method="POST" action="/signup">
+      <form hx-post="/signup" hx-target="#error-messages" hx-swap="innerHTML">
         <table>
-         <tr>
-         <p> SCTI </p>
-          <!--  <img src="static/assets/logo.svg" alt="Descrição da imagem" width="200" height="100"> -->
+          <tr>
+            <p> SCTI </p>
+            <div id="error-messages"></div>
+            <!--  <img src="static/assets/logo.svg" alt="Descrição da imagem" width="200" height="100"> -->
           </tr>
           <tr>
             <td><label>Nome</label></td>
@@ -34,6 +36,7 @@
         </table>
         <br>
         <input class="button-submmit" type="submit" value="Enviar">
+        <a href="login">Já tem conta?</a>
       </form>
     </div>
   </body>
