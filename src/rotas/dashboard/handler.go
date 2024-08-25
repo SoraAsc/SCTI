@@ -31,7 +31,7 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   registered_activities, _ := DB.GetUserActivities(cookie.Value)
   available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
 
-  admin := DB.GetAdmin(cookie.Value)
+  admin := VerifyAdmin(w, r)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
