@@ -17,6 +17,33 @@ func AtividadeCheia(w http.ResponseWriter, err error) {
   `))
 }
 
+func PaidError(w http.ResponseWriter, err error) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div class="failure">
+        Falha ao validar: 
+    ` + err.Error() + `
+      </div>
+  `))
+}
+
+func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
+  email := r.FormValue("Email")
+
+  err := DB.MarkAsPaid(email)
+  if err != nil {
+    PaidError(w, err)
+    return
+  }
+
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+    <div>
+      Ingresso Validado com sucesso!
+    </div>
+  `))
+}
+
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
@@ -33,6 +60,17 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
   email := DB.GetEmail(cookie.Value)
   if !DB.GetStanding(email) {
     AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
+    return
+  }
+
+  paid, err := DB.IsUserPaid(cookie.Value)
+  if err != nil {
+    AtividadeCheia(w, err)
+    return
+  }
+
+  if !paid {
+    AtividadeCheia(w, fmt.Errorf("Usuário não possui ingresso validado"))
     return
   }
 

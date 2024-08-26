@@ -333,9 +333,9 @@ func DeleteUser(userUUID string) error {
   query = `
   DELETE FROM credits
   WHERE purchase_id IN(
-    SELECT purchase_id
-    FROM purchases
-    WHERE user_id = $1
+  SELECT purchase_id
+  FROM purchases
+  WHERE user_id = $1
   )
   `
 
@@ -393,34 +393,87 @@ func DeleteUser(userUUID string) error {
 }
 
 func ChangeUserPassword(userUUID string, newPassword string) error {
-    tx, err := DB.Begin()
-    if err != nil {
-        return fmt.Errorf("failed to start transaction: %v", err)
-    }
-    defer tx.Rollback()
+  tx, err := DB.Begin()
+  if err != nil {
+    return fmt.Errorf("failed to start transaction: %v", err)
+  }
+  defer tx.Rollback()
 
-    var userID int
-    err = tx.QueryRow("SELECT id FROM users WHERE uuid = $1", userUUID).Scan(&userID)
-    if err != nil {
-        if err == sql.ErrNoRows {
-            return fmt.Errorf("no user found with UUID: %s", userUUID)
-        }
-        return fmt.Errorf("failed to fetch user: %v", err)
+  var userID int
+  err = tx.QueryRow("SELECT id FROM users WHERE uuid = $1", userUUID).Scan(&userID)
+  if err != nil {
+    if err == sql.ErrNoRows {
+      return fmt.Errorf("no user found with UUID: %s", userUUID)
     }
+    return fmt.Errorf("failed to fetch user: %v", err)
+  }
 
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
-    if err != nil {
-        return fmt.Errorf("failed to hash password: %v", err)
+  hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+  if err != nil {
+    return fmt.Errorf("failed to hash password: %v", err)
+  }
+
+  _, err = tx.Exec("UPDATE passwd SET passwd = $1 WHERE id = $2", string(hashedPassword), userID)
+  if err != nil {
+    return fmt.Errorf("failed to update password: %v", err)
+  }
+
+  if err = tx.Commit(); err != nil {
+    return fmt.Errorf("failed to commit transaction: %v", err)
+  }
+
+  return nil
+}
+
+func MarkAsPaid(email string) error {
+  tx, err := DB.Begin()
+  if err != nil {
+    return fmt.Errorf("failed to start transaction: %v", err)
+  }
+  defer tx.Rollback()
+
+  query := `
+  UPDATE users
+  SET isPaid = TRUE
+  WHERE email = $1
+  `
+
+  result, err := tx.Exec(query, email)
+  if err != nil {
+    return fmt.Errorf("failed to update user payment status: %v", err)
+  }
+
+  rowsAffected, err := result.RowsAffected()
+  if err != nil {
+    return fmt.Errorf("failed to get rows affected: %v", err)
+  }
+  if rowsAffected == 0 {
+    return fmt.Errorf("no user found with email: %s", email)
+  }
+
+  if err = tx.Commit(); err != nil {
+    return fmt.Errorf("failed to commit transaction: %v", err)
+  }
+
+  return nil
+}
+
+func IsUserPaid(uuid string) (bool, error) {
+  var isPaid bool
+
+  query := `
+  SELECT isPaid
+  FROM users
+  WHERE uuid = $1
+  `
+  err := DB.QueryRow(query, uuid).Scan(&isPaid)
+
+  if err != nil {
+    if err == sql.ErrNoRows {
+      return false, fmt.Errorf("no user found with UUID: %s", uuid)
     }
+    return false, fmt.Errorf("failed to fetch user payment status: %v", err)
+  }
 
-    _, err = tx.Exec("UPDATE passwd SET passwd = $1 WHERE id = $2", string(hashedPassword), userID)
-    if err != nil {
-        return fmt.Errorf("failed to update password: %v", err)
-    }
-
-    if err = tx.Commit(); err != nil {
-        return fmt.Errorf("failed to commit transaction: %v", err)
-    }
-
-    return nil
+  return isPaid, nil
 }

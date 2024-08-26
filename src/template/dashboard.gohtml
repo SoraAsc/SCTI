@@ -144,6 +144,16 @@
         </form>
         <div id="admcriar"></div>
       </div>
+      <div>
+        <form>
+          <label for="Email">Validar Ingresso:</label><br>
+          <input type="email" name="Email"><br>
+          <button hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
+             Enviar
+          </button>
+        </form>
+        <div id="markpaid"></div>
+      </div>
     {{ end }}
   </body>
 </html>
