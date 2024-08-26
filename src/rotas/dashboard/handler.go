@@ -73,4 +73,5 @@ func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
   mux.HandleFunc("POST /set-admin", SetAdmin)
   mux.HandleFunc("POST /add_activity", PostActivity)
+  mux.HandleFunc("POST /markpaid", PostValidateEmail)
 }

@@ -17,6 +17,10 @@ CREATE TABLE users (
   isPaid BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE day (
+  day INT NOT NULL
+);
+
 CREATE TABLE passwd (
   id INT PRIMARY KEY REFERENCES users(id),
   passwd VARCHAR(255) NOT NULL
