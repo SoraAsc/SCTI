@@ -117,8 +117,13 @@ func GetLogoff(w http.ResponseWriter, r *http.Request) {
 }
 
 func VerifyAdmin(w http.ResponseWriter, r *http.Request, uuid string) bool {
-  admcookie, _ := r.Cookie("Admin")
-  if admcookie != nil && admcookie.Value == "1" {
+  admcookie, err := r.Cookie("Admin")
+  if err != nil && err.Error() != "http: named cookie not present" {
+      http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
+      return false
+  }
+
+  if admcookie.Value == uuid {
     return true
   }
 
@@ -127,7 +132,7 @@ func VerifyAdmin(w http.ResponseWriter, r *http.Request, uuid string) bool {
   if isAdmin {
     admcookie := http.Cookie{
       Name:     "Admin",
-      Value:    "1",
+      Value:    uuid,
       Expires:  time.Now().Add(2 * 24 * time.Hour),
       Secure:   false,
       HttpOnly: true,

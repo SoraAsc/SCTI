@@ -41,18 +41,8 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
     `))
     return
   } else {
-    admin, err := strconv.ParseBool(admcookie.Value)
-    if err != nil {
-      w.Header().Set("Content-Type", "text/html")
-      w.Write([]byte(`
-      <div class="failure">
-      Falha ao converter cookie de admin:
-      ` + err.Error() + `
-      </div>
-      `))
-      return
-    }
-    if admin {
+
+    if admcookie.Value == cookie.Value {
       email := DB.GetEmail(cookie.Value)
       if !DB.GetStanding(email) {
         AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
@@ -75,75 +65,76 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 
       fmt.Println(activityID)
       w.Header().Set("HX-Refresh", "true")
-      w.WriteHeader(http.StatusOK)}
+      w.WriteHeader(http.StatusOK)
+    } else {
+      http.SetCookie(w, &http.Cookie{
+        Name:   "Admin",
+        Value:  "",
+        MaxAge: -1,
+        Secure: false,
+        HttpOnly: true,
+        Path: "/",
+        SameSite: http.SameSiteLaxMode,
+      })
     }
   }
+}
 
 
-  func PostDescadastros(w http.ResponseWriter, r *http.Request) {
-    cookie, err := r.Cookie("accessToken")
-    if err != nil {
-      // fmt.Println("Error Getting cookie:", err)
-      http.Redirect(w, r, "/login", http.StatusSeeOther)
-      return
-    }
+func PostDescadastros(w http.ResponseWriter, r *http.Request) {
+  cookie, err := r.Cookie("accessToken")
+  if err != nil {
+    // fmt.Println("Error Getting cookie:", err)
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
+  }
 
-    if cookie.Value == "-1" {
-      // fmt.Println("Invalid accessToken")
-      http.Redirect(w, r, "/login", http.StatusSeeOther)
-    }
+  if cookie.Value == "-1" {
+    // fmt.Println("Invalid accessToken")
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
+  }
 
-    admcookie, err := r.Cookie("Admin")
-    if err != nil {
-      w.Header().Set("Content-Type", "text/html")
-      w.Write([]byte(`
-      <div class="failure">
-      Falha ao ler cookie de admin:
-      ` + err.Error() + `
-      </div>
-      `))
-      return
-    } else {
-      admin, err := strconv.ParseBool(admcookie.Value)
+  admcookie, err := r.Cookie("Admin")
+  if err != nil {
+    w.Header().Set("Content-Type", "text/html")
+    w.Write([]byte(`
+    <div class="failure">
+    Falha ao ler cookie de admin:
+    ` + err.Error() + `
+    </div>
+    `))
+    return
+  } else {
+
+    if admcookie.Value == cookie.Value {
+      activityID, err := strconv.Atoi(r.FormValue("id"))
       if err != nil {
-        w.Header().Set("Content-Type", "text/html")
-        w.Write([]byte(`
-        <div class="failure">
-        Falha ao converter cookie de admin:
-        ` + err.Error() + `
-        </div>
-        `))
+        http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
         return
       }
-      if admin {
-        activityID, err := strconv.Atoi(r.FormValue("id"))
-        if err != nil {
-          http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
-          return
-        }
 
-        err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
-        if err != nil {
-          w.WriteHeader(http.StatusBadRequest)
-        }
-
-        fmt.Println(activityID)
-        w.Header().Set("HX-Refresh", "true")
-        w.WriteHeader(http.StatusOK)
+      err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
+      if err != nil {
+        w.WriteHeader(http.StatusBadRequest)
       }
+
+      fmt.Println(activityID)
+      w.Header().Set("HX-Refresh", "true")
+      w.WriteHeader(http.StatusOK)
     }
   }
+}
 
-  func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activity) []DB.Activity {
-    registeredMap := make(map[int]bool)
-    for _, activity := range registeredActivities {
-      registeredMap[activity.Activity_id] = true
-    }
-    filteredActivities := make([]DB.Activity, 0, len(allActivities))
-    for _, activity := range allActivities {
-      if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
-        filteredActivities = append(filteredActivities, activity)
-      }
-    }
-    return filteredActivities
+func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activity) []DB.Activity {
+  registeredMap := make(map[int]bool)
+  for _, activity := range registeredActivities {
+    registeredMap[activity.Activity_id] = true
   }
+  filteredActivities := make([]DB.Activity, 0, len(allActivities))
+  for _, activity := range allActivities {
+    if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
+      filteredActivities = append(filteredActivities, activity)
+    }
+  }
+  return filteredActivities
+}

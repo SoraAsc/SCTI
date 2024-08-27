@@ -18,18 +18,20 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
     `))
     return
   } else {
-    admin, err := strconv.ParseBool(admcookie.Value)
+
+    logincookie, err := r.Cookie("acessToken")
     if err != nil {
       w.Header().Set("Content-Type", "text/html")
       w.Write([]byte(`
       <div class="failure">
-      Falha ao converter cookie de admin:
+      Falha ao ler cookie de login:
       ` + err.Error() + `
       </div>
       `))
       return
     }
-    if admin {
+
+    if admcookie.Value == logincookie.Value {
       email := r.FormValue("Email")
 
       err := DB.SetAdmin(DB.GetUUID(email), true)
@@ -44,6 +46,16 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
       Admin criado com sucesso
       </div>
       `))
+    } else {
+      http.SetCookie(w, &http.Cookie{
+        Name:   "Admin",
+        Value:  "",
+        MaxAge: -1,
+        Secure: false,
+        HttpOnly: true,
+        Path: "/",
+        SameSite: http.SameSiteLaxMode,
+      })
     }
   }
 }
@@ -80,18 +92,19 @@ func PostActivity(w http.ResponseWriter, r* http.Request) {
     `))
     return
   } else {
-    admin, err := strconv.ParseBool(admcookie.Value)
+    logincookie, err := r.Cookie("acessToken")
     if err != nil {
       w.Header().Set("Content-Type", "text/html")
       w.Write([]byte(`
       <div class="failure">
-      Falha ao converter cookie de admin:
+      Falha ao ler cookie de login:
       ` + err.Error() + `
       </div>
       `))
       return
     }
-    if admin {
+
+    if admcookie.Value == logincookie.Value {
       var a DB.Activity
       a.Spots, _ = strconv.Atoi(r.FormValue("spots"))
       a.Activity_type = r.FormValue("type")
@@ -114,6 +127,16 @@ func PostActivity(w http.ResponseWriter, r* http.Request) {
       Atividade criada com sucesso.
       </div>
       `))
+    } else {
+      http.SetCookie(w, &http.Cookie{
+        Name:   "Admin",
+        Value:  "",
+        MaxAge: -1,
+        Secure: false,
+        HttpOnly: true,
+        Path: "/",
+        SameSite: http.SameSiteLaxMode,
+      })
     }
   }
 }

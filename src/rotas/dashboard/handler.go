@@ -36,22 +36,39 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
-  admcookie, err := r.Cookie("Admin")
   var admin bool
-  if err != nil {
-    if err.Error() == "http: named cookie not present" {
-      admin = false
-    } else {
+
+  admcookie, err := r.Cookie("Admin")
+  if err != nil && err.Error() != "http: named cookie not present" {
       http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
-      return
-    }
-  } else {
-    admin, err = strconv.ParseBool(admcookie.Value)
-    if err != nil {
       admin = false
-      http.Error(w, fmt.Sprintf("Invalid parsing cookie: %v", err), http.StatusBadRequest)
-      return
-    }
+  }
+
+  logincookie, err := r.Cookie("acessToken")
+  if err != nil {
+    w.Header().Set("Content-Type", "text/html")
+    w.Write([]byte(`
+    <div class="failure">
+    Falha ao ler cookie de login:
+    ` + err.Error() + `
+    </div>
+    `))
+    return
+  }
+
+  if admcookie.Value == logincookie.Value {
+    admin = true
+  } else {
+    http.SetCookie(w, &http.Cookie{
+      Name:   "Admin",
+      Value:  "",
+      MaxAge: -1,
+      Secure: false,
+      HttpOnly: true,
+      Path: "/",
+      SameSite: http.SameSiteLaxMode,
+    })
+  admin = false
   }
 
   data := DashboardData{
