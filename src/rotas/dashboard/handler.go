@@ -32,16 +32,27 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   registered_activities, _ := DB.GetUserActivities(cookie.Value)
   available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
 
+
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
-  admcookie, _ := r.Cookie("Admin")
-  admin, err := strconv.ParseBool(admcookie.Value)
+  admcookie, err := r.Cookie("Admin")
+  var admin bool
   if err != nil {
-    http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
-    return
+    if err.Error() == "http: named cookie not present" {
+      admin = false
+    } else {
+      http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
+      return
+    }
+  } else {
+    admin, err = strconv.ParseBool(admcookie.Value)
+    if err != nil {
+      admin = false
+      http.Error(w, fmt.Sprintf("Invalid parsing cookie: %v", err), http.StatusBadRequest)
+      return
+    }
   }
-
 
   data := DashboardData{
     IsVerified: standing,
@@ -58,24 +69,8 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   tmpl.ExecuteTemplate(w, "dashboard", data)
 }
 
-func PostDashboard(w http.ResponseWriter, r *http.Request) {
-  auth, err := r.Cookie("accessToken")
-  if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-    return
-  }
-
-  if auth.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-  }
-  fmt.Fprintf(w, "POST /dashboard")
-}
-
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
-  mux.HandleFunc("POST /dashboard", PostDashboard)
   mux.HandleFunc("POST /cadastrar", PostCadastros)
   mux.HandleFunc("POST /descadastrar", PostDescadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
