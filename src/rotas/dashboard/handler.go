@@ -1,10 +1,11 @@
 package dashboard
 
 import (
-  DB "SCTI/database"
-  "fmt"
-  "net/http"
-  "html/template"
+	DB "SCTI/database"
+	"fmt"
+	"html/template"
+	"net/http"
+	"strconv"
 )
 
 type DashboardData struct {
@@ -31,9 +32,16 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
   registered_activities, _ := DB.GetUserActivities(cookie.Value)
   available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
 
-  admin := VerifyAdmin(w, r)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
+
+  admcookie, _ := r.Cookie("Admin")
+  admin, err := strconv.ParseBool(admcookie.Value)
+  if err != nil {
+    http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
+    return
+  }
+
 
   data := DashboardData{
     IsVerified: standing,
