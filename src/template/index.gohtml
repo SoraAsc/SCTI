@@ -13,18 +13,27 @@
     <div class="header_style_form"></div>
     <!-- Your content here -->
     <header>
-      <div class="header_home">
-        <div class="header_home_items">
-          <img class="header_logo" src="/static/assets/placeholder.jpg">
+      <div class="header-nav">
+        <h2 class="nav-title-pixel">scti</h2>
+        <div class="navs-container">
+          <nav>Sobre</nav>
+          <nav>Programação</nav>
+          <nav>Contato</nav>
+          <nav>Inscreva-se</nav>
         </div>
       </div>
+      <div class="header-home">
+          <img class="header-logo" src="/static/assets/welcome_player.png">
+      </div>
     </header>
-    <div class="home_top">
-      <div class="top_info">
+    <div class="home-top">
+      <div class="top-info">
         <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
-        <hr class="white_hr">
         <p class="caption">Uma semana inteira de conteúdos, que acontecerá entre os dias 8 a 13 de novembro, sendo transmitido por uma plataforma privada no Discord!</p>
       </div>
+      <button class="pink-pixel-button">
+        start
+      </button>
     </div>
     <div class="Palestras">
       {{ range .Activities }}

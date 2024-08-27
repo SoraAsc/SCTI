@@ -1,11 +1,11 @@
 *{
 	font-family: "League Spartan", sans-serif;
-	
+
 }
 body{
 	background-image: url('../assets/background.svg');
-    background-size: cover; 
-    background-position: center; 
+    background-size: cover;
+    background-position: center;
 
 }
 
@@ -17,6 +17,7 @@ body{
     font-weight: normal; /* ou bold, etc. */
     font-style: normal; /* ou italic, etc. */
 }
+
 .button-submmit {
     width: 303px;
     height: 45px;
@@ -29,21 +30,21 @@ body{
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     background-color: #FF00C7B2;
     margin-bottom: 25px;
-    
+
   }
   .button-submmit:hover {
     cursor: pointer;
     filter: brightness(1.2);
   }
 footer {
-    position: fixed; 
-    bottom: 0px; 
-    left: 0; 
+    position: fixed;
+    bottom: 0px;
+    left: 0;
 	height: 45px;
-    width: 100%; 
-    place-items: center; 
+    width: 100%;
+    place-items: center;
 	vertical-align: middle;
-    background-color: #ff00c7b2 !important	;  
+    background-color: #ff00c7b2 !important	;
     font-weight: 400;
     font-size: 14px;
 	padding: 0 !important;
@@ -51,5 +52,5 @@ footer {
     line-height: 22px;
 	display: grid;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional para o footer */
-    z-index: 5; 
+    z-index: 5;
     }
