@@ -33,7 +33,7 @@ CREATE TABLE activities (
   room VARCHAR(255) NOT NULL,
   speaker VARCHAR(255) NOT NULL,
   topic VARCHAR(255) NOT NULL,
-  description VARCHAR(255),
+  description VARCHAR(1000),
   time VARCHAR(255) NOT NULL,
   day INT NOT NULL
 );
@@ -41,6 +41,7 @@ CREATE TABLE activities (
 CREATE TABLE registrations (
   user_id UUID NOT NULL,
   activity_id INT NOT NULL,
+  has_attended BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (user_id, activity_id),
   FOREIGN KEY (user_id) REFERENCES users(uuid),
   FOREIGN KEY (activity_id) REFERENCES activities(id)

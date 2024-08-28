@@ -45,6 +45,7 @@
 
     <div class="atividades_registradas">
     {{ range .RegisteredActivities }}
+      <div class="response" id="registered_{{ .Activity_id }}"></div>
       <div class="atividade_registrada" id="registrada_{{ .Activity_id }}">
         <div class="info">
           <div class="id">ID: {{ .Activity_id }}</div>
@@ -65,7 +66,12 @@
           </div>
           <div class="descricao">{{ .Description }}</div>
         </div>
-        <button class="cadastrar" hx-refresh="true" hx-post="/descadastrar" hx-trigger="click" hx-target="#registrada_{{ .Activity_id }}" hx-swap="delete" hx-vals='{"id": "{{ .Activity_id }}"}'>
+        <button class="cadastrar" hx-refresh="true"
+                                  hx-post="/descadastrar"
+                                  hx-trigger="click"
+                                  hx-target="#registered_{{ .Activity_id }}"
+                                  hx-swap="innerHTML"
+                                  hx-vals='{"id": "{{ .Activity_id }}"}'>
           Sair
         </button>
 

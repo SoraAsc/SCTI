@@ -195,56 +195,63 @@ func SignupUserForActivity(userUUID string, activityID int) (bool, error) {
   return true, nil
 }
 
-func UnregisterUserFromActivity(userUUID string, activityID int) error {
-  tx, err := DB.Begin()
-  if err != nil {
-    return err
-  }
-  defer tx.Rollback()
+func UnregisterUserFromActivity(uuid string, activityID int) error {
+    tx, err := DB.Begin()
+    if err != nil {
+        return err
+    }
+    defer tx.Rollback()
 
-  query := `
-  SELECT EXISTS(
-  SELECT 1 FROM registrations
-  WHERE user_id = $1 AND activity_id = $2
-  )
-  `
+    query := `
+    SELECT EXISTS(
+        SELECT 1 FROM registrations
+        WHERE user_id = $1 AND activity_id = $2
+    ), has_attended
+    FROM registrations
+    WHERE user_id = $1 AND activity_id = $2
+    `
+    var registrationExists, hasAttended bool
+    err = tx.QueryRow(query, uuid, activityID).Scan(&registrationExists, &hasAttended)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return errors.New("Usuário não registrado nessa atividade")
+        }
+        return err
+    }
 
-  var registrationExists bool
-  err = tx.QueryRow(query, userUUID, activityID).Scan(&registrationExists)
-  if err != nil {
-    return err
-  }
-  if !registrationExists {
-    return errors.New("user is not registered for this activity")
-  }
+    if !registrationExists {
+        return errors.New("Usuário não registrado nessa atividade")
+    }
 
-  query = `
-  DELETE FROM registrations
-  WHERE user_id = $1 AND activity_id = $2
-  `
+    if hasAttended {
+        return errors.New("Proibido sair de uma atividade em que participou")
+    }
 
-  _, err = tx.Exec(query, userUUID, activityID)
-  if err != nil {
-    return err
-  }
+    deleteQuery := `
+    DELETE FROM registrations
+    WHERE user_id = $1 AND activity_id = $2
+    `
+    _, err = tx.Exec(deleteQuery, uuid, activityID)
+    if err != nil {
+        return err
+    }
 
-  query = `
-  UPDATE activities 
-  SET spots = spots + 1 
-  WHERE id = $1
-  `
+    updateQuery := `
+    UPDATE activities
+    SET spots = spots + 1
+    WHERE id = $1
+    `
+    _, err = tx.Exec(updateQuery, activityID)
+    if err != nil {
+        return err
+    }
 
-  _, err = tx.Exec(query, activityID)
-  if err != nil {
-    return err
-  }
+    err = tx.Commit()
+    if err != nil {
+        return err
+    }
 
-  err = tx.Commit()
-  if err != nil {
-    return err
-  }
-
-  return nil
+    return nil
 }
 
 func GetUserActivities(userUUID string) ([]Activity, error) {
@@ -277,4 +284,37 @@ func GetUserActivities(userUUID string) ([]Activity, error) {
   }
 
   return activities, nil
+}
+
+func MarkUserAttendance(uuid string, activityID int) error {
+  tx, err := DB.Begin()
+  if err != nil {
+    return fmt.Errorf("failed to start transaction: %v", err)
+  }
+  defer tx.Rollback()
+
+  query := `
+  UPDATE registrations
+  SET has_attended = TRUE
+  WHERE user_id = $1 AND activity_id = $2
+  `
+
+  result, err := tx.Exec(query, uuid, activityID)
+  if err != nil {
+    return fmt.Errorf("failed to update attendance status: %v", err)
+  }
+
+  rowsAffected, err := result.RowsAffected()
+  if err != nil {
+    return fmt.Errorf("failed to get rows affected: %v", err)
+  }
+  if rowsAffected == 0 {
+    return fmt.Errorf("Usuário não está cadastrado nesta atividade")
+  }
+
+  if err = tx.Commit(); err != nil {
+    return fmt.Errorf("failed to commit transaction: %v", err)
+  }
+
+  return nil
 }
