@@ -27,6 +27,16 @@ func PaidError(w http.ResponseWriter, err error) {
   `))
 }
 
+func LeaveError(w http.ResponseWriter, err error) {
+  w.Header().Set("Content-Type", "text/html")
+  w.Write([]byte(`
+      <div class="failure">
+        Falha ao sair: 
+    ` + err.Error() + `
+      </div>
+  `))
+}
+
 func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
   email := r.FormValue("Email")
 
@@ -96,24 +106,24 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 func PostDescadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
+    fmt.Println("Error Getting cookie:", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
   if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
+    fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
-    http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
+    LeaveError(w, err)
     return
   }
 
   err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
   if err != nil {
-    w.WriteHeader(http.StatusBadRequest)
+    LeaveError(w, err)
   }
 
   fmt.Println(activityID)
