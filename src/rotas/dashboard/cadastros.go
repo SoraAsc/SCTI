@@ -10,10 +10,10 @@ import (
 func AtividadeCheia(w http.ResponseWriter, err error) {
   w.Header().Set("Content-Type", "text/html")
   w.Write([]byte(`
-      <div class="failure">
-        Falha ao se cadastrar: 
-    ` + err.Error() + `
-      </div>
+  <div class="failure">
+  Falha ao se cadastrar: 
+  ` + err.Error() + `
+  </div>
   `))
 }
 
@@ -103,6 +103,7 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusOK)
 }
 
+
 func PostDescadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
@@ -115,6 +116,7 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
+
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
     LeaveError(w, err)
@@ -132,15 +134,15 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
 }
 
 func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activity) []DB.Activity {
-    registeredMap := make(map[int]bool)
-    for _, activity := range registeredActivities {
-        registeredMap[activity.Activity_id] = true
+  registeredMap := make(map[int]bool)
+  for _, activity := range registeredActivities {
+    registeredMap[activity.Activity_id] = true
+  }
+  filteredActivities := make([]DB.Activity, 0, len(allActivities))
+  for _, activity := range allActivities {
+    if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
+      filteredActivities = append(filteredActivities, activity)
     }
-    filteredActivities := make([]DB.Activity, 0, len(allActivities))
-    for _, activity := range allActivities {
-        if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
-            filteredActivities = append(filteredActivities, activity)
-        }
-    }
-    return filteredActivities
+  }
+  return filteredActivities
 }
