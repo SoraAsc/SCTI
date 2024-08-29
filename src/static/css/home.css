@@ -191,6 +191,32 @@ header .header-home .header-logo {
 	position: relative;
 }
 
+.home-activities .activity-container .left-button {
+	margin-right: 1.2em;
+	transition: transform 1s;
+}
+
+.home-activities .activity-container .right-button {
+	margin-left: 1.2em;
+	transform: rotateY(180deg);
+}
+
+.home-activities .activity-container .left-button,
+.home-activities .activity-container .right-button {
+	cursor: pointer;
+	transition: transform 0.5s;
+}
+
+.home-activities .activity-container .left-button:hover {
+	opacity: 0.5;
+	transform: scale(1.1);
+}
+
+.home-activities .activity-container .right-button:hover {
+	opacity: 0.5;
+	transform: rotateY(180deg) scale(1.1);
+}
+
 .home-activities .activity-container .activity .type {
 	position: absolute;
 	font-family: "Joystix";

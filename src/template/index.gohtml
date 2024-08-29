@@ -63,27 +63,29 @@
       </div>
 
       <div class="activity-container">
-        <div id="home-main-activity" class="activity">
+        <img class="left-button" src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
+        <div class="activity">
           <span id="activity-type" class="type">MiniCursos</span>
           <img class="back" src="/static/assets/home/bottom_container.svg" />
           <img class="fore" src="/static/assets/home/container.svg" />
-            <div class="details">
-              <div class="speaker-container">
-                <div class="perfil">
-                  <img class="outer" src="/static/assets/home/image_container.svg" />
-                  <img class="inner" src="/static/assets/home/image_container.svg" />
-                  <img class="placeholder" src="/static/assets/placeholder.jpg" />
-                </div>
-                <p id="activity-speaker" class="truncate speaker"></p>
+          <div class="details">
+            <div class="speaker-container">
+              <div class="perfil">
+                <img class="outer" src="/static/assets/home/image_container.svg" />
+                <img class="inner" src="/static/assets/home/image_container.svg" />
+                <img class="placeholder" src="/static/assets/placeholder.jpg" />
               </div>
-              <div class="vertical-line"></div>
-              <div class="info">
-                <p id="activity-topic" class="topic truncate"></p>
-                <p id="activity-time" class="time truncate"></p>
-                <p id="activity-description" class="description truncate"></p>
-              </div>
+              <p id="activity-speaker" class="truncate speaker"></p>
             </div>
+            <div class="vertical-line"></div>
+            <div class="info">
+              <p id="activity-topic" class="topic truncate"></p>
+              <p id="activity-time" class="time truncate"></p>
+              <p id="activity-description" class="description truncate"></p>
+            </div>
+          </div>
         </div>
+        <img class="right-button" src="/static/assets/home/directional_button.svg" onclick="navigate('right')"/>
       </div>
 
     </div>
@@ -99,6 +101,7 @@
       const activityTime = document.getElementById('activity-time')
       const activityDescription = document.getElementById('activity-description')
       let lastWeekDayButtonSelected = null
+      currentIndex = 0, currentDay = 1
 
       // Filtra cada uma das atividades por dia
       const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
@@ -128,6 +131,12 @@
         activityTopic.innerText = activity.Topic
         activityTime.innerText = activity.Time.substring(0, 5)
         activityDescription.innerText = activity.Description
+      }
+
+      const navigate = (direction) => {
+        const length = activities[currentDay].length;
+        currentIndex = (currentIndex + (direction === "left" ? -1 : 1) + length) % length;
+        RefreshActivity()
       }
 
       FilterActivities(1)
