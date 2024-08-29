@@ -1,10 +1,9 @@
 package dashboard
 
 import (
-  DB "SCTI/database"
-  "fmt"
-  "net/http"
-  "html/template"
+	DB "SCTI/database"
+	"html/template"
+	"net/http"
 )
 
 type DashboardData struct {
@@ -17,28 +16,40 @@ type DashboardData struct {
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
-
   if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
   }
 
   all_activities, _ := DB.GetAllActivities()
   registered_activities, _ := DB.GetUserActivities(cookie.Value)
   available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
-
-  admin := DB.GetAdmin(cookie.Value)
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
+  admin := false
+  admcookie, err := r.Cookie("Admin")
+  if err == nil && admcookie.Value == cookie.Value {
+    admin = true
+  } else {
+    http.SetCookie(w, &http.Cookie{
+      Name:     "Admin",
+      Value:    "",
+      MaxAge:   -1,
+      Secure:   false,
+      HttpOnly: true,
+      Path:     "/",
+      SameSite: http.SameSiteLaxMode,
+    })
+  }
+
   data := DashboardData{
-    IsVerified: standing,
-    IsAdmin: admin,
-    Activities: available_activities,
+    IsVerified:          standing,
+    IsAdmin:             admin,
+    Activities:          available_activities,
     RegisteredActivities: registered_activities,
   }
 
@@ -47,29 +58,16 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-  tmpl.ExecuteTemplate(w, "dashboard", data)
-}
-
-func PostDashboard(w http.ResponseWriter, r *http.Request) {
-  auth, err := r.Cookie("accessToken")
+  err = tmpl.ExecuteTemplate(w, "dashboard", data)
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-    return
+    http.Error(w, err.Error(), http.StatusInternalServerError)
   }
-
-  if auth.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-  }
-  fmt.Fprintf(w, "POST /dashboard")
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
   mux.HandleFunc("GET /presenca", GetAttendance)
   mux.HandleFunc("POST /presenca", PostAttendance)
-  mux.HandleFunc("POST /dashboard", PostDashboard)
   mux.HandleFunc("POST /cadastrar", PostCadastros)
   mux.HandleFunc("POST /descadastrar", PostDescadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)

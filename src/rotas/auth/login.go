@@ -63,6 +63,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
   }
 
   http.SetCookie(w, &cookie)
+  _ = VerifyAdmin(w, r, uuid)
 
   if r.Header.Get("HX-Request") == "true" {
     w.Header().Set("HX-Redirect", "/dashboard")
@@ -101,9 +102,59 @@ func GetLogoff(w http.ResponseWriter, r *http.Request) {
     Path: "/",
     SameSite: http.SameSiteLaxMode,
   })
+  http.SetCookie(w, &http.Cookie{
+    Name:   "Admin",
+    Value:  "",
+    MaxAge: -1,
+    Secure: false,
+    HttpOnly: true,
+    Path: "/",
+    SameSite: http.SameSiteLaxMode,
+  })
   http.Redirect(w, r, "/login", http.StatusSeeOther)
 
   w.WriteHeader(http.StatusOK)
 }
 
+func VerifyAdmin(w http.ResponseWriter, r *http.Request, uuid string) bool {
+  admcookie, err := r.Cookie("Admin")
+  if err != nil {
+    if err != http.ErrNoCookie {
+      http.Error(w, fmt.Sprintf("Error reading admin cookie: %v", err), http.StatusBadRequest)
+      return false
+    }
+    fmt.Println("login.go: Admin cookie not present")
+  } else {
+    if admcookie.Value == uuid {
+      return true
+    } else {
+      http.SetCookie(w, &http.Cookie{
+        Name:   "Admin",
+        Value:  "",
+        MaxAge: -1,
+        Secure: false,
+        HttpOnly: true,
+        Path: "/",
+        SameSite: http.SameSiteLaxMode,
+      })
+    }
+  }
 
+  isAdmin := DB.GetAdmin(uuid)
+
+  if isAdmin {
+    admcookie := http.Cookie{
+      Name:     "Admin",
+      Value:    uuid,
+      Expires:  time.Now().Add(2 * 24 * time.Hour),
+      Secure:   false,
+      HttpOnly: true,
+      Path:     "/",
+      SameSite: http.SameSiteLaxMode,
+    }
+    http.SetCookie(w, &admcookie)
+    return true
+  }
+
+  return false
+}
