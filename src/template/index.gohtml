@@ -63,7 +63,8 @@
       </div>
 
       <div class="activity-container">
-        <img class="left-button" src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
+        <img class="left-button disabled" id="left-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
         <div class="activity">
           <span id="activity-type" class="type">MiniCursos</span>
           <img class="back" src="/static/assets/home/bottom_container.svg" />
@@ -85,7 +86,8 @@
             </div>
           </div>
         </div>
-        <img class="right-button" src="/static/assets/home/directional_button.svg" onclick="navigate('right')"/>
+        <img class="right-button disabled" id="right-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('right')"/>
       </div>
 
     </div>
@@ -100,18 +102,22 @@
       const activityTopic = document.getElementById('activity-topic')
       const activityTime = document.getElementById('activity-time')
       const activityDescription = document.getElementById('activity-description')
-      let lastWeekDayButtonSelected = null
-      currentIndex = 0, currentDay = 1
+
+      let lastWeekDayButtonSelected = null, currentIndex = 0, currentDay = 1
+
+      const leftNavigationButton = document.getElementById("left-navigation-button")
+      const rightNavigationButton = document.getElementById("right-navigation-button")
 
       // Filtra cada uma das atividades por dia
-      const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
+      let activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
         .push(activity), acc), {})
-
+      
       const FilterActivities = (day) => {
         if(activities[day])
         {
           currentDay = day
-          currentIndex = 0
+          currentIndex = currentIndex % activities[currentDay].length;
+          ChangeNavigationButtonState()
           RefreshActivity()
           HighlightButton(day)
         }
@@ -121,6 +127,17 @@
         lastWeekDayButtonSelected?.classList.remove('selected')
         lastWeekDayButtonSelected = document.getElementById('button-weekday-' + day)
         lastWeekDayButtonSelected.classList.add('selected')
+      }
+
+      const ChangeNavigationButtonState = () => {
+        if(!activities[currentDay] || activities[currentDay].length <= 1)
+        {
+          leftNavigationButton.classList.add("disabled")
+          rightNavigationButton.classList.add("disabled")
+        } else {
+          leftNavigationButton.classList.remove("disabled")
+          rightNavigationButton.classList.remove("disabled")
+        }
       }
 
       const RefreshActivity = () => {
@@ -134,9 +151,12 @@
       }
 
       const navigate = (direction) => {
-        const length = activities[currentDay].length;
-        currentIndex = (currentIndex + (direction === "left" ? -1 : 1) + length) % length;
-        RefreshActivity()
+        if(activities[currentDay] && activities[currentDay].length > 1)
+        {
+          const length = activities[currentDay].length;
+          currentIndex = (currentIndex + (direction === "left" ? -1 : 1) + length) % length;
+          RefreshActivity()
+        }
       }
 
       FilterActivities(1)
