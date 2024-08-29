@@ -35,67 +35,14 @@
         start
       </button>
     </div>
-    <div class="Palestras">
-      {{ range .Activities }}
-      {{ if eq .Activity_type "PL" }}
-      <div class="atividade">
-        <div class="info">
-          <div class="id">{{ .Activity_id }}</div>
-          <div class="tipo">{{ .Activity_type }}</div>
-        </div>
-        <div class="content">
-          <div class="upper_content">
-            <div class="a_title">
-              <div class="topico">{{ .Topic }}</div>
-              <div class="palestrante">{{ .Speaker }}</div>
-            </div>
-            <div class="sub_header">
-              <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
-              <div class="sala">{{ .Room }}</div>
-              <div class="vagas">{{ .Spots }}</div>
-            </div>
-          </div>
-          <div class="descricao">{{ .Description }}</div>
-        </div>
-      </div>
-      {{ end }}
-      {{ end }}
+
+    <div class="home-activities">
+      <h1 class="main-title">Programação</h1>
     </div>
-    <div class="MiniCursos">
-      {{ range .Activities }}
-      {{ if eq .Activity_type "MC" }}
-      <div class="atividade">
-        <div class="info">
-          <div class="id">{{ .Activity_id }}</div>
-          <div class="tipo">{{ .Activity_type }}</div>
-        </div>
-        <div class="content">
-          <div class="upper_content">
-            <div class="a_title">
-              <div class="topico">{{ .Topic }}</div>
-              <div class="palestrante">{{ .Speaker }}</div>
-            </div>
-            <div class="sub_header">
-              <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
-              <div class="sala">{{ .Room }}</div>
-              <div class="vagas">{{ .Spots }}</div>
-            </div>
-          </div>
-          <div class="descricao">{{ .Description }}</div>
-        </div>
-      </div>
-      {{ end }}
-      {{ end }}
-    </div>
+    
     <footer>
       <p>Copyright © 2024 SCTI - Todos os direitos reservados</p>
     </footer>
-  </body>
-  <footer>
-    Copyright © 2024 SCTI - Todos os direitos reservados
-  </footer>
   </body>
 </html>
 {{ end }}
