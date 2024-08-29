@@ -15,7 +15,7 @@ psql -U postgres -d scti-db -f populate.sql
 echo "Qual o seu email: "
 read -r Email
 Email=${Email:-user@test.com}
-cmd="INSERT INTO users (email, name, uuid, verificationCode, isVerified, isAdmin, isPaid) VALUES ('$Email', 'Voce', '623e4567-e89b-12d3-a456-426614174000', '523e4', TRUE, TRUE, TRUE);"
+cmd="INSERT INTO users (email, name, uuid, verificationCode, isVerified, isAdmin, isPaid) VALUES ('$Email', 'Voce', '623e4567-e89b-12d3-a456-426614174000', '623e4', TRUE, TRUE, TRUE);"
 
 psql -U postgres -d scti-db -c "$cmd"
 

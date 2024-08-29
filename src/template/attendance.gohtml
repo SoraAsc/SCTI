@@ -1,0 +1,31 @@
+{{ define "attendance" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>Validar Presença</title>
+  </head>
+  <body>
+    <div id="admatividade"></div>
+    <form>
+      <label for="Atividade">Qual atividade para marcar presença</label>
+      <br>
+      <select name="Atividade" id="atividade">
+        {{ range .Activities }}
+        <option value="{{ .Activity_id }}">{{ .Topic }}</option>
+        {{ end }}
+      </select> 
+      <br>
+      <button hx-post="/presenca"
+              hx-trigger="click"
+              hx-target="#admatividade"
+              hx-swap="innerHTML"
+              hx-vals='{"Uuid": "{{ .Uuid }}"}'>
+        Enviar
+      </button>
+    </form>
+  </body>
+</html>
+{{ end }}

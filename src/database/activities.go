@@ -318,3 +318,44 @@ func MarkUserAttendance(uuid string, activityID int) error {
 
   return nil
 }
+
+func GetUserAttendedActivities(uuid string) ([]Activity, error) {
+  query := `
+  SELECT a.id, a.spots, a.activity_type, a.room, a.speaker, a.topic, a.description, a.time, a.day
+  FROM activities a
+  JOIN registrations r ON a.id = r.activity_id
+  WHERE r.user_id = $1 AND r.has_attended = TRUE
+  `
+
+  rows, err := DB.Query(query, uuid)
+  if err != nil {
+    return nil, fmt.Errorf("failed to query attended activities: %v", err)
+  }
+  defer rows.Close()
+
+  var attendedActivities []Activity
+  for rows.Next() {
+    var activity Activity
+    err := rows.Scan(
+      &activity.Activity_id,
+      &activity.Spots,
+      &activity.Activity_type,
+      &activity.Room,
+      &activity.Speaker,
+      &activity.Topic,
+      &activity.Description,
+      &activity.Time,
+      &activity.Day,
+    )
+    if err != nil {
+      return nil, fmt.Errorf("failed to scan activity: %v", err)
+    }
+    attendedActivities = append(attendedActivities, activity)
+  }
+
+  if err = rows.Err(); err != nil {
+    return nil, fmt.Errorf("error iterating over rows: %v", err)
+  }
+
+  return attendedActivities, nil
+}

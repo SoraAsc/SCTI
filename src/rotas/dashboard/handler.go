@@ -66,6 +66,8 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
 
 func RegisterRoutes(mux *http.ServeMux) {
   mux.HandleFunc("GET /dashboard", GetDashboard)
+  mux.HandleFunc("GET /presenca", GetAttendance)
+  mux.HandleFunc("POST /presenca", PostAttendance)
   mux.HandleFunc("POST /cadastrar", PostCadastros)
   mux.HandleFunc("POST /descadastrar", PostDescadastros)
   mux.HandleFunc("POST /send-verification-email", VerifyEmail)
