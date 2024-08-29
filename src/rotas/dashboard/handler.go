@@ -2,7 +2,6 @@ package dashboard
 
 import (
 	DB "SCTI/database"
-	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -17,63 +16,40 @@ type DashboardData struct {
 func GetDashboard(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
-
   if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
+    return
   }
 
   all_activities, _ := DB.GetAllActivities()
   registered_activities, _ := DB.GetUserActivities(cookie.Value)
   available_activities := RemoveRegisteredActivities(all_activities, registered_activities)
-
-
   email := DB.GetEmail(cookie.Value)
   standing := DB.GetStanding(email)
 
-  var admin bool
-
+  admin := false
   admcookie, err := r.Cookie("Admin")
-  if err != nil && err.Error() != "http: named cookie not present" {
-      http.Error(w, fmt.Sprintf("Invalid admin cookie: %v", err), http.StatusBadRequest)
-      admin = false
-  }
-
-  logincookie, err := r.Cookie("acessToken")
-  if err != nil {
-    w.Header().Set("Content-Type", "text/html")
-    w.Write([]byte(`
-    <div class="failure">
-    Falha ao ler cookie de login:
-    ` + err.Error() + `
-    </div>
-    `))
-    return
-  }
-
-  if admcookie.Value == logincookie.Value {
+  if err == nil && admcookie.Value == cookie.Value {
     admin = true
   } else {
     http.SetCookie(w, &http.Cookie{
-      Name:   "Admin",
-      Value:  "",
-      MaxAge: -1,
-      Secure: false,
+      Name:     "Admin",
+      Value:    "",
+      MaxAge:   -1,
+      Secure:   false,
       HttpOnly: true,
-      Path: "/",
+      Path:     "/",
       SameSite: http.SameSiteLaxMode,
     })
-  admin = false
   }
 
   data := DashboardData{
-    IsVerified: standing,
-    IsAdmin: admin,
-    Activities: available_activities,
+    IsVerified:          standing,
+    IsAdmin:             admin,
+    Activities:          available_activities,
     RegisteredActivities: registered_activities,
   }
 
@@ -82,7 +58,10 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-  tmpl.ExecuteTemplate(w, "dashboard", data)
+  err = tmpl.ExecuteTemplate(w, "dashboard", data)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
 }
 
 func RegisterRoutes(mux *http.ServeMux) {

@@ -19,7 +19,7 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
     return
   } else {
 
-    logincookie, err := r.Cookie("acessToken")
+    logincookie, err := r.Cookie("accessToken")
     if err != nil {
       w.Header().Set("Content-Type", "text/html")
       w.Write([]byte(`
@@ -92,7 +92,7 @@ func PostActivity(w http.ResponseWriter, r* http.Request) {
     `))
     return
   } else {
-    logincookie, err := r.Cookie("acessToken")
+    logincookie, err := r.Cookie("accessToken")
     if err != nil {
       w.Header().Set("Content-Type", "text/html")
       w.Write([]byte(`

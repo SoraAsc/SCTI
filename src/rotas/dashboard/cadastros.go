@@ -30,54 +30,29 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
-  admcookie, err := r.Cookie("Admin")
-  if err != nil {
-    w.Header().Set("Content-Type", "text/html")
-    w.Write([]byte(`
-    <div class="failure">
-    Falha ao ler cookie de admin:
-    ` + err.Error() + `
-    </div>
-    `))
+  email := DB.GetEmail(cookie.Value)
+  if !DB.GetStanding(email) {
+    AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
     return
-  } else {
-
-    if admcookie.Value == cookie.Value {
-      email := DB.GetEmail(cookie.Value)
-      if !DB.GetStanding(email) {
-        AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
-        return
-      }
-
-      activityID, err := strconv.Atoi(r.FormValue("id"))
-      if err != nil {
-        http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
-        return
-      }
-
-      state, err := DB.SignupUserForActivity(cookie.Value, activityID)
-      if err != nil {
-        AtividadeCheia(w, err)
-        return
-      }
-
-      fmt.Println(state)
-
-      fmt.Println(activityID)
-      w.Header().Set("HX-Refresh", "true")
-      w.WriteHeader(http.StatusOK)
-    } else {
-      http.SetCookie(w, &http.Cookie{
-        Name:   "Admin",
-        Value:  "",
-        MaxAge: -1,
-        Secure: false,
-        HttpOnly: true,
-        Path: "/",
-        SameSite: http.SameSiteLaxMode,
-      })
-    }
   }
+
+  activityID, err := strconv.Atoi(r.FormValue("id"))
+  if err != nil {
+    http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
+    return
+  }
+
+  state, err := DB.SignupUserForActivity(cookie.Value, activityID)
+  if err != nil {
+    AtividadeCheia(w, err)
+    return
+  }
+
+  fmt.Println(state)
+
+  fmt.Println(activityID)
+  w.Header().Set("HX-Refresh", "true")
+  w.WriteHeader(http.StatusOK)
 }
 
 
@@ -94,35 +69,20 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
-  admcookie, err := r.Cookie("Admin")
+  activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
-    w.Header().Set("Content-Type", "text/html")
-    w.Write([]byte(`
-    <div class="failure">
-    Falha ao ler cookie de admin:
-    ` + err.Error() + `
-    </div>
-    `))
+    http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
     return
-  } else {
-
-    if admcookie.Value == cookie.Value {
-      activityID, err := strconv.Atoi(r.FormValue("id"))
-      if err != nil {
-        http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
-        return
-      }
-
-      err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
-      if err != nil {
-        w.WriteHeader(http.StatusBadRequest)
-      }
-
-      fmt.Println(activityID)
-      w.Header().Set("HX-Refresh", "true")
-      w.WriteHeader(http.StatusOK)
-    }
   }
+
+  err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
+  if err != nil {
+    w.WriteHeader(http.StatusBadRequest)
+  }
+
+  fmt.Println(activityID)
+  w.Header().Set("HX-Refresh", "true")
+  w.WriteHeader(http.StatusOK)
 }
 
 func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activity) []DB.Activity {
