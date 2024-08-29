@@ -123,3 +123,56 @@ header .header-home .header-logo {
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+.home-activities .days-container {
+	margin: 3em 0 1.5em 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	column-gap: 3em;
+}
+
+.home-activities .days-container .button-weekday {
+	width: 7em;
+	position: relative;
+    margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+}
+
+.home-activities .days-container .button-weekday img {
+	width: 100%;
+	cursor: pointer;
+	fill: #c8ccff;
+	color: #c8ccff;
+	transition: all 0.5s;
+	filter: invert(74%) sepia(15%) saturate(998%) hue-rotate(200deg) brightness(106%) contrast(106%);
+}
+
+.home-activities .days-container .button-weekday p {
+	position: absolute;
+	left: 50%;
+	color: black;
+	font-size: 1em;
+	transform: translate(-50%, -50%);
+	top: calc(50% - 1.5px);
+	font-family: "Joystix";
+	pointer-events: none;
+	transition: all 0.5s;
+	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+.home-activities .days-container .button-weekday.selected img,
+.home-activities .days-container .button-weekday:hover img {
+	filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg) brightness(98%) contrast(97%);
+}
+
+.home-activities .days-container .button-weekday.selected p,
+.home-activities .days-container .button-weekday:hover p {
+	color: rgba(255, 255, 255, 1);
+
+	text-shadow: 2px 0 rgba(255, 0, 199, 1), -2px 0 rgba(255, 0, 199, 1), 0 2px rgba(255, 0, 199, 1), 0 -2px rgba(255, 0, 199, 1),
+	1px 1px rgba(255, 0, 199, 1), -1px -1px rgba(255, 0, 199, 1), 1px -1px rgba(255, 0, 199, 1), -1px 1px rgba(255, 0, 199, 1);
+	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+}

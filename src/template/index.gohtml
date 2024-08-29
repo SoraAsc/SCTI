@@ -38,11 +38,51 @@
 
     <div class="home-activities">
       <h1 class="main-title">Programação</h1>
+      <div class="days-container">
+        <button id="button-weekday-1" class="button-weekday" onclick="FilterActivities(1)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Segunda</p>
+        </button>
+        <button id="button-weekday-2" class="button-weekday" onclick="FilterActivities(2)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Terça</p>
+        </button>
+        <button id="button-weekday-3" class="button-weekday" onclick="FilterActivities(3)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quarta</p>
+        </button>
+        <button id="button-weekday-4" class="button-weekday" onclick="FilterActivities(4)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quinta</p>
+        </button>
+        <button id="button-weekday-5" class="button-weekday" onclick="FilterActivities(5)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Sexta</p>
+        </button>
+      </div>
     </div>
     
     <footer>
       <p>Copyright © 2024 SCTI - Todos os direitos reservados</p>
     </footer>
+
+    <script>
+      let lastWeekDayButtonSelected = null
+
+      const FilterActivities = (day) => {
+        currentDay = day
+        currentIndex = 0
+        HighlightButton(day)
+      }
+
+      const HighlightButton = (day) => {
+        lastWeekDayButtonSelected?.classList.remove('selected')
+        lastWeekDayButtonSelected = document.getElementById('button-weekday-' + day)
+        lastWeekDayButtonSelected.classList.add('selected')
+      }
+
+      FilterActivities("1")
+    </script>
   </body>
 </html>
 {{ end }}
