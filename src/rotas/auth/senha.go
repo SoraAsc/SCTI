@@ -3,6 +3,7 @@ package auth
 import (
   "SCTI/fileserver"
   DB "SCTI/database"
+  HTMX "SCTI/htmx"
   "fmt"
   "os"
   "net/url"
@@ -21,12 +22,7 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
 
   _, err := DB.GetCodeByEmail(r.FormValue("Email"))
   if err != nil {
-    w.Header().Set("Content-Type", "text/html")
-      w.Write([]byte(`
-        <div class="red">
-          Nenhum usuário encontrado com este email
-        </div>
-      `))
+    HTMX.Failure(w,"Nenhum usuário encontrado com este email: ", err)
     return
   }
 
@@ -80,20 +76,9 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
   dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
 
   if err := dialer.DialAndSend(msg); err != nil {
-    fmt.Printf("smtp error: %s\n", err)
-    w.Header().Set("Content-Type", "text/html")
-      w.Write([]byte(`
-        <div class="red">
-          Falha ao enviar email
-        </div>
-      `))
+    HTMX.Failure(w, "Falha ao enviar email: ", err)
     return
   }
 
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-    <div class="green">
-      Email enviado com sucesso!!
-    </div>
-  `))
+  HTMX.Success(w, "Email enviado com sucesso")
 }

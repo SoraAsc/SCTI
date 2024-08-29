@@ -5,53 +5,19 @@ import (
   "strconv"
   "net/http"
   DB "SCTI/database"
+  HTMX "SCTI/htmx"
 )
-
-func AtividadeCheia(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-  <div class="failure">
-  Falha ao se cadastrar: 
-  ` + err.Error() + `
-  </div>
-  `))
-}
-
-func PaidError(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Falha ao validar: 
-    ` + err.Error() + `
-      </div>
-  `))
-}
-
-func LeaveError(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Falha ao sair: 
-    ` + err.Error() + `
-      </div>
-  `))
-}
 
 func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
   email := r.FormValue("Email")
 
   err := DB.MarkAsPaid(email)
   if err != nil {
-    PaidError(w, err)
+    HTMX.Failure(w, "Falha ao validar o ingresso: ", err)
     return
   }
 
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-    <div>
-      Ingresso Validado com sucesso!
-    </div>
-  `))
+  HTMX.Success(w, "Ingresso validado com sucesso")
 }
 
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
@@ -69,18 +35,18 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 
   email := DB.GetEmail(cookie.Value)
   if !DB.GetStanding(email) {
-    AtividadeCheia(w, fmt.Errorf("Usuário não possui email verificado"))
+    HTMX.Failure(w, "Falha ao se cadastrar: ", fmt.Errorf("Usuário não possui email verificado"))
     return
   }
 
   paid, err := DB.IsUserPaid(cookie.Value)
   if err != nil {
-    AtividadeCheia(w, err)
+    HTMX.Failure(w, "Falha ao se cadastrar: ", err)
     return
   }
 
   if !paid {
-    AtividadeCheia(w, fmt.Errorf("Usuário não possui ingresso validado"))
+    HTMX.Failure(w, "Falha ao se cadastrar: ", fmt.Errorf("Usuário não possui ingresso validado"))
     return
   }
 
@@ -90,15 +56,11 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  state, err := DB.SignupUserForActivity(cookie.Value, activityID)
+  _, err = DB.SignupUserForActivity(cookie.Value, activityID)
   if err != nil {
-    AtividadeCheia(w, err)
+    HTMX.Failure(w, "Falha ao se cadastrar: ", err)
     return
   }
-
-  fmt.Println(state)
-
-  fmt.Println(activityID)
   w.Header().Set("HX-Refresh", "true")
   w.WriteHeader(http.StatusOK)
 }
@@ -119,13 +81,14 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
 
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
-    LeaveError(w, err)
+    HTMX.Failure(w, "Falha ao sair: ", err)
     return
   }
 
   err = DB.UnregisterUserFromActivity(cookie.Value, activityID)
   if err != nil {
-    LeaveError(w, err)
+    HTMX.Failure(w, "Falha ao sair: ", err)
+    return
   }
 
   fmt.Println(activityID)

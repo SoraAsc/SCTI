@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	DB "SCTI/database"
+  HTMX "SCTI/htmx"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -14,17 +15,13 @@ type AttendanceData struct {
   Uuid string
 }
 
-func PresencaErro(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Falha ao marcar presença:
-    ` + err.Error() + `
-      </div>
-  `))
-}
-
 func GetAttendance(w http.ResponseWriter, r *http.Request) {
+  if !CheckAdmin(w, r) {
+    http.Error(w, "Endpoint exclusiva de Admins", http.StatusUnauthorized)
+    HTMX.Failure(w, "Acesso proibido", fmt.Errorf("Não foi encontrado ou não é valido o cookie de admin"))
+    return
+  }
+
   code := r.URL.Query().Get("code")
   encodedEmail := r.URL.Query().Get("email")
 
@@ -69,27 +66,28 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostAttendance(w http.ResponseWriter, r *http.Request) {
+  if !CheckAdmin(w, r) {
+    http.Error(w, "Endpoint exclusiva de Admins", http.StatusUnauthorized)
+    HTMX.Failure(w, "Acesso proibido", fmt.Errorf("Não foi encontrado ou não é valido o cookie de admin"))
+    return
+  }
+
   uuid := r.FormValue("Uuid")
   atividade := r.FormValue("Atividade")
 
   id, err := strconv.Atoi(atividade)
   if err != nil {
-    PresencaErro(w, err)
+    HTMX.Failure(w, "Falha ao resgatar atividade: ", err)
     return
   }
 
   err = DB.MarkUserAttendance(uuid, id)
   if err != nil {
-    PresencaErro(w, err)
+    HTMX.Failure(w, "Falha ao marcar presença do usuário: ", err)
     return
   }
 
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Presença do usuário marcada com sucesso:
-      </div>
-  `))
+  HTMX.Success(w, "Presença do usuário marcada com sucesso")
 }
 
 func RemoveAttendedActivities(registeredActivities []DB.Activity, attendedActivities []DB.Activity) []DB.Activity {
