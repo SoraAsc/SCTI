@@ -38,6 +38,7 @@
 
     <div class="home-activities">
       <h1 class="main-title">Programação</h1>
+
       <div class="days-container">
         <button id="button-weekday-1" class="button-weekday" onclick="FilterActivities(1)">
           <img src="/static/assets/home/button.svg" />
@@ -60,6 +61,31 @@
           <p>Sexta</p>
         </button>
       </div>
+
+      <div class="activity-container">
+        <div id="home-main-activity" class="activity">
+          <span id="activity-type" class="type">MiniCursos</span>
+          <img class="back" src="/static/assets/home/bottom_container.svg" />
+          <img class="fore" src="/static/assets/home/container.svg" />
+            <div class="details">
+              <div class="speaker-container">
+                <div class="perfil">
+                  <img class="outer" src="/static/assets/home/image_container.svg" />
+                  <img class="inner" src="/static/assets/home/image_container.svg" />
+                  <img class="placeholder" src="/static/assets/placeholder.jpg" />
+                </div>
+                <p id="activity-speaker" class="truncate speaker"></p>
+              </div>
+              <div class="vertical-line"></div>
+              <div class="info">
+                <p id="activity-topic" class="topic truncate"></p>
+                <p id="activity-time" class="time truncate"></p>
+                <p id="activity-description" class="description truncate"></p>
+              </div>
+            </div>
+        </div>
+      </div>
+
     </div>
     
     <footer>
@@ -67,12 +93,25 @@
     </footer>
 
     <script>
+      const activityType = document.getElementById('activity-type')
+      const activitySpeaker = document.getElementById('activity-speaker')
+      const activityTopic = document.getElementById('activity-topic')
+      const activityTime = document.getElementById('activity-time')
+      const activityDescription = document.getElementById('activity-description')
       let lastWeekDayButtonSelected = null
 
+      // Filtra cada uma das atividades por dia
+      const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
+        .push(activity), acc), {})
+
       const FilterActivities = (day) => {
-        currentDay = day
-        currentIndex = 0
-        HighlightButton(day)
+        if(activities[day])
+        {
+          currentDay = day
+          currentIndex = 0
+          RefreshActivity()
+          HighlightButton(day)
+        }
       }
 
       const HighlightButton = (day) => {
@@ -81,7 +120,17 @@
         lastWeekDayButtonSelected.classList.add('selected')
       }
 
-      FilterActivities("1")
+      const RefreshActivity = () => {
+        const activity = activities[currentDay][currentIndex]
+
+        activityType.innerText = activity.Activity_type === "MC" ? "MiniCursos" : "Palestras"
+        activitySpeaker.innerText = activity.Speaker
+        activityTopic.innerText = activity.Topic
+        activityTime.innerText = activity.Time.substring(0, 5)
+        activityDescription.innerText = activity.Description
+      }
+
+      FilterActivities(1)
     </script>
   </body>
 </html>
