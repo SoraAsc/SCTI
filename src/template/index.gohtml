@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="header_style_form"></div>
-    <!-- Your content here -->
+    <!-- Your content her -->
     <header>
       <div class="header-nav">
         <h2 class="nav-title-pixel">scti</h2>
@@ -19,21 +19,69 @@
           <nav>Sobre</nav>
           <nav>Programação</nav>
           <nav>Contato</nav>
-          <nav>Inscreva-se</nav>
+          <button class="pink-pixel-button" id="last-nav">
+            <img src="/static/assets/home/button.svg" />
+            <p>Inscreva-se</p>
+          </button>
         </div>
       </div>
-      <div class="header-home">
-          <img class="header-logo" src="/static/assets/welcome_player.png">
-      </div>
+          <div class="welcome-container">
+            <h1 class="main-title">WELCOME</h1>
+            <h1 class="main-title">PLAYER1</h1>
+
+          </div>
+
     </header>
+
     <div class="home-top">
       <div class="top-info">
         <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
         <p class="caption">Uma semana inteira de conteúdos, que acontecerá entre os dias 8 a 13 de novembro, sendo transmitido por uma plataforma privada no Discord!</p>
       </div>
-      <button class="pink-pixel-button">
-        start
+      <button class="pink-pixel-button" id="start-button">
+        <img src="/static/assets/home/button.svg"/>
+        <p>start</p>
       </button>
+    </div>
+
+    <div id="main-infos">
+      <div id="about">
+        <div class="main-container-text">
+          <h2>Sobre o Evento</h2>
+          <p>A 11 Semana de Ciência da Computação  e Tecnologia da Informação SCTI (2024) tem como principais
+            objetivos o aprimoramento técnico-científico dos participantes e difusão das novas tecnologias na área de
+            Computação e Sistemas de Informação. O maior objetivo do evento é expor a seus participantes a dinâmica
+            existente no mundo empresarial da computação ou que necessitam desta área em seu meio
+          </p>
+        </div>
+      </div>
+
+      <div id="local">
+        <img src="/static/assets/home/hourglass.svg" alt="">
+        <div class="main-container-text">
+          <h2>período e local de realização</h2>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga corrupti, expedita atque animi in exercitationem consequatur sequi adipisci, dolore, officia tempore quas perferendis porro fugiat. Sit nihil animi dolore dicta?</p>
+        </div>
+      </div>
+
+      <div id="sponsor">
+        <div class="main-container-text">
+          <h2>seja um apoiador</h2>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum officia iste nisi, totam maxime ullam id repellat temporibus ipsum veritatis molestiae inventore reprehenderit praesentium iure fugit sequi suscipit explicabo. Ex.</p>
+          <div id="sponsors-buttons-container">
+            <button>
+              <img src="/static/assets/home/button.svg" />
+              <p>saiba mais</p>
+            </button>
+            <button>
+              <img src="/static/assets/home/button.svg" />
+              <p>contato</p>
+            </button>
+          </div>
+        </div>
+
+        <img src="/static/assets/home/hands.svg" alt="">
+      </div>
     </div>
 
     <div class="home-activities">
@@ -119,7 +167,7 @@
       {{ end }}
       {{ end }}
     </div>
-    
+
     <div class="MiniCursos">
       {{ range .Activities }}
       {{ if eq .Activity_type "MC" }}
@@ -168,7 +216,7 @@
       // Filtra cada uma das atividades por dia
       let activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
         .push(activity), acc), {})
-      
+
       const FilterActivities = (day) => {
         if(activities[day])
         {
