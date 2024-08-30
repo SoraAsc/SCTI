@@ -20,7 +20,7 @@ header .header-nav {
 }
 
 header .header-nav .nav-title-pixel {
-	font-size: 26px;
+	font-size: 1.6em;
 	font-family: 'Joystix';
 	margin-left: 15px;
 }
@@ -37,39 +37,111 @@ header .header-nav .navs-container {
 }
 
 header .header-nav .navs-container nav {
-	font-size: 18px;
+	font-size: 1.3em;
 	cursor: pointer;
 }
 
-header .header-nav .navs-container nav:last-child {
-	cursor: pointer;
-	height: 36px;
-	line-height: 34px;
-	font-size: 18px;
-	background-color: #FF00C7;
-	font-family: "Joystix";
-	border-radius: 14px;
-	color: #eee;
-	transition: .4s;
+#last-nav{
+	width: auto;
+	height: auto;
 }
 
-header .header-nav .navs-container nav:last-child:hover {
-	letter-spacing: 1px;
-	background-color: #030932;
-	color: #FF00C7;
+#last-nav img{
+	width: 140px;
+	height: 80px;
+}
+#last-nav p{
+	font-size: 1.3em;
 }
 
-header .header-home {
+.pink-pixel-button {
+	width: auto;
+	position: relative;
+  margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	transition: .5s;
+}
+
+.pink-pixel-button img{
 	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	cursor: pointer;
+	fill: #c8ccff;
+	color: #c8ccff;
+	transition: all 0.5s;
+	filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg) brightness(98%) contrast(97%);
 }
 
-header .header-home .header-logo {
-	width: 383px;
-	height: 174px;
+
+.pink-pixel-button:hover img {
+	opacity: 0;
 }
+
+.pink-pixel-button p{
+	color: white;
+	position: absolute;
+	font-size: 1em;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	top: calc(50% - 1.5px);
+	font-family: "Joystix";
+	pointer-events: none;
+	transition: all 0.5s;
+	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+.pink-pixel-button:hover p{
+color: #FF00C7;
+letter-spacing: 1px;
+}
+
+
+header .welcome-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+header .main-title {
+	text-align: center;
+	font-size: 5em;
+  font-family: "joystix";
+	-webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+	filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+	background: linear-gradient(to bottom, white 56%, #FEB0DC 56%);
+	background-clip: text;
+	padding: 0.5em 0 0.5em 0;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+header .main-title:last-child {
+	text-align: center;
+	font-size: 5em;
+  font-family: "joystix";
+	-webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+	filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+	background: linear-gradient(to bottom, white 56%, #FEB0DC 56%);
+	background-clip: text;
+	padding: 0.5em 0 0.5em 0;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-top: -80px;
+}
+
+ #start-button img{
+	width: 140px;
+	height: 70px;
+}
+ #start-button p{
+	font-size: 2em;
+}
+
+
+
+
 
 /* Estilização Home */
 
@@ -84,32 +156,117 @@ header .header-home .header-logo {
 
 .home-top h1 {
 	color: #fff;
-	font-size: 30px;
+	font-size: 3em;
 	font-weight: 600;
 	line-height: 64px;
 }
 
 .caption {
-	font-size: 18px;
+	font-size: 1.5em;
 }
 
-.pink-pixel-button {
-	background-color: #FF00C7;
-	font-family: "Joystix";
-	outline: none;
+
+#sponsor .main-container-text #sponsors-buttons-container button:hover img {
+	opacity: 0;
+}
+
+#main-infos{
+	display: flex;
+	margin: 0 auto;
+	width: 80%;
+	flex-direction: column;
+	gap: 60px;
+	align-items: center;
+}
+
+#main-infos #about{
+	width: 100%;
+	text-align: start;
+}
+
+.main-container-text{
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+}
+
+.main-container-text h2{
+	font-size: 2em;
+  font-family: "joystix";
+	-webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+	filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+	background: linear-gradient(to bottom, white 53%, #FEB0DC 53%);
+	background-clip: text;
+	padding: 0.5em 0 0.5em 0;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.main-container-text p {
+	font-size: 1.3em;
+	opacity: .8;
+}
+
+#local{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#sponsor{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#sponsor .main-container-text #sponsors-buttons-container{
+	margin-top: 12px;
+	width: 40%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#sponsor .main-container-text #sponsors-buttons-container button{
+	width: 7em;
+	position: relative;
+  margin: 0;
+	padding: 0;
 	border: none;
-	border-radius: 14px;
-	font-size: 34px;
-	color: #eee;
-	cursor: pointer;
-	transition: .4s;
+	background: none;
 }
 
-.pink-pixel-button:hover {
-	letter-spacing: 2px;
-	background-color: #030932;
-	color: #FF00C7;
+#sponsor .main-container-text #sponsors-buttons-container button img{
+	width: 100%;
+	cursor: pointer;
+	fill: #c8ccff;
+	color: #c8ccff;
+	transition: all 0.5s;
+	filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg) brightness(98%) contrast(97%);
 }
+
+#sponsor .main-container-text #sponsors-buttons-container button:hover img {
+	opacity: 0;
+}
+
+#sponsor .main-container-text #sponsors-buttons-container button p{
+	position: absolute;
+	left: 50%;
+	color: white;
+	font-size: 1em;
+	transform: translate(-50%, -50%);
+	top: calc(50% - 1.5px);
+	font-family: "Joystix";
+	pointer-events: none;
+	transition: all 0.5s;
+	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+#sponsor .main-container-text #sponsors-buttons-container button:hover p{
+color: #FF00C7;
+letter-spacing: 1px;
+}
+
 
 /* Estilização Programação */
 
@@ -121,10 +278,10 @@ header .header-home .header-logo {
 
 .home-activities .main-title {
 	font-size: 4em;
-    font-family: "joystix";
-	-webkit-text-stroke: 0.06px rgba(0, 0, 0, 1); 
+  font-family: "joystix";
+	-webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
 	filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
-	background: linear-gradient(to bottom, white 56%, #CFCFCF 56%);
+	background: linear-gradient(to bottom, white 56%, #FEB0DC 56%);
 	background-clip: text;
 	padding: 0.5em 0 0.5em 0;
 	-webkit-background-clip: text;
@@ -142,7 +299,7 @@ header .header-home .header-logo {
 .home-activities .days-container .button-weekday {
 	width: 7em;
 	position: relative;
-    margin: 0;
+  margin: 0;
 	padding: 0;
 	border: none;
 	background: none;
@@ -159,6 +316,7 @@ header .header-home .header-logo {
 
 .home-activities .days-container .button-weekday p {
 	position: absolute;
+	cursor: pointer;
 	left: 50%;
 	color: black;
 	font-size: 1em;
@@ -168,6 +326,7 @@ header .header-home .header-logo {
 	pointer-events: none;
 	transition: all 0.5s;
 	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+	z-index: 2;
 }
 
 .home-activities .days-container .button-weekday.selected img,
