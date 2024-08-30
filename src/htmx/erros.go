@@ -5,7 +5,7 @@ import (
 )
 
 func Failure(w http.ResponseWriter, message string, err error) {
-  w.Header().Set("Content-Type", "text/html")
+  w.Header().Set("Content-Type", "text/html; charset=utf-8")
   w.Write([]byte(`
   <div>
   ` + message + `
@@ -15,7 +15,7 @@ func Failure(w http.ResponseWriter, message string, err error) {
 }
 
 func Success(w http.ResponseWriter, message string) {
-  w.Header().Set("Content-Type", "text/html")
+  w.Header().Set("Content-Type", "text/html; charset=utf-8")
   w.Write([]byte(`
   <div>
   ` + message + `
