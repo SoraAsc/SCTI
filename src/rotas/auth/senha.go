@@ -1,13 +1,14 @@
 package auth
 
 import (
-  "SCTI/fileserver"
   DB "SCTI/database"
   HTMX "SCTI/htmx"
+  "SCTI/fileserver"
   "fmt"
-  "os"
-  "net/url"
   "net/http"
+  "net/url"
+  "os"
+
   gomail "gopkg.in/mail.v2"
 )
 
@@ -30,41 +31,40 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
   verificationLink := fmt.Sprintf("http://localhost:8080/trocar?email=%s", encodedEmail)
 
   htmlBody := `
-    <!DOCTYPE html>
-    <html>
+  <!DOCTYPE html>
+  <html>
     <head>
-        <style>
-            .button {
-                display: inline-block;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                text-align: center;
-                text-decoration: none;
-                outline: none;
-                color: #ffffff;
-                background-color: #4CAF50;
-                border: none;
-                border-radius: 15px;
-                box-shadow: 0 9px #999;
-            }
-            .button:hover {background-color: #3e8e41}
-            .button:active {
-                background-color: #3e8e41;
-                box-shadow: 0 5px #666;
-                transform: translateY(4px);
-            }
-        </style>
+      <style>
+        a {
+          display: inline-block;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          outline: none;
+          color: #ffffff !important;
+          background-color: #FF00C7 !important;
+          border: none;
+          border-radius: 15px;
+          box-shadow: 0 9px #999;
+        }
+        a:hover { filter: brightness(1.2) !important;}
+        a:active {
+          background-color: #FF00C7;
+          box-shadow: 0 5px #666;
+          transform: translateY(4px);
+        }
+      </style>
     </head>
     <body>
-        <p>Clique no botão abaixo para trocar sua senha:</p>
-        <a href="` + verificationLink + `" class="button">Trocar Senha</a>
+      <p>Clique no botão abaixo para trocar sua senha:</p>
+      <a href="` + verificationLink + `">Trocar Senha</a>
     </body>
-    </html>
+  </html>
   `
 
   plainBody := "Clique no botão abaixo para trocar sua senha:\n" + verificationLink
-
 
   msg := gomail.NewMessage()
   msg.SetHeader("From", from)
@@ -79,6 +79,5 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
     HTMX.Failure(w, "Falha ao enviar email: ", err)
     return
   }
-
   HTMX.Success(w, "Email enviado com sucesso")
 }
