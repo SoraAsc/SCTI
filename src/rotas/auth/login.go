@@ -2,22 +2,13 @@ package auth
 
 import (
   DB "SCTI/database"
+  HTMX "SCTI/htmx"
   "SCTI/fileserver"
   "encoding/json"
   "net/http"
   "time"
   "fmt"
 )
-
-func LoginFailed(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Falha no Login:
-    ` + err.Error() + `
-      </div>
-  `))
-}
 
 func GetLogin(w http.ResponseWriter, r *http.Request) {
   var t = fileserver.Execute("template/login.gohtml")
@@ -29,12 +20,12 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
   if r.Header.Get("Content-type") == "application/json" {
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
-      LoginFailed(w, err)
+      HTMX.Failure(w, "Falha no login: ", err)
       return
     }
   } else {
     if err := r.ParseForm(); err != nil {
-      LoginFailed(w, err)
+      HTMX.Failure(w, "Falha no login: ", err)
       return
     }
     user.Email = r.FormValue("Email")
@@ -43,12 +34,12 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
   login, uuid, err := VerifyLogin(user, w)
 
   if err != nil {
-    LoginFailed(w, err)
+    HTMX.Failure(w, "Falha no login: ", err)
     return
   }
 
   if !login {
-    LoginFailed(w, fmt.Errorf("Somehow login failed"))
+    HTMX.Failure(w, "Falha no login: ", fmt.Errorf("Erro desconhecido"))
     return
   }
 

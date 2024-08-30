@@ -6,6 +6,7 @@ import (
   "net/http"
   "net/url"
   DB "SCTI/database"
+  HTMX "SCTI/htmx"
 )
 
 type TrocarData struct {
@@ -42,19 +43,8 @@ func PostTrocar(w http.ResponseWriter, r *http.Request) {
 
   err := DB.ChangeUserPassword(uuid, senha)
   if err != nil {
-    w.Header().Set("Content-Type", "text/html")
-      w.Write([]byte(`
-        <div class="red">
-          <p>Não foi possivel trocar a senha</p>
-          <p>` + err.Error() + `</p>
-        </div>
-      `))
+    HTMX.Failure(w, "Não foi possível trocar a senha: ", err)
     return
   }
-  w.Header().Set("Content-Type", "text/html")
-    w.Write([]byte(`
-      <div class="red">
-        <p>Senha trocada com sucesso</p>
-      </div>
-    `))
+  HTMX.Success(w, "Senha trocada com sucesso")
 }

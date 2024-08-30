@@ -2,6 +2,7 @@ package dashboard
 
 import (
   DB "SCTI/database"
+  HTMX "SCTI/htmx"
   "net/http"
   "net/url"
   "fmt"
@@ -9,15 +10,6 @@ import (
 
   gomail "gopkg.in/mail.v2"
 )
-
-func SentError(w http.ResponseWriter, err error) {
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="failure">
-        Falha ao enviar o email de verificação: ` + err.Error() + `
-    </div>
-  `))
-}
 
 func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
@@ -35,7 +27,7 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   email := DB.GetEmail(cookie.Value)
   code, err := DB.GetCode(cookie.Value)
   if err != nil {
-    SentError(w, err)
+    HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
     return
   }
 
@@ -83,7 +75,6 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 
   plainBody := "Clique aqui para verificar seu email:\n" + verificationLink
 
-
   msg := gomail.NewMessage()
   msg.SetHeader("From", from)
   msg.SetHeader("To", email)
@@ -94,14 +85,8 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
 
   if err := dialer.DialAndSend(msg); err != nil {
-    SentError(w, err)
+    HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
     return
   }
-
-  w.Header().Set("Content-Type", "text/html")
-  w.Write([]byte(`
-      <div class="success">
-          Email de verificação enviado com sucesso!!
-      </div>
-  `))
+  HTMX.Success(w, "Email de verificação enviado com sucesso!")
 }
