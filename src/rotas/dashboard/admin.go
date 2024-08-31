@@ -3,7 +3,9 @@ package dashboard
 import (
   DB "SCTI/database"
   HTMX "SCTI/htmx"
+	"time"
   "fmt"
+	"os"
   "net/http"
   "strconv"
 )
@@ -61,6 +63,15 @@ func PostActivity(w http.ResponseWriter, r* http.Request) {
     return
   }
 
+	eventStart := os.Getenv("SCTI_START_DATE")
+	hourMin := r.FormValue("time") + ":00"
+	day, _ := strconv.Atoi(r.FormValue("day"))
+
+	eventStartDate, _ := time.Parse(time.DateOnly, eventStart) 
+	activityHour, _ := time.Parse(time.TimeOnly, hourMin)
+	activityTime := eventStartDate.AddDate(0, 0, day - 1)
+	activityTime = activityTime.Add((time.Hour * time.Duration(activityHour.Hour())) + (time.Hour * 3))
+
   var a DB.Activity
   a.Spots, _ = strconv.Atoi(r.FormValue("spots"))
   a.Activity_type = r.FormValue("type")
@@ -68,8 +79,9 @@ func PostActivity(w http.ResponseWriter, r* http.Request) {
   a.Speaker = r.FormValue("speaker")
   a.Topic = r.FormValue("topic")
   a.Description = r.FormValue("description")
-  a.Time = r.FormValue("time")
-  a.Day, _ = strconv.Atoi(r.FormValue("day"))
+  a.Time = hourMin
+  a.Day = day
+	a.Timestamp = activityTime.Unix()
 
   _, err := DB.CreateActivity(a)
   if err != nil {
