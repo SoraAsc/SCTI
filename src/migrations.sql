@@ -35,7 +35,8 @@ CREATE TABLE activities (
   topic VARCHAR(255) NOT NULL,
   description VARCHAR(1000),
   time VARCHAR(255) NOT NULL,
-  day INT NOT NULL
+  day INT NOT NULL,
+	time_stamp BIGINT NOT NULL
 );
 
 CREATE TABLE registrations (

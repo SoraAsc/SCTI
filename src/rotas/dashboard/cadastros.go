@@ -2,6 +2,7 @@ package dashboard
 
 import (
   "fmt"
+	"time"
   "strconv"
   "net/http"
   DB "SCTI/database"
@@ -21,6 +22,7 @@ func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
+	current_time := time.Now().Unix()
   cookie, err := r.Cookie("accessToken")
   if err != nil {
     // fmt.Println("Error Getting cookie:", err)
@@ -50,6 +52,17 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+	timestamp, err := strconv.ParseInt(r.FormValue("timestamp"), 10, 64)
+	if err != nil {
+    HTMX.Failure(w, "Falha ao se cadastrar: ", err)
+    return
+  }
+
+  if timestamp < current_time {
+    HTMX.Failure(w, "Falha ao se cadastrar: ", fmt.Errorf("O tempo da atividade foi ultrapassado"))
+    return
+  }
+
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
     http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
@@ -67,6 +80,7 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 
 
 func PostDescadastros(w http.ResponseWriter, r *http.Request) {
+	current_time := time.Now().Unix()
   cookie, err := r.Cookie("accessToken")
   if err != nil {
     fmt.Println("Error Getting cookie:", err)
@@ -77,6 +91,17 @@ func PostDescadastros(w http.ResponseWriter, r *http.Request) {
   if cookie.Value == "-1" {
     fmt.Println("Invalid accessToken")
     http.Redirect(w, r, "/login", http.StatusSeeOther)
+  }
+
+	timestamp, err := strconv.ParseInt(r.FormValue("timestamp"), 10, 64)
+	if err != nil {
+    HTMX.Failure(w, "Falha ao sair: ", err)
+    return
+  }
+
+  if timestamp < current_time {
+    HTMX.Failure(w, "Falha ao sair: ", fmt.Errorf("O tempo da atividade foi ultrapassado"))
+    return
   }
 
   activityID, err := strconv.Atoi(r.FormValue("id"))
@@ -101,9 +126,10 @@ func RemoveRegisteredActivities(allActivities, registeredActivities []DB.Activit
   for _, activity := range registeredActivities {
     registeredMap[activity.Activity_id] = true
   }
+
   filteredActivities := make([]DB.Activity, 0, len(allActivities))
   for _, activity := range allActivities {
-    if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
+		if !registeredMap[activity.Activity_id] && activity.Activity_type == "MC" {
       filteredActivities = append(filteredActivities, activity)
     }
   }
