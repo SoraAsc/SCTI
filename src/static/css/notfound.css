@@ -1,0 +1,37 @@
+.not-found{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.button-submmit{
+    transition: .5s;
+    width: 300px;
+    height: 70px;
+}
+
+span{
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.button-submmit p{
+	color: white;
+	position: absolute;
+	font-size: 1em;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	top: calc(51%);
+	font-family: "Joystix";
+	pointer-events: none;
+	transition: all 0.5s;
+	filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+
+
+
