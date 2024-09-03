@@ -548,6 +548,7 @@ header .main-title:last-child {
   flex-direction: column;
   gap: 10px;
 	align-items: center;
+  margin-bottom: 60px;
 }
 
 .sponsors .main-title{
@@ -580,4 +581,46 @@ header .main-title:last-child {
 .sponsors-type-header h3{
 	font-family: "Joystix";
 	font-size: 1.5em;
+}
+
+.sponsors-images-container{
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sponsors-images-container img{
+  width: 140px;
+  height: 140px;
+}
+
+.benefits{
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.benefits h2{
+  font-family: "Joystix";
+  font-size: 1.5em;
+}
+
+.benefits p{
+  font-size: 1.3em;
+}
+
+.benefits li{
+  font-size: 1.2em;
+}
+
+.benefits ul{
+  list-style: circle;
+  margin-left: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
