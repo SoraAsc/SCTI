@@ -31,6 +31,17 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
     user.Email = r.FormValue("Email")
     user.Password = r.FormValue("Senha")
   }
+
+  if user.Email == "" {
+    HTMX.Failure(w, "Erro ao entrar: ", fmt.Errorf("Campo do email está vazio"))
+    return
+  }
+
+  if user.Password == "" {
+    HTMX.Failure(w, "Erro ao entrar: ", fmt.Errorf("Campo da senha está vazio"))
+    return
+  }
+
   login, uuid, err := VerifyLogin(user, w)
 
   if err != nil {
