@@ -550,26 +550,6 @@ header .main-title:last-child {
 	align-items: center;
 }
 
-#meet-sponsors {
-	text-align: center;
-  height: 100px;
-  width: 100%;
-  place-items: center;
-  vertical-align: middle;
-  background-color: rgba(255, 0, 199, 0.7);
-  padding: 1.5em 0;
-  color: #fff !important;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
-	margin-bottom: 100px;
-}
-
-#meet-sponsors p{
-  font-size: 3em;
-	line-height: 55px;
-	font-family: "Joystix";
-	opacity: .9;
-}
-
 .sponsors .main-title{
 	font-size: 4em;
   font-family: "joystix";
