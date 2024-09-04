@@ -112,3 +112,96 @@ body {
   color: #ff00c7;
   letter-spacing: 1px;
 }
+
+
+.sponsors {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+	align-items: center;
+  margin-bottom: 60px;
+}
+
+.sponsors .main-title{
+	font-size: 4em;
+  font-family: "joystix";
+  -webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+  filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+  background: linear-gradient(to bottom, white 56%, #feb0dc 56%);
+  background-clip: text;
+  padding: 0.5em 0 0.5em 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sponsors .sponsors-image-text-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.sponsors-type-header{
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0 auto;
+	gap: 20px;
+}
+
+.sponsors-type-header h3{
+	font-family: "Joystix";
+	font-size: 1.5em;
+}
+
+.sponsors-images-container{
+  width: 75%;
+  margin: 60px auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sponsors-images-container img{
+  width: 140px;
+  height: 140px;
+}
+
+.benefits{
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.benefits h2{
+  font-family: "Joystix";
+  font-size: 1.5em;
+}
+
+.benefits p{
+  font-size: 1.3em;
+  margin-bottom: 12px;
+}
+
+.benefits li{
+  font-size: 1.2em;
+}
+
+.benefits ul{
+  list-style: disc;
+  margin-left: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#become-sponsor-button {
+  width: 200px;
+  margin-bottom: 60px;
+}
+
+#become-sponsor-button p {
+  font-size: 1.4em;
+}
