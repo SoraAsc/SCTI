@@ -130,12 +130,13 @@ header .main-title:last-child {
   margin-top: -80px;
 }
 
-#start-button img {
-  width: 140px;
-  height: 70px;
+#start-button{
+  width: 230px;
+  margin: 4em 0;
 }
+
 #start-button p {
-  font-size: 2em;
+  font-size: 2.5em;
 }
 
 /* Estilização Home */
@@ -545,7 +546,7 @@ header .main-title:last-child {
 .sponsors {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 70px;
 	align-items: center;
   margin-bottom: 60px;
 }
@@ -584,7 +585,7 @@ header .main-title:last-child {
 
 .sponsors-images-container{
   width: 75%;
-  margin: 0 auto;
+  margin: 60px auto;
   display: flex;
   justify-content: space-around;
 }
@@ -609,6 +610,7 @@ header .main-title:last-child {
 
 .benefits p{
   font-size: 1.3em;
+  margin-bottom: 12px;
 }
 
 .benefits li{
@@ -616,10 +618,19 @@ header .main-title:last-child {
 }
 
 .benefits ul{
-  list-style: circle;
+  list-style: disc;
   margin-left: 1.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+}
+
+#become-sponsor-button {
+  width: 200px;
+  margin-bottom: 60px;
+}
+
+#become-sponsor-button p {
+  font-size: 1.4em;
 }
