@@ -2,11 +2,13 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 
 	_ "github.com/lib/pq"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var DB *sql.DB
@@ -78,10 +80,10 @@ func CreateUser(Email string, hash string, UUIDString string, name string) error
 
 func UserExists(email string) (bool, error) {
 	query := `
-    SELECT EXISTS(
-        SELECT 1 FROM users WHERE email = $1
-    )
-    `
+  SELECT EXISTS(
+  SELECT 1 FROM users WHERE email = $1
+  )
+  `
 
 	var exists bool
 	err := DB.QueryRow(query, email).Scan(&exists)
@@ -94,11 +96,11 @@ func UserExists(email string) (bool, error) {
 
 func GetHash(email string) string {
 	query := `
-    SELECT passwd.passwd
-    FROM users
-    JOIN passwd ON users.id = passwd.id
-    WHERE users.email = $1
-    `
+  SELECT passwd.passwd
+  FROM users
+  JOIN passwd ON users.id = passwd.id
+  WHERE users.email = $1
+  `
 
 	var hash string
 	err := DB.QueryRow(query, email).Scan(&hash)
@@ -116,10 +118,10 @@ func GetHash(email string) string {
 
 func GetId(uuid string) (int, error) {
 	query := `
-    SELECT id
-    FROM users
-    WHERE users.uuid = $1
-    `
+  SELECT id
+  FROM users
+  WHERE users.uuid = $1
+  `
 
 	var id int
 	err := DB.QueryRow(query, uuid).Scan(&id)
@@ -135,10 +137,10 @@ func GetId(uuid string) (int, error) {
 
 func GetCode(uuid string) (string, error) {
 	query := `
-    SELECT verificationCode
-    FROM users
-    WHERE users.uuid = $1
-    `
+  SELECT verificationCode
+  FROM users
+  WHERE users.uuid = $1
+  `
 
 	var code string
 	err := DB.QueryRow(query, uuid).Scan(&code)
@@ -154,10 +156,10 @@ func GetCode(uuid string) (string, error) {
 
 func GetCodeByEmail(email string) (string, error) {
 	query := `
-    SELECT verificationCode
-    FROM users
-    WHERE users.email = $1
-    `
+  SELECT verificationCode
+  FROM users
+  WHERE users.email = $1
+  `
 
 	var code string
 	err := DB.QueryRow(query, email).Scan(&code)
@@ -173,10 +175,10 @@ func GetCodeByEmail(email string) (string, error) {
 
 func GetUUID(email string) string {
 	query := `
-    SELECT uuid
-    FROM users
-    WHERE users.email = $1
-    `
+  SELECT uuid
+  FROM users
+  WHERE users.email = $1
+  `
 
 	var uuid string
 	err := DB.QueryRow(query, email).Scan(&uuid)
@@ -194,10 +196,10 @@ func GetUUID(email string) string {
 
 func GetEmail(uuid string) string {
 	query := `
-    SELECT email
-    FROM users
-    WHERE users.uuid = $1
-    `
+  SELECT email
+  FROM users
+  WHERE users.uuid = $1
+  `
 
 	var email string
 	err := DB.QueryRow(query, uuid).Scan(&uuid)
@@ -215,10 +217,10 @@ func GetEmail(uuid string) string {
 
 func GetStanding(email string) bool {
 	query := `
-    SELECT isVerified
-    FROM users
-    WHERE users.email = $1
-    `
+  SELECT isVerified
+  FROM users
+  WHERE users.email = $1
+  `
 
 	var accStatus bool
 	err := DB.QueryRow(query, email).Scan(&accStatus)
@@ -263,10 +265,10 @@ func SetStanding(uuid string, standing bool) error {
 
 func GetAdmin(uuid string) bool {
 	query := `
-    SELECT isAdmin
-    FROM users
-    WHERE users.uuid = $1
-    `
+  SELECT isAdmin
+  FROM users
+  WHERE users.uuid = $1
+  `
 
 	var admStatus bool
 	err := DB.QueryRow(query, uuid).Scan(&admStatus)
@@ -297,14 +299,182 @@ func SetAdmin(uuid string, admStatus bool) error {
 	_, err = tx.Exec(query, admStatus, uuid)
 	if err != nil {
 		tx.Rollback()
-		return fmt.Errorf("não foi possível alterar o estado de administrador do usuário: %v", err)
+		return fmt.Errorf("Usuário inexistente: %v", err)
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return fmt.Errorf("não foi possível confirmar a transação de alterar o estado de administrador: %v", err)
+		return fmt.Errorf("não foi possível confirmar a transação: %v", err)
 	}
 
-	fmt.Println("Estado de administrador do usuário alterado")
 	return nil
+}
+
+func DeleteUser(userUUID string) error {
+	tx, err := DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	query := `
+  SELECT id FROM users
+  WHERE uuid = $1
+  `
+
+	var userID int
+	err = tx.QueryRow(query, userUUID).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return errors.New("usuário não encontrado")
+		}
+		return err
+	}
+
+	query = `
+  DELETE FROM credits
+  WHERE purchase_id IN(
+  SELECT purchase_id
+  FROM purchases
+  WHERE user_id = $1
+  )
+  `
+
+	_, err = tx.Exec(query, userUUID)
+	if err != nil {
+		return err
+	}
+
+	query = `
+  DELETE FROM purchases
+  WHERE user_id = $1
+  `
+
+	_, err = tx.Exec(query, userUUID)
+	if err != nil {
+		return err
+	}
+
+	query = `
+  DELETE FROM registrations
+  WHERE user_id = $1
+  `
+
+	_, err = tx.Exec(query, userUUID)
+	if err != nil {
+		return err
+	}
+
+	query = `
+  DELETE FROM passwd
+  WHERE id = $1
+  `
+
+	_, err = tx.Exec(query, userID)
+	if err != nil {
+		return err
+	}
+
+	query = `
+  DELETE FROM users
+  WHERE uuid = $1
+  `
+
+	_, err = tx.Exec(query, userUUID)
+	if err != nil {
+		return err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ChangeUserPassword(userUUID string, newPassword string) error {
+	tx, err := DB.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to start transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	var userID int
+	err = tx.QueryRow("SELECT id FROM users WHERE uuid = $1", userUUID).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("no user found with UUID: %s", userUUID)
+		}
+		return fmt.Errorf("failed to fetch user: %v", err)
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("failed to hash password: %v", err)
+	}
+
+	_, err = tx.Exec("UPDATE passwd SET passwd = $1 WHERE id = $2", string(hashedPassword), userID)
+	if err != nil {
+		return fmt.Errorf("failed to update password: %v", err)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
+	}
+
+	return nil
+}
+
+func MarkAsPaid(email string) error {
+	tx, err := DB.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to start transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	query := `
+  UPDATE users
+  SET isPaid = TRUE
+  WHERE email = $1
+  `
+
+	result, err := tx.Exec(query, email)
+	if err != nil {
+		return fmt.Errorf("failed to update user payment status: %v", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %v", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("no user found with email: %s", email)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
+	}
+
+	return nil
+}
+
+func IsUserPaid(uuid string) (bool, error) {
+	var isPaid bool
+
+	query := `
+  SELECT isPaid
+  FROM users
+  WHERE uuid = $1
+  `
+	err := DB.QueryRow(query, uuid).Scan(&isPaid)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, fmt.Errorf("no user found with UUID: %s", uuid)
+		}
+		return false, fmt.Errorf("failed to fetch user payment status: %v", err)
+	}
+
+	return isPaid, nil
 }
