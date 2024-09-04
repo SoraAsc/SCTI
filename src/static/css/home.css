@@ -139,10 +139,6 @@ header .main-title:last-child {
 	font-size: 2em;
 }
 
-
-
-
-
 /* Estilização Home */
 
 .home-top {
@@ -424,13 +420,6 @@ letter-spacing: 1px;
 	font-family: "Joystix";
 }
 
-.home-activities .activity-container .activity .details .vertical-line {
-	height: 100%;
-	width: 4px;
-	background-color: rgba(26, 30, 83, 1);
-	border: 2px solid rgba(255, 255, 255, 1);
-}
-
 .home-activities .activity-container .activity .details .speaker-container {
 	width: 30%;
 	display: flex;
@@ -505,7 +494,93 @@ letter-spacing: 1px;
     overflow: hidden;
 }
 
+/* Estilização Fale Conosco */
+
+.home-more-info {
+	position: relative;
+	width: fit-content;
+	margin: 5em auto 12em;
+}
+
+.home-more-info .title {
+	position: absolute;
+    color: black;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "joystix";
+    font-size: 1.2em;
+    z-index: 1;
+    margin-top: 1em;
+}
+
+
+.home-more-info .outer {
+	filter: invert(5%) sepia(93%) saturate(3608%) hue-rotate(238deg) brightness(98%) contrast(90%);
+}
+
+.home-more-info .inner {
+	position: absolute;
+	left: 49.8%;
+	top: 48.5%;
+	transform: translate(-50%, -50%);
+	width: 96%;
+	filter: invert(79%) sepia(8%) saturate(1207%) hue-rotate(199deg) brightness(100%) contrast(104%);
+}
+
+.home-more-info .details {
+	position: absolute;
+	
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    column-gap: 0.5em;
+    height: 50%;
+    width: 100%;
+    top: 25%;
+    color: black;
+}
+
+.home-more-info .details ul {
+	list-style: square;
+	font-size: 0.6em;
+}
+
+.home-more-info .details li {
+	font-family: "Joystix";
+}
+
+.home-more-info .details li +  li {
+	margin-top: 1em;
+}
+
+.home-more-info .details .left {
+	width: 49%;
+	margin-left: 4em;
+}
+
+.home-more-info .details .right {
+	width: 49%;
+	margin-right: 4em;
+}
+
+.home-more-info .astronaut {
+	position: absolute;
+    top: 92%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Estilização Genêrico */
+
 .truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.details .vertical-line {
+	height: 100%;
+	width: 4px;
+	background-color: rgba(26, 30, 83, 1);
+	border: 2px solid rgba(255, 255, 255, 1);
 }
