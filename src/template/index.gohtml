@@ -12,19 +12,31 @@
   <body>
     <div class="header_style_form"></div>
     <!-- Your content her -->
-    <header>
-      <div class="header-nav">
-        <h2 class="nav-title-pixel">scti</h2>
-        <div class="navs-container">
-          <nav>Sobre</nav>
-          <nav>Programação</nav>
-          <nav>Contato</nav>
-          <button class="pink-pixel-button" id="last-nav">
-            <img src="/static/assets/home/button.svg" />
-            <p>Inscreva-se</p>
-          </button>
-        </div>
+    <div class="header-nav">
+      <h2 class="nav-title-pixel">scti</h2>
+      <div class="navs-container">
+        <nav>
+          <a href="/#about">
+            Sobre
+          </a>
+        </nav>
+        <nav>
+          <a href="/#sponsors-buttons-container">
+            Programação
+          </a>
+        </nav>
+        <nav>
+          <a href="/#contact">
+            Contato
+          </a>
+        </nav>
+        <button class="pink-pixel-button" id="last-nav">
+          <img src="/static/assets/home/button.svg" />
+          <p>Inscreva-se</p>
+        </button>
       </div>
+    </div>
+    <header>
           <div class="welcome-container">
             <h1 class="main-title">WELCOME</h1>
             <h1 class="main-title">PLAYER1</h1>
@@ -105,7 +117,7 @@
         </button>
       </div>
 
-      <div class="activity-container">
+      <div class="activity-container" id="programation">
         <img class="left-button disabled" id="left-navigation-button"
           src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
         <div class="activity">
@@ -134,7 +146,7 @@
       </div>
     </div>
 
-    <div class="sponsors">
+    <div class="sponsors" id="contact">
         <h1 class="main-title">patrocinadores</h1>
 
         <div class="sponsors-image-text-container">
