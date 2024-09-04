@@ -35,6 +35,21 @@ func PostSignup(w http.ResponseWriter, r *http.Request) {
     user.Password = r.FormValue("Senha")
   }
 
+  if name == "" {
+    HTMX.Failure(w, "Erro ao cadastrar: ", fmt.Errorf("Campo do nome está vazio"))
+    return
+  }
+
+  if user.Email == "" {
+    HTMX.Failure(w, "Erro ao cadastrar: ", fmt.Errorf("Campo do email está vazio"))
+    return
+  }
+
+  if user.Password == "" {
+    HTMX.Failure(w, "Erro ao cadastrar: ", fmt.Errorf("Campo da senha está vazio"))
+    return
+  }
+
   found, err := DB.UserExists(user.Email)
   if err != nil {
     HTMX.Failure(w, "Falha no signup: ", err)
