@@ -9,7 +9,7 @@ import (
 	"SCTI/rotas/home"
 	"SCTI/rotas/lncc"
 	"SCTI/rotas/loja"
-	patrocionadores "SCTI/rotas/patrocinadores"
+	"SCTI/rotas/patrocinadores"
 )
 
 func LoadRoutes(mux *http.ServeMux) {
@@ -20,5 +20,5 @@ func LoadRoutes(mux *http.ServeMux) {
 	home.RegisterRoutes(mux)
 	lncc.RegisterRoutes(mux)
 	loja.RegisterRoutes(mux)
-	patrocionadores.RegisterRoutes(mux)
+	patrocinadores.RegisterRoutes(mux)
 }
