@@ -521,10 +521,10 @@ letter-spacing: 1px;
 
 .home-more-info .inner {
 	position: absolute;
-	left: 49.8%;
-	top: 48.5%;
+	left: 50%;
+	top: 49%;
 	transform: translate(-50%, -50%);
-	width: 96%;
+	width: 97%;
 	filter: invert(79%) sepia(8%) saturate(1207%) hue-rotate(199deg) brightness(100%) contrast(104%);
 }
 
@@ -533,8 +533,7 @@ letter-spacing: 1px;
 	
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    column-gap: 0.5em;
+    column-gap: 1em;
     height: 50%;
     width: 100%;
     top: 25%;
@@ -556,12 +555,38 @@ letter-spacing: 1px;
 
 .home-more-info .details .left {
 	width: 49%;
-	margin-left: 4em;
+	margin: 0 0 1.5em 4em;
 }
 
 .home-more-info .details .right {
 	width: 49%;
 	margin-right: 4em;
+}
+
+.home-more-info .details .right .info {
+	display: flex;
+	align-items: center;
+	font-family: "Inter";
+	font-size: 0.55em;
+	column-gap: 1em;
+	margin-bottom: 1em;
+}
+
+.home-more-info .details .right .info p, 
+.home-more-info .details .right .info a {
+	font-family: "Inter";
+	font-weight: 600;
+	text-decoration: none;
+	color: black;
+	transition: color 0.3s;
+}
+
+.home-more-info .details .right .info:last-child a {
+	text-decoration: underline;
+}
+
+.home-more-info .details .right .info a:hover {
+	color: rgba(255, 0, 199, 1);
 }
 
 .home-more-info .astronaut {
@@ -581,6 +606,7 @@ letter-spacing: 1px;
 .details .vertical-line {
 	height: 100%;
 	width: 4px;
+	padding: 0.5em 0;
 	background-color: rgba(26, 30, 83, 1);
 	border: 2px solid rgba(255, 255, 255, 1);
 }
