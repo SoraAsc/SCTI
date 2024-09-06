@@ -1,0 +1,207 @@
+html,
+body {
+  min-height: 100%;
+  color: #eee;
+}
+
+body {
+  min-width: 320px;
+}
+
+
+.header-nav {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  justify-content: space-between;
+  padding-top: 20px;
+  color: #eee;
+  margin-bottom: 50px;
+}
+
+.header-nav .nav-title-pixel {
+  font-size: 1.6em;
+  font-family: "Joystix";
+  margin-left: 15px;
+}
+
+ .header-nav .navs-container {
+  width: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  margin: 0 20px;
+}
+
+ .header-nav .navs-container nav {
+  font-size: 1.3em;
+  cursor: pointer;
+}
+
+ .header-nav .navs-container nav a{
+  text-decoration: none;
+  color: #eee;
+  transition: .5s;
+}
+
+ .header-nav .navs-container nav a:active{
+  font-size: 1.3em;
+  cursor: pointer;
+  font-style: none;
+  color: #eee;
+}
+
+ .header-nav .navs-container nav a:hover{
+  color: #ff00c7;
+  opacity: .8;
+}
+
+#last-nav {
+  width: auto;
+  height: auto;
+}
+
+#last-nav img {
+  width: 140px;
+  height: 80px;
+}
+#last-nav p {
+  font-size: 1.3em;
+}
+
+.pink-pixel-button {
+  width: auto;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  transition: 0.5s;
+}
+
+.pink-pixel-button img {
+  width: 100%;
+  cursor: pointer;
+  fill: #c8ccff;
+  color: #c8ccff;
+  transition: all 0.5s;
+  filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg)
+    brightness(98%) contrast(97%);
+}
+
+.pink-pixel-button:hover img {
+  opacity: 0;
+}
+
+.pink-pixel-button p {
+  color: white;
+  position: absolute;
+  font-size: 1em;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: calc(50% - 1.5px);
+  font-family: "Joystix";
+  pointer-events: none;
+  transition: all 0.5s;
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+.pink-pixel-button:hover p {
+  color: #ff00c7;
+  letter-spacing: 1px;
+}
+
+
+.sponsors {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+	align-items: center;
+  margin-bottom: 60px;
+}
+
+.sponsors .main-title{
+	font-size: 4em;
+  font-family: "joystix";
+  -webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+  filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+  background: linear-gradient(to bottom, white 56%, #feb0dc 56%);
+  background-clip: text;
+  padding: 0.5em 0 0.5em 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sponsors .sponsors-image-text-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.sponsors-type-header{
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0 auto;
+	gap: 20px;
+}
+
+.sponsors-type-header h3{
+	font-family: "Joystix";
+	font-size: 1.5em;
+}
+
+.sponsors-images-container{
+  width: 75%;
+  margin: 60px auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sponsors-images-container img{
+  width: 140px;
+  height: 140px;
+}
+
+.benefits{
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.benefits h2{
+  font-family: "Joystix";
+  font-size: 1.5em;
+}
+
+.benefits p{
+  font-size: 1.3em;
+  margin-bottom: 12px;
+}
+
+.benefits li{
+  font-size: 1.2em;
+}
+
+.benefits ul{
+  list-style: disc;
+  margin-left: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#become-sponsor-button {
+  width: 200px;
+  margin-bottom: 60px;
+}
+
+#become-sponsor-button p {
+  font-size: 1.4em;
+}

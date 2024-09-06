@@ -12,26 +12,38 @@
   <body>
     <div class="header_style_form"></div>
     <!-- Your content her -->
-    <header>
-      <div class="header-nav">
-        <h2 class="nav-title-pixel">scti</h2>
-        <div class="navs-container">
-          <nav>Sobre</nav>
-          <nav>Programação</nav>
-          <nav>Contato</nav>
-          <button class="pink-pixel-button" id="last-nav">
-            <img src="/static/assets/home/button.svg" />
-            <p>Inscreva-se</p>
-          </button>
-        </div>
+    <div class="header-nav">
+      <h2 class="nav-title-pixel">scti</h2>
+      <div class="navs-container">
+        <nav>
+          <a href="/#about">
+            Sobre
+          </a>
+        </nav>
+        <nav>
+          <a href="/#sponsors-buttons-container">
+            Programação
+          </a>
+        </nav>
+        <nav>
+          <a href="/#contact">
+            Contato
+          </a>
+        </nav>
+        <button class="pink-pixel-button" id="last-nav">
+          <img src="/static/assets/home/button.svg" />
+          <p>Inscreva-se</p>
+        </button>
       </div>
+    </div>
+    <header>
           <div class="welcome-container">
             <h1 class="main-title">WELCOME</h1>
             <h1 class="main-title">PLAYER1</h1>
-
           </div>
 
     </header>
+
 
     <div class="home-top">
       <div class="top-info">
@@ -66,16 +78,14 @@
 
       <div id="sponsor">
         <div class="main-container-text">
-          <h2>seja um apoiador</h2>
+          <h2>seja um patrocinador</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum officia iste nisi, totam maxime ullam id repellat temporibus ipsum veritatis molestiae inventore reprehenderit praesentium iure fugit sequi suscipit explicabo. Ex.</p>
           <div id="sponsors-buttons-container">
             <button>
-              <img src="/static/assets/home/button.svg" />
-              <p>saiba mais</p>
-            </button>
-            <button>
-              <img src="/static/assets/home/button.svg" />
-              <p>contato</p>
+              <a href="/patrocinadores">
+                <img src="/static/assets/home/button.svg" />
+                <p>saiba mais</p>
+              </a>
             </button>
           </div>
         </div>
@@ -110,7 +120,7 @@
         </button>
       </div>
 
-      <div class="activity-container">
+      <div class="activity-container" id="programation">
         <img class="left-button disabled" id="left-navigation-button"
           src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
         <div class="activity">
