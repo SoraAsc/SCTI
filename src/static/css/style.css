@@ -1,56 +1,159 @@
-*{
-	font-family: "League Spartan", sans-serif;
-
+* {
+  font-family: "League Spartan", sans-serif;
 }
-body{
-	background-image: url('../assets/background.svg');
-    background-size: cover;
-    background-position: center;
-
+body {
+  background-image: url("../assets/background.svg");
+  background-size: cover;
+  background-position: center;
 }
 
 @font-face {
-    font-family: 'joystix';
-    src: url('../fonts/joystix\ monospace.otf') format('otf'),
-         url('../fonts/joystix\ monospace.otf') format('woff'),
-         url('../fonts/joystix\ monospace.otf') format('truetype');
-    font-weight: normal; /* ou bold, etc. */
-    font-style: normal; /* ou italic, etc. */
+  font-family: "joystix";
+  src: url("../fonts/joystix\ monospace.otf") format("otf"),
+    url("../fonts/joystix\ monospace.otf") format("woff"),
+    url("../fonts/joystix\ monospace.otf") format("truetype");
+  font-weight: normal; /* ou bold, etc. */
+  font-style: normal; /* ou italic, etc. */
 }
 
 .button-submmit {
-    width: 303px;
-    height: 45px;
-    margin: 10px 0;
-    color: #FEAEDC !important;
-    font-size: 21px;
-    border-radius: 4.64px;
-    font-family: joystix;
-    border: 1px #aaa;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    background-color: #FF00C7B2;
-    margin-bottom: 25px;
-
-  }
-  .button-submmit:hover {
-    cursor: pointer;
-    filter: brightness(1.2);
-  }
+  width: 303px;
+  height: 45px;
+  margin: 10px 0;
+  color: #feaedc !important;
+  font-size: 21px;
+  border-radius: 4.64px;
+  font-family: joystix;
+  border: 1px #aaa;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background-color: #ff00c7b2;
+  margin-bottom: 25px;
+}
+.button-submmit:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+}
 footer {
-    position: fixed;
-    bottom: 0px;
-    left: 0;
-	height: 45px;
-    width: 100%;
-    place-items: center;
-	vertical-align: middle;
-    background-color: #ff00c7b2 !important	;
-    font-weight: 400;
-    font-size: 14px;
-	padding: 0 !important;
-	color: #fff !important;
-    line-height: 22px;
-	display: grid;
-    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional para o footer */
-    z-index: 5;
-    }
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  height: 45px;
+  width: 100%;
+  place-items: center;
+  vertical-align: middle;
+  background-color: #ff00c7b2 !important	;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 0 !important;
+  color: #fff !important;
+  line-height: 22px;
+  display: grid;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional para o footer */
+  z-index: 5;
+}
+
+/*Estilização da navbar */
+
+.header-nav {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  justify-content: space-between;
+  padding-top: 20px;
+  color: #eee;
+  margin-bottom: 50px;
+}
+
+.header-nav .nav-title-pixel {
+  font-size: 1.6em;
+  font-family: "Joystix";
+  margin-left: 15px;
+}
+
+.header-nav .navs-container {
+  width: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  margin: 0 20px;
+}
+
+.header-nav .navs-container nav {
+  font-size: 1.3em;
+  cursor: pointer;
+}
+
+.header-nav .navs-container nav a {
+  text-decoration: none;
+  color: #eee;
+  transition: 0.5s;
+}
+
+.header-nav .navs-container nav a:active {
+  font-size: 1.3em;
+  cursor: pointer;
+  font-style: none;
+  color: #eee;
+}
+
+.header-nav .navs-container nav a:hover {
+  color: #ff00c7;
+  opacity: 0.8;
+}
+
+#last-nav {
+  width: auto;
+  height: auto;
+}
+
+#last-nav img {
+  width: 140px;
+  height: 80px;
+}
+#last-nav p {
+  font-size: 1.3em;
+}
+
+.pink-pixel-button {
+  width: auto;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  transition: 0.5s;
+}
+
+.pink-pixel-button img {
+  width: 100%;
+  cursor: pointer;
+  fill: #c8ccff;
+  color: #c8ccff;
+  transition: all 0.5s;
+  filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg)
+    brightness(98%) contrast(97%);
+}
+
+.pink-pixel-button:hover img {
+  opacity: 0;
+}
+
+.pink-pixel-button p {
+  color: white;
+  position: absolute;
+  font-size: 1em;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: calc(50% - 1.5px);
+  font-family: "Joystix";
+  pointer-events: none;
+  transition: all 0.5s;
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+}
+
+.pink-pixel-button:hover p {
+  color: #ff00c7;
+  letter-spacing: 1px;
+}
