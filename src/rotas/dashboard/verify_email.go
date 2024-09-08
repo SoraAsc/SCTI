@@ -3,6 +3,7 @@ package dashboard
 import (
   DB "SCTI/database"
   HTMX "SCTI/htmx"
+  Erros "SCTI/erros"
   "net/http"
   "net/url"
   "fmt"
@@ -14,13 +15,13 @@ import (
 func VerifyEmail(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
+    Erros.LogError("dashboard/verify_email", fmt.Errorf("Error getting cookie: %v", err))
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
   if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
+    Erros.LogError("dashboard/verify_email", fmt.Errorf("Invalid access token"))
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 

@@ -3,6 +3,7 @@ package auth
 import (
   DB "SCTI/database"
   HTMX "SCTI/htmx"
+  Erros "SCTI/erros"
   "SCTI/fileserver"
   "encoding/json"
   "net/http"
@@ -114,15 +115,14 @@ func GetLogoff(w http.ResponseWriter, r *http.Request) {
     SameSite: http.SameSiteLaxMode,
   })
   http.Redirect(w, r, "/login", http.StatusSeeOther)
-
-  w.WriteHeader(http.StatusOK)
 }
 
 func VerifyAdmin(w http.ResponseWriter, r *http.Request, uuid string) bool {
   admcookie, err := r.Cookie("Admin")
   if err != nil {
     if err != http.ErrNoCookie {
-      http.Error(w, fmt.Sprintf("Error reading admin cookie: %v", err), http.StatusBadRequest)
+      Erros.LogError("auth/login", fmt.Errorf("Error reading admin cookie: %v", err.Error()))
+      Erros.HttpError(w, "auth/login", fmt.Errorf("Error reading admin cookie: %v", err.Error()))
       return false
     }
     fmt.Println("login.go: Admin cookie not present")

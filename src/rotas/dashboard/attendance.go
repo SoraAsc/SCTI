@@ -3,6 +3,7 @@ package dashboard
 import (
 	DB "SCTI/database"
   HTMX "SCTI/htmx"
+  Erros "SCTI/erros"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -17,7 +18,7 @@ type AttendanceData struct {
 
 func GetAttendance(w http.ResponseWriter, r *http.Request) {
   if !CheckAdmin(w, r) {
-    http.Error(w, "Endpoint exclusiva de Admins", http.StatusUnauthorized)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Endpoint exclusiva de Admins"))
     HTMX.Failure(w, "Acesso proibido", fmt.Errorf("Não foi encontrado ou não é valido o cookie de admin"))
     return
   }
@@ -28,12 +29,12 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
   fmt.Println(code, encodedEmail)
 
   if code == "" || encodedEmail == "" {
-    http.Error(w, fmt.Sprintf("Código ou email do usuário ausentes!\nCódigo: %v\nEmail: %v", code, encodedEmail), http.StatusBadRequest)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Código ou email do usuário ausentes!\nCódigo: %v\nEmail: %v", code, encodedEmail))
   }
 
   email, err := url.QueryUnescape(encodedEmail)
   if err != nil {
-    http.Error(w, fmt.Sprintf("Invalid email format: %v", err.Error()), http.StatusBadRequest)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Invalid email format: %v", err.Error()))
     return
   }
   fmt.Println(email)
@@ -42,11 +43,11 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
   fmt.Println(uuid)
   userActivities, err := DB.GetUserActivities(uuid)
   if err != nil {
-    http.Error(w, fmt.Sprintf("Não foi possivel recuperar os cadastros do usuário!\n%v", err.Error()), http.StatusInternalServerError)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Não foi possivel recuperar os cadastros do usuário!\n%v", err.Error()))
   }
   attendedActivities, err := DB.GetUserAttendedActivities(uuid)
   if err != nil {
-    http.Error(w, fmt.Sprintf("Não foi possivel recuperar as presenças do usuário!\n%v", err.Error()), http.StatusInternalServerError)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Não foi possivel recuperar as presenças do usuário!\n%v", err.Error()))
   }
   userActivities = RemoveAttendedActivities(userActivities, attendedActivities)
 
@@ -67,7 +68,7 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
 
 func PostAttendance(w http.ResponseWriter, r *http.Request) {
   if !CheckAdmin(w, r) {
-    http.Error(w, "Endpoint exclusiva de Admins", http.StatusUnauthorized)
+    Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Endpoint exclusiva de Admins"))
     HTMX.Failure(w, "Acesso proibido", fmt.Errorf("Não foi encontrado ou não é valido o cookie de admin"))
     return
   }

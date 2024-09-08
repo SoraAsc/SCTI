@@ -2,6 +2,7 @@ package home
 
 import (
 	DB "SCTI/database"
+  Erros "SCTI/erros"
 	"SCTI/rotas/notfound"
 	"fmt"
 	"html/template"
@@ -30,7 +31,7 @@ func GetHome(w http.ResponseWriter, r *http.Request) {
 
   tmpl, err := template.ParseFiles("template/index.gohtml")
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    Erros.HttpError(w, "home/handler", err)
     return
   }
   tmpl.ExecuteTemplate(w, "index", data)
