@@ -43,11 +43,12 @@
 
     <nav class="header-nav">
       <h2 class="nav-title-pixel">scti</h2>
-      <!-- <a href="/logoff"><button>logoff</button></a> -->
-      <a href="/logoff">
-        Logoff
-      </a>
+      <a href="/logoff">Logoff</a>
     </nav>
+
+    {{ range .Activities }}
+      <div class="response" id="hx-return-{{ .Activity_id }}"></div>
+    {{ end }}
 
     <div class="main-content">
       <h1 class="title">Select your Courses</h1>
@@ -72,6 +73,17 @@
           <img src="/static/assets/home/button.svg" />
           <p>Sexta</p>
         </button>
+      </div>
+
+      <div class="activity-container" id="programation">
+        <div class="activity">
+          <span id="activity-type" class="type">MiniCursos</span>
+          <img class="back" src="/static/assets/home/bottom_container.svg" />
+          <img class="fore" src="/static/assets/home/container.svg" />
+          <div id="available-courses" class="available-courses">
+
+          </div>
+        </div>
       </div>
     </div>
 
@@ -201,6 +213,64 @@
         <div id="markpaid"></div>
       </div>
     {{ end }}
+    <script>
+      let lastWeekDayButtonSelected = null
+      const availableCourses = document.getElementById("available-courses")
+      const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
+        .push(activity), acc), {})
+      console.log(activities)
+
+      const FilterActivities = (day) => {
+        availableCourses.innerHTML = ""
+        const dayActivities = activities[day] || []
+        if(dayActivities.length > 0)
+        {
+          const ul = document.createElement("ul")
+          dayActivities.forEach((activity, i) => {
+            const li = document.createElement("li")
+            const detailsHolder = document.createElement("div")
+            const btn = createButton(activity.Activity_id, activity.Timestamp)
+
+            li.classList.add("course-container")
+            detailsHolder.classList.add("truncate", "details")
+
+            const type = activity.Activity_type === "MC" ? "Minicurso" : "Palestra"
+
+            detailsHolder.innerHTML = `<span>${type} ${i+1} - </span><span>${activity.Topic}</span>`
+
+            li.appendChild(detailsHolder)
+            li.innerHTML += btn
+            // li.innerHTML += `<div class="response" id="hx-return-${activity.Activity_id}"></div>`
+            ul.appendChild(li)
+          })
+          availableCourses.appendChild(ul)
+          htmx.process(availableCourses)
+        } else availableCourses.textContent = "Não há nenhuma atividade programada nesse dia"
+        if(day > 0 && day < 6) HighlightButton(day)
+      }
+
+      const HighlightButton = (day) => {
+        lastWeekDayButtonSelected?.classList.remove('selected')
+        lastWeekDayButtonSelected = document.getElementById('button-weekday-' + day)
+        lastWeekDayButtonSelected.classList.add('selected')
+      }
+
+      const createButton = (id, timestamp) => {
+        return `<button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
+          hx-target="#hx-return-${id}" hx-swap="innerHTML" 
+          hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'>Inscreva-se</button>`
+      }
+      
+      FilterActivities(1)
+    </script>
   </body>
 </html>
 {{ end }}
+<!-- <button class="cadastrar" hx-refresh="true"
+hx-post="/cadastrar"
+hx-trigger="click"
+hx-target="#hx-return-{{ .Activity_id }}"
+hx-swap="innerHTML"
+hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+Cadastrar
+</button> -->

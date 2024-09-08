@@ -13,19 +13,29 @@ h1 {
   font-size: min(2em, 5vw);
 }
 
-.header-nav a {
+.header-nav a, .main-content .activity-container .activity .available-courses .course-container button {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 36px;
   min-width: 90px;
-  margin-right: 15px;
   color: white;
   text-decoration: none;
   background-color: #E30CB4;
   mask-image: url("/static/assets/home/button.svg");
   -webkit-mask-image: url("/static/assets/home/button.svg");
   mask-repeat: no-repeat;
+  border: none;
+  font-family: "Joystix";
+  font-size: 0.7em;
+}
+
+.header-nav a {
+  margin-right: 15px;
+}
+
+.main-content .activity-container .activity .available-courses .course-container button {
+  cursor: pointer;
 }
 
 .main-content {
@@ -33,6 +43,47 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.main-content .activity-container .activity .available-courses {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 20%;
+  width: 100%;
+  height: 66%;
+  color: rgba(255, 0, 199, 1);
+  font-family: "Joystix";
+  margin-top: 2em;
+}
+
+.main-content .activity-container .activity .available-courses .course-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 3em;
+}
+
+.main-content .activity-container .activity .available-courses .details {
+  width: 400px;
+}
+
+.main-content .activity-container .activity .available-courses ul li span:nth-child(2) {
+  color: black;
+}
+
+li, span {
+  font-family: "Joystix";
+  font-size: 12px;
+  font-weight: 400;
+}
+
+li + li {
+  margin-top: 2em;
+}
+
+.truncate {
+  white-space: nowrap;
 }
 
 /* body {

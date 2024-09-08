@@ -256,3 +256,44 @@ footer {
     1px -1px rgba(255, 0, 199, 1), -1px 1px rgba(255, 0, 199, 1);
   filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
 }
+
+.activity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+  margin-bottom: 6em;
+}
+
+.activity-container .activity {
+  position: relative;
+}
+
+.activity-container .activity .back {
+  position: absolute;
+  z-index: -2;
+  right: -10px;
+  bottom: 2.5em;
+}
+
+.activity-container .activity .type {
+  position: absolute;
+  font-family: "Joystix";
+  font-size: 2em;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0.8em 0 0.4em 0;
+  text-transform: uppercase;
+  color: rgba(255, 0, 199, 1);
+  text-shadow: 2px 0 rgba(217, 217, 217, 1), -2px 0 rgba(217, 217, 217, 1),
+    0 2px rgba(217, 217, 217, 1), 0 -2px rgba(217, 217, 217, 1),
+    1px 1px rgba(217, 217, 217, 1), -1px -1px rgba(217, 217, 217, 1),
+    1px -1px rgba(217, 217, 217, 1), -1px 1px rgba(217, 217, 217, 1);
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

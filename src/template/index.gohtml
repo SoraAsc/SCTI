@@ -30,10 +30,10 @@
             Contato
           </a>
         </nav>
-        <button class="pink-pixel-button" id="last-nav">
+        <a href="/login" class="pink-pixel-button" id="last-nav">
           <img src="/static/assets/home/button.svg" />
           <p>Inscreva-se</p>
-        </button>
+        </a>
       </div>
     </div>
     <header>
@@ -261,7 +261,7 @@
       const rightNavigationButton = document.getElementById("right-navigation-button")
 
       // Filtra cada uma das atividades por dia
-      let activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
+      const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
         .push(activity), acc), {})
 
       const FilterActivities = (day) => {
