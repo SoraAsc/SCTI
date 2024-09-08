@@ -788,7 +788,11 @@ header .main-title:last-child {
   }
 
   #sponsor .main-container-text #sponsors-buttons-container button {
-    width: 7em;
+    width: 6em;
+  }
+
+  #sponsor .main-container-text #sponsors-buttons-container button p{
+    font-size: .9em;
   }
 
   .home-activities .main-title{

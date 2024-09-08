@@ -4,72 +4,6 @@ body {
   color: #eee;
 }
 
-body {
-  min-width: 320px;
-}
-
-
-.header-nav {
-  display: flex;
-  width: 100%;
-  height: 20%;
-  justify-content: space-between;
-  padding-top: 20px;
-  color: #eee;
-  margin-bottom: 50px;
-}
-
-.header-nav .nav-title-pixel {
-  font-size: 1.6em;
-  font-family: "Joystix";
-  margin-left: 15px;
-}
-
- .header-nav .navs-container {
-  width: 40%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  text-align: center;
-  gap: 5px;
-  margin: 0 20px;
-}
-
- .header-nav .navs-container nav {
-  font-size: 1.3em;
-  cursor: pointer;
-}
-
- .header-nav .navs-container nav a{
-  text-decoration: none;
-  color: #eee;
-  transition: .5s;
-}
-
- .header-nav .navs-container nav a:active{
-  font-size: 1.3em;
-  cursor: pointer;
-  font-style: none;
-  color: #eee;
-}
-
- .header-nav .navs-container nav a:hover{
-  color: #ff00c7;
-  opacity: .8;
-}
-
-#last-nav {
-  width: auto;
-  height: auto;
-}
-
-#last-nav img {
-  width: 140px;
-  height: 80px;
-}
-#last-nav p {
-  font-size: 1.3em;
-}
 
 .pink-pixel-button {
   width: auto;
@@ -151,7 +85,7 @@ body {
 
 .sponsors-type-header h3{
 	font-family: "Joystix";
-	font-size: 1.5em;
+	font-size: 2.2em;
 }
 
 .sponsors-images-container{
@@ -182,10 +116,12 @@ body {
 .benefits p{
   font-size: 1.3em;
   margin-bottom: 12px;
+  opacity: .8;
 }
 
 .benefits li{
   font-size: 1.2em;
+  opacity: .8;
 }
 
 .benefits ul{
@@ -204,4 +140,103 @@ body {
 
 #become-sponsor-button p {
   font-size: 1.4em;
+}
+
+
+@media (min-width: 577px) and (max-width: 768px){
+  .sponsors .main-title{
+    font-size: 2.8em;
+  }
+
+  .sponsors-images-container{
+    width: 85%;
+    margin: 60px auto;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sponsors-images-container img{
+    width: 120px;
+    height: 120px;
+  }
+
+  .benefits{
+    width: 90%;
+  }
+
+  .benefits h2{
+    font-size: 1.2em;
+  }
+
+  .benefits p,
+  .benefits li{
+    font-size: 1em;
+  }
+
+  .benefits ul{
+    margin-left: 0;
+  }
+
+  #become-sponsor-button {
+    width: 175px;
+    margin-bottom: 60px;
+  }
+
+  #become-sponsor-button p {
+    font-size: 1.2em;
+  }
+}
+
+
+@media (max-width: 576px){
+
+  .sponsors .main-title{
+    font-size: 2em;
+  }
+
+  .sponsors-type-header h3{
+    font-family: "Joystix";
+    font-size: 1.7em;
+  }
+
+  .sponsors-images-container{
+    width: 75%;
+    margin: 60px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .sponsors-images-container img{
+    width: 110px;
+    height: 110px;
+  }
+
+  .benefits{
+    width: 85%;
+  }
+
+  .benefits h2{
+    font-size: 1.1em;
+  }
+
+  .benefits p,
+  .benefits li{
+    font-size: .9em;
+  }
+
+  .benefits ul{
+    margin-left: 0;
+  }
+
+  #become-sponsor-button {
+    width: 155px;
+    margin-bottom: 40px;
+  }
+
+  #become-sponsor-button p {
+    font-size: 1em;
+  }
+
 }
