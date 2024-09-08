@@ -39,7 +39,6 @@ func CheckAdmin(w http.ResponseWriter, r *http.Request) bool {
 
 func SetAdmin(w http.ResponseWriter, r *http.Request) {
   if !CheckAdmin(w, r) {
-    http.Error(w, "Acesso proibido", http.StatusForbidden)
     HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
     return
   }
@@ -56,7 +55,6 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
 
 func PostActivity(w http.ResponseWriter, r* http.Request) {
   if !CheckAdmin(w, r) {
-    http.Error(w, "Acesso proibido", http.StatusForbidden)
     HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
     return
   }

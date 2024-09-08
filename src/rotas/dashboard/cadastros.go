@@ -6,6 +6,7 @@ import (
   "net/http"
   DB "SCTI/database"
   HTMX "SCTI/htmx"
+  Erros "SCTI/erros"
 )
 
 func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +24,13 @@ func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
+    Erros.LogError("dashboard/cadastros", err)
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
   if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
+    Erros.LogError("dashboard/cadastros", fmt.Errorf("Invalid access token"))
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 
@@ -52,7 +53,7 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 
   activityID, err := strconv.Atoi(r.FormValue("id"))
   if err != nil {
-    http.Error(w, fmt.Sprintf("Invalid activity ID: %v", err), http.StatusBadRequest)
+    Erros.HttpError(w, "dashboard/cadastros", fmt.Errorf("Invalid activity ID: %v", err))
     return
   }
 
@@ -69,13 +70,13 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 func PostDescadastros(w http.ResponseWriter, r *http.Request) {
   cookie, err := r.Cookie("accessToken")
   if err != nil {
-    fmt.Println("Error Getting cookie:", err)
+    Erros.LogError("dashboard/cadastros", fmt.Errorf("Error Getting cookie: %v", err))
     http.Redirect(w, r, "/login", http.StatusSeeOther)
     return
   }
 
   if cookie.Value == "-1" {
-    fmt.Println("Invalid accessToken")
+    Erros.LogError("dashboard/cadastros", fmt.Errorf("Invalid access token"))
     http.Redirect(w, r, "/login", http.StatusSeeOther)
   }
 

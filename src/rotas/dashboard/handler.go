@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	DB "SCTI/database"
+  Erros "SCTI/erros"
 	"html/template"
 	"net/http"
 )
@@ -55,12 +56,12 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
 
   tmpl, err := template.ParseFiles("template/dashboard.gohtml")
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    Erros.HttpError(w, "dashboard/handler", err)
     return
   }
   err = tmpl.ExecuteTemplate(w, "dashboard", data)
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    Erros.HttpError(w, "dashboard/handler", err)
   }
 }
 
