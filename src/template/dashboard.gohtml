@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +11,6 @@
     <title>SCTI - Dashboard</title>
   </head>
   <body>
-    <div class="title">Painel do Usuário</div>
-
     {{ if not .IsVerified }}
       <div>
         <button hx-post="/send-verification-email"
@@ -41,9 +41,19 @@
       <div id="email_message"></div>
     {{ end }}
 
-    <a href="/logoff"><button>logoff</button></a>
+    <nav class="header-nav">
+      <h2 class="nav-title-pixel">scti</h2>
+      <!-- <a href="/logoff"><button>logoff</button></a> -->
+      <a href="/logoff">
+        Logoff
+      </a>
+    </nav>
 
-    <div class="atividades_registradas">
+    <div class="main-content">
+      <h1 class="title">Select your Courses</h1>
+    </div>
+
+    <!-- <div class="atividades_registradas">
     {{ range .RegisteredActivities }}
       <div class="response" id="registered_{{ .Activity_id }}"></div>
       <div class="atividade_registrada" id="registrada_{{ .Activity_id }}">
@@ -77,9 +87,9 @@
 
       </div>
     {{ end }}
-    </div>
+    </div> -->
 
-    <div class="atividades">
+    <!-- <div class="atividades">
     {{ range .Activities }}
       <div class="response" id="hx-return-{{ .Activity_id }}"></div>
       <div class="atividade" id="activity_{{ .Activity_id }}">
@@ -112,7 +122,7 @@
         </button>
       </div>
       {{ end }}
-    </div>
+    </div> -->
 
     {{ if .IsAdmin }}
       <div>

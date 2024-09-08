@@ -1,4 +1,40 @@
+html,
 body {
+  min-height: 100%;
+  color: #eee;
+}
+
+body {
+  min-width: 320px;
+}
+
+h1 {
+  font-family: "Joystix";
+  font-size: min(2em, 5vw);
+}
+
+.header-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  min-width: 90px;
+  margin-right: 15px;
+  color: white;
+  text-decoration: none;
+  background-color: #E30CB4;
+  mask-image: url("/static/assets/home/button.svg");
+  -webkit-mask-image: url("/static/assets/home/button.svg");
+  mask-repeat: no-repeat;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+
+}
+
+/* body {
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
@@ -58,4 +94,4 @@ body {
   display: flex;
   flex-direction: row;
 }
-
+ */
