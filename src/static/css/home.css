@@ -569,6 +569,7 @@ header .main-title:last-child {
   background-color: rgba(26, 30, 83, 1);
   border: 2px solid rgba(255, 255, 255, 1);
 }
+/*Responsividade Tablet*/
 
 @media (max-width: 768px) and (min-width: 577px) {
   header .main-title {
@@ -623,29 +624,272 @@ header .main-title:last-child {
     justify-content: center;
   }
 
-  #sponsor .main-container-text #sponsors-buttons-container button {
-    width: 11em;
+  .home-activities .main-title{
+    font-size: 3.5em;
+  }
+
+  .home-activities .days-container {
+    column-gap: 2em;
+  }
+
+  .home-activities .days-container .button-weekday {
+    width: 6em;
+  }
+
+  .home-activities .days-container .button-weekday p {
+    font-size: 1em;
+  }
+  .home-activities .activity-container .activity .type{
+    font-size: 1.7em;
+    margin-top: 1.4em;
+  }
+
+  .home-activities .activity-container .details .vertical-line {
+    height: 75%;
+  }
+
+  .home-activities .activity-container .activity .details .info .topic  {
+    font-size: 0.9em;
   }
 
   .home-activities .activity-container .activity,
   .fore {
-    width: 500px;
+    width: 410px;
     height: 280px;
   }
 
   .home-activities .activity-container .activity .back {
-    width: 515px;
+    width: 425px;
     height: 280px;
     bottom: 1.3em;
     right: -7.5px;
   }
 
+  img#left-navigation-button.left-button{
+    width: 45px;
+  }
+
+  img#right-navigation-button.right-button{
+    width: 45px;
+  }
+
+
   #contact .outer {
-    width: 600px;
+    width: 560px;
+  }
+
+  .home-more-info .title {
+    font-size: 1.1em;
+    margin-top: .7em;
+  }
+
+  .home-more-info .details ul {
+    list-style: square;
+    font-size: 0.6em;
+  }
+
+  .home-more-info .details .left {
+    margin-left: 2.5em;
+  }
+
+  .home-more-info .details .right {
+    width: 55%;
+    margin-right: 2em;
+  }
+
+  .home-more-info .details .right .info {
+    font-size: .5em;
+  }
+
+  .home-more-info .details .right .info img{
+    width: 24px;
   }
 }
-
+/*Responsividade Celular*/
 @media (max-width: 576px) {
+
+  header .main-title {
+    font-size: 3.5em;
+  }
+
+  header .main-title:last-child {
+    font-size: 3.5em;
+    margin-top: -40px;
+  }
+
+  .home-top {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .home-top .top-info h1 {
+    font-size: 1.7em;
+  }
+
+  .home-top .top-info .caption {
+    font-size: 1em;
+  }
+
+  #start-button {
+    cursor: default;
+    animation-name: remove-button-mobile;
+    animation-duration: 7s;
+  }
+
+  #start-button img {
+    cursor: default;
+    width: 0%;
+    animation-name: main-button-bg-animation-mobile;
+    animation-duration: 7s;
+    opacity: 0;
+  }
+
+  #start-button p {
+    font-size: 0em;
+    letter-spacing: 0px;
+    animation-name: main-button-text-animation-mobile;
+    animation-duration: 7s;
+    opacity: 0;
+  }
+
+  #main-infos {
+    width: 100%;
+  }
+
+  .main-container-text {
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  .main-container-text p {
+    font-size: 1.2em;
+    opacity: 0.8;
+  }
+
+  #local {
+    flex-direction: column-reverse;
+  }
+
+  #local .main-container-text,
+  #sponsor .main-container-text {
+    margin-bottom: 40px;
+  }
+
+  #sponsor {
+    flex-direction: column;
+  }
+
+  #sponsor > img {
+    display: none;
+  }
+
+  #sponsor .main-container-text #sponsors-buttons-container {
+    justify-content: center;
+  }
+
+  #sponsor .main-container-text #sponsors-buttons-container button {
+    width: 7em;
+  }
+
+  .home-activities .main-title{
+    font-size: 3em;
+  }
+
+
+  .home-activities .days-container {
+    column-gap: 1.5em;
+  }
+
+  .home-activities .days-container .button-weekday {
+    width: 4em;
+  }
+
+  .home-activities .days-container .button-weekday p {
+    font-size: 0.65em;
+  }
+
+  .home-activities .activity-container .activity,
+  .fore {
+    width: 330px;
+    height: 280px;
+  }
+
+  .home-activities .activity-container .activity .back {
+    width: 345px;
+    height: 280px;
+    bottom: 1em;
+    right: -7.5px;
+  }
+
+  img#left-navigation-button.left-button{
+    width: 27px;
+    margin-right: .9em;
+  }
+
+  img#right-navigation-button.right-button{
+    width: 27px;
+    margin-left: .9em;
+  }
+
+  .home-activities .activity-container .activity .type {
+    font-size: 1.5em;
+    margin-top: 2.4em;
+  }
+
+  .home-activities .activity-container .activity .details {
+    height: 50%;
+    top: 30%;
+  }
+
+  .details .vertical-line {
+    height: 80%;
+  }
+
+  .home-activities .activity-container .activity .details .info {
+    width: 50%;
+  }
+  .home-activities .activity-container .activity .details .info .topic {
+    font-size: 0.8em;
+  }
+
+  .home-activities .activity-container .activity .details .info .time {
+    font-size: 1.1em;
+  }
+
+  .home-activities .activity-container .activity .details .info .description {
+    font-size: 0.7em;
+  }
+
+  #contact .outer {
+    width: 420px;
+  }
+
+  .home-more-info .title {
+    font-size: 0.9em;
+    margin-top: .5em;
+  }
+
+  .home-more-info .details ul {
+    list-style: square;
+    font-size: 0.45em;
+  }
+
+  .home-more-info .details .left {
+    margin-left: 2.5em;
+  }
+
+  .home-more-info .details .right {
+    width: 55%;
+    margin-right: 2em;
+  }
+
+  .home-more-info .details .right .info {
+    font-size: .4em;
+  }
+
+  .home-more-info .details .right .info img{
+    width: 18px;
+  }
 }
 
 @keyframes main-button-bg-animation {
@@ -732,7 +976,7 @@ header .main-title:last-child {
   }
 }
 
-@keyframes main-button-bg-animation {
+@keyframes main-button-bg-animation-mobile {
   0% {
     width: 0%;
     opacity: 0;
@@ -758,7 +1002,7 @@ header .main-title:last-child {
   }
 }
 
-@keyframes main-button-text-animation {
+@keyframes main-button-text-animation-mobile {
   0% {
     opacity: 0;
     font-size: 0px;
@@ -767,7 +1011,7 @@ header .main-title:last-child {
   }
 
   25% {
-    font-size: 2.5em;
+    font-size: 1.6em;
     opacity: 1;
     color: white;
     letter-spacing: 0px;
@@ -779,7 +1023,7 @@ header .main-title:last-child {
   }
 
   75% {
-    font-size: 2.5em;
+    font-size: 1.6em;
     opacity: 1;
     letter-spacing: 0px;
     color: white;
@@ -793,7 +1037,7 @@ header .main-title:last-child {
   }
 }
 
-@keyframes remove-button {
+@keyframes remove-button-mobile {
   0% {
     width: 0%;
     opacity: 0;
@@ -801,11 +1045,11 @@ header .main-title:last-child {
 
   25% {
     opacity: 1;
-    width: 230px;
+    width: 140px;
   }
 
   75% {
-    width: 230px;
+    width: 140px;
     opacity: 1;
   }
 
