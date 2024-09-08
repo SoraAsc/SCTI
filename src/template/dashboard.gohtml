@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <title>SCTI - Dashboard</title>
   </head>
@@ -51,6 +51,28 @@
 
     <div class="main-content">
       <h1 class="title">Select your Courses</h1>
+      <div class="days-container">
+        <button id="button-weekday-1" class="button-weekday" onclick="FilterActivities(1)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Segunda</p>
+        </button>
+        <button id="button-weekday-2" class="button-weekday" onclick="FilterActivities(2)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Terça</p>
+        </button>
+        <button id="button-weekday-3" class="button-weekday" onclick="FilterActivities(3)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quarta</p>
+        </button>
+        <button id="button-weekday-4" class="button-weekday" onclick="FilterActivities(4)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quinta</p>
+        </button>
+        <button id="button-weekday-5" class="button-weekday" onclick="FilterActivities(5)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Sexta</p>
+        </button>
+      </div>
     </div>
 
     <!-- <div class="atividades_registradas">
