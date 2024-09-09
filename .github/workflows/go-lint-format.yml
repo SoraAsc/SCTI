@@ -1,0 +1,63 @@
+name: Go Lint and Format
+
+# Define quando o workflow será executado
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  lint-and-format:
+    name: Lint and Format
+    runs-on: ubuntu-latest  # Executa o job na última versão do Ubuntu
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+    - name: Install goimports
+      run: go install golang.org/x/tools/cmd/goimports@latest
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+    # Executa gofmt para verificar problemas de formatação
+    - name: Run gofmt
+      run: |
+        gofmt_output=$(gofmt -l -d .)
+        if [ -n "$gofmt_output" ]; then
+          echo "gofmt found style issues:"
+          echo "$gofmt_output"
+          exit 1
+        fi
+
+    # Executa goimports para verificar problemas de importação
+    - name: Run goimports
+      run: |
+        goimports_output=$(goimports -l -d .)
+        if [ -n "$goimports_output" ]; then
+          echo "goimports found import formatting issues:"
+          echo "$goimports_output"
+          exit 1
+        fi
+
+    # Executa staticcheck para análise estática de código
+    - name: Run staticcheck
+      run: staticcheck ./...
+
+    # Tenta corrigir automaticamente problemas de formatação se as verificações anteriores falharem
+    - name: Auto-fix formatting
+      if: failure()
+      run: |
+        gofmt -w .
+        goimports -w .
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Auto-format Go code" || echo "No changes to commit"
+        git push || echo "No changes to push"
+
+    # Executa os testes do projeto
+    - name: Run tests
+      run: go test ./...
