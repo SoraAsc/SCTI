@@ -1,36 +1,36 @@
 package auth
 
 import (
-  DB "SCTI/database"
-  HTMX "SCTI/htmx"
-  "SCTI/fileserver"
-  "fmt"
-  "net/http"
-  "net/url"
-  "os"
+	DB "SCTI/database"
+	"SCTI/fileserver"
+	HTMX "SCTI/htmx"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
 
-  gomail "gopkg.in/mail.v2"
+	gomail "gopkg.in/mail.v2"
 )
 
 func GetSenha(w http.ResponseWriter, r *http.Request) {
-  var t = fileserver.Execute("template/senha.gohtml")
-  t.Execute(w, nil)
+	var t = fileserver.Execute("template/senha.gohtml")
+	t.Execute(w, nil)
 }
 
 func PostSenha(w http.ResponseWriter, r *http.Request) {
-  from := os.Getenv("GMAIL_SENDER")
-  pass := os.Getenv("GMAIL_PASS")
+	from := os.Getenv("GMAIL_SENDER")
+	pass := os.Getenv("GMAIL_PASS")
 
-  _, err := DB.GetCodeByEmail(r.FormValue("Email"))
-  if err != nil {
-    HTMX.Failure(w,"Nenhum usuário encontrado com este email: ", err)
-    return
-  }
+	_, err := DB.GetCodeByEmail(r.FormValue("Email"))
+	if err != nil {
+		HTMX.Failure(w, "Nenhum usuário encontrado com este email: ", err)
+		return
+	}
 
-  encodedEmail := url.QueryEscape(r.FormValue("Email"))
-  verificationLink := fmt.Sprintf("http://localhost:8080/trocar?email=%s", encodedEmail)
+	encodedEmail := url.QueryEscape(r.FormValue("Email"))
+	verificationLink := fmt.Sprintf("http://localhost:8080/trocar?email=%s", encodedEmail)
 
-  htmlBody := `
+	htmlBody := `
   <!DOCTYPE html>
   <html>
     <head>
@@ -64,20 +64,20 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
   </html>
   `
 
-  plainBody := "Clique no botão abaixo para trocar sua senha:\n" + verificationLink
+	plainBody := "Clique no botão abaixo para trocar sua senha:\n" + verificationLink
 
-  msg := gomail.NewMessage()
-  msg.SetHeader("From", from)
-  msg.SetHeader("To", r.FormValue("Email"))
-  msg.SetHeader("Subject", "Trocar Senha SCTI")
-  msg.SetBody("text/plain", plainBody)
-  msg.AddAlternative("text/html", htmlBody)
+	msg := gomail.NewMessage()
+	msg.SetHeader("From", from)
+	msg.SetHeader("To", r.FormValue("Email"))
+	msg.SetHeader("Subject", "Trocar Senha SCTI")
+	msg.SetBody("text/plain", plainBody)
+	msg.AddAlternative("text/html", htmlBody)
 
-  dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
 
-  if err := dialer.DialAndSend(msg); err != nil {
-    HTMX.Failure(w, "Falha ao enviar email: ", err)
-    return
-  }
-  HTMX.Success(w, "Email enviado com sucesso")
+	if err := dialer.DialAndSend(msg); err != nil {
+		HTMX.Failure(w, "Falha ao enviar email: ", err)
+		return
+	}
+	HTMX.Success(w, "Email enviado com sucesso")
 }
