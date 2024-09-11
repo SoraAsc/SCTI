@@ -1,13 +1,14 @@
 package main
 
 import (
-  "SCTI/fileserver"
-  "SCTI/middleware"
-  "SCTI/database"
-  "log"
-  "net/http"
-  "github.com/joho/godotenv"
-  "fmt"
+	"SCTI/database"
+	"SCTI/fileserver"
+	"SCTI/middleware"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {

@@ -1,7 +1,8 @@
 package main
 
-import ("fmt")
-
+import (
+	"fmt"
+)
 
 type Pessoa struct {
 	Nome       string
@@ -9,11 +10,9 @@ type Pessoa struct {
 	Cadastrado bool
 }
 
-
 func (p Pessoa) String() string {
 	return fmt.Sprintf("%v %v, %v", p.Nome, p.Idade, p.Cadastrado)
 }
-
 
 func main() {
 	ab := []Pessoa{{"Sophia", 22, false}, {"teste", 33, true}}
@@ -31,11 +30,10 @@ func main() {
 
 	ab = append(ab, Artur, Bruno, Zadoque)
 
+	for _, Pessoa := range ab {
+		if Pessoa.Cadastrado {
+			fmt.Println(Pessoa)
+		}
 
-for _, Pessoa := range ab {
-	if Pessoa.Cadastrado {
-		fmt.Println(Pessoa)
-        }
-
-     }
+	}
 }
