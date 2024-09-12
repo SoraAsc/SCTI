@@ -5,9 +5,10 @@ import (
 	"SCTI/fileserver"
 	"SCTI/middleware"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
