@@ -66,14 +66,16 @@ func GetDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterRoutes(mux *http.ServeMux) {
-  mux.HandleFunc("GET /dashboard", GetDashboard)
-  mux.HandleFunc("GET /presenca", GetAttendance)
-  mux.HandleFunc("GET /ingresso", GetIngresso)
-  mux.HandleFunc("POST /presenca", PostAttendance)
-  mux.HandleFunc("POST /cadastrar", PostCadastros)
-  mux.HandleFunc("POST /descadastrar", PostDescadastros)
-  mux.HandleFunc("POST /send-verification-email", VerifyEmail)
-  mux.HandleFunc("POST /set-admin", SetAdmin)
-  mux.HandleFunc("POST /add_activity", PostActivity)
-  mux.HandleFunc("POST /markpaid", PostValidateEmail)
+	mux.HandleFunc("GET /dashboard", GetDashboard)
+	mux.HandleFunc("GET /presenca", GetAttendance)
+	mux.HandleFunc("GET /ingresso", GetIngresso)
+	mux.HandleFunc("POST /qr-user", UserSentQR)
+	mux.HandleFunc("POST /qr-all", AllUsersSentQR)
+	mux.HandleFunc("POST /presenca", PostAttendance)
+	mux.HandleFunc("POST /cadastrar", PostCadastros)
+	mux.HandleFunc("POST /descadastrar", PostDescadastros)
+	mux.HandleFunc("POST /send-verification-email", VerifyEmail)
+	mux.HandleFunc("POST /set-admin", SetAdmin)
+	mux.HandleFunc("POST /add_activity", PostActivity)
+	mux.HandleFunc("POST /markpaid", PostValidateEmail)
 }
