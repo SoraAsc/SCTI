@@ -25,13 +25,13 @@ VALUES
 -- FROM activities;
 
 -- Insert users
-INSERT INTO users (email, name, uuid, verificationCode, isVerified, isAdmin, isPaid)
+INSERT INTO users (email, name, uuid, verificationCode, isVerified, isAdmin, isPaid, sentqr)
 VALUES
-  ('usuario1@teste.com', 'Usuário Um', '123e4567-e89b-12d3-a456-426614174000', '123e4', TRUE, FALSE, FALSE),
-  ('usuario2@teste.com', 'Usuário Dois', '223e4567-e89b-12d3-a456-426614174000', '223e4', TRUE, FALSE, TRUE),
-  ('usuario3@teste.com', 'Usuário Três', '323e4567-e89b-12d3-a456-426614174000', '323e4', FALSE, FALSE, FALSE),
-  ('admin@teste.com', 'Administrador', '423e4567-e89b-12d3-a456-426614174000', '423e4', TRUE, TRUE, TRUE),
-  ('usuario5@teste.com', 'Usuário Cinco', '523e4567-e89b-12d3-a456-426614174000', '523e4', TRUE, FALSE, TRUE);
+  ('usuario1@teste.com', 'Usuário Um', '123e4567-e89b-12d3-a456-426614174000', '123e4', TRUE, FALSE, FALSE, FALSE),
+  ('usuario2@teste.com', 'Usuário Dois', '223e4567-e89b-12d3-a456-426614174000', '223e4', TRUE, FALSE, TRUE, FALSE),
+  ('usuario3@teste.com', 'Usuário Três', '323e4567-e89b-12d3-a456-426614174000', '323e4', FALSE, FALSE, FALSE, FALSE),
+  ('admin@teste.com', 'Administrador', '423e4567-e89b-12d3-a456-426614174000', '423e4', TRUE, TRUE, TRUE, TRUE),
+  ('usuario5@teste.com', 'Usuário Cinco', '523e4567-e89b-12d3-a456-426614174000', '523e4', TRUE, FALSE, TRUE, FALSE);
 
 -- Insert passwords
 INSERT INTO passwd (id, passwd)

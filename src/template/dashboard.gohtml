@@ -59,7 +59,7 @@
             </div>
             <div class="sub_header">
               <div class="dia">{{ .Day }}</div>
-							<div class="hora">{{ .Time }}</div>
+              <div class="hora">{{ .Time }}</div>
               <div class="sala">{{ .Room }}</div>
               <div class="vagas">{{ .Spots }}</div>
             </div>
@@ -95,7 +95,7 @@
             </div>
             <div class="sub_header">
               <div class="dia">{{ .Day }}</div>
-							<div class="hora">{{ .Time }}</div>
+              <div class="hora">{{ .Time }}</div>
               <div class="sala">{{ .Room }}</div>
               <div class="vagas">{{ .Spots }}</div>
             </div>
@@ -107,7 +107,7 @@
                                   hx-trigger="click"
                                   hx-target="#hx-return-{{ .Activity_id }}"
                                   hx-swap="innerHTML"
-																	hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+                                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
           Cadastrar
         </button>
       </div>
@@ -167,6 +167,22 @@
           </button>
         </form>
         <div id="markpaid"></div>
+        <form>
+          <label for="Email">Enviar QR Code para o usuário</label><br>
+          <input type="email" name="Email"><br>
+          <button hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML">
+             Enviar
+          </button>
+        </form>
+        <div id="qrcodeuser"></div>
+        <button hx-post="/qr-all"
+                hx-trigger="click"
+                hx-target="#qrcodeall"
+                hx-swap="innerHTML"
+                hx-indicator="#loading-indicator">
+          Enviar QR para todos
+        </button>
+        <div id="qrcodeall"></div>
       </div>
     {{ end }}
   </body>

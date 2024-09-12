@@ -46,13 +46,13 @@ func CreateUser(Email string, hash string, UUIDString string, name string) error
 	}
 
 	query := `
-  INSERT INTO users (email, uuid, verificationCode, name)
-  VALUES ($1, $2, $3, $4)
+  INSERT INTO users (email, uuid, verificationCode, name, sentqr)
+  VALUES ($1, $2, $3, $4, $5)
   RETURNING id
   `
 
 	var userID int
-	err = tx.QueryRow(query, Email, UUIDString, UUIDString[:5], name).Scan(&userID)
+	err = tx.QueryRow(query, Email, UUIDString, UUIDString[:5], name, false).Scan(&userID)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("não foi possível inserir o usuário: %v", err)
@@ -81,7 +81,7 @@ func CreateUser(Email string, hash string, UUIDString string, name string) error
 func UserExists(email string) (bool, error) {
 	query := `
   SELECT EXISTS(
-  SELECT 1 FROM users WHERE email = $1
+    SELECT 1 FROM users WHERE email = $1
   )
   `
 
@@ -334,9 +334,9 @@ func DeleteUser(userUUID string) error {
 	query = `
   DELETE FROM credits
   WHERE purchase_id IN(
-  SELECT purchase_id
-  FROM purchases
-  WHERE user_id = $1
+    SELECT purchase_id
+    FROM purchases
+    WHERE user_id = $1
   )
   `
 
@@ -477,4 +477,86 @@ func IsUserPaid(uuid string) (bool, error) {
 	}
 
 	return isPaid, nil
+}
+
+func SetSentQR(email string) error {
+	tx, err := DB.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to set qrcode as sent: %v", err)
+	}
+	defer tx.Rollback()
+
+	query := `
+  UPDATE users
+  SET sentqr = TRUE
+  WHERE email = $1
+  `
+
+	result, err := tx.Exec(query, email)
+	if err != nil {
+		return fmt.Errorf("failed to update user qr status: %v", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %v", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("no user found with email: %s", email)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
+	}
+
+	return nil
+}
+
+func IsUserQR(email string) (bool, error) {
+	var qr bool
+
+	query := `
+  SELECT sentqr
+  FROM users
+  WHERE email = $1
+  `
+	err := DB.QueryRow(query, email).Scan(&qr)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, fmt.Errorf("no user found with email: %s", email)
+		}
+		return false, fmt.Errorf("failed to fetch user qrcode status: %v", err)
+	}
+
+	return qr, nil
+}
+
+type User struct {
+	Code  string
+	Email string
+}
+
+func GetAllUsers() ([]User, error) {
+	query := `SELECT verificationcode, email FROM users`
+	rows, err := DB.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("falha ao buscar usuários: %v", err)
+	}
+	defer rows.Close()
+
+	var users []User
+	for rows.Next() {
+		var user User
+		if err := rows.Scan(&user.Code, &user.Email); err != nil {
+			return nil, fmt.Errorf("falha ao ler dados do usuário: %v", err)
+		}
+		users = append(users, user)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("erro ao iterar sobre os usuários: %v", err)
+	}
+
+	return users, nil
 }
