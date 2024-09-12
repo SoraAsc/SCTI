@@ -55,6 +55,22 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
 	HTMX.Success(w, "Admin criado com sucesso")
 }
 
+func RemoveAdmin(w http.ResponseWriter, r *http.Request) {
+	if !CheckAdmin(w, r) {
+		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
+		return
+	}
+
+	email := r.FormValue("Email")
+	err := DB.SetAdmin(DB.GetUUID(email), false)
+	if err != nil {
+		HTMX.Failure(w, "Falha ao remover o Admin: ", err)
+		return
+	}
+
+	HTMX.Success(w, "Admin removido com sucesso")
+}
+
 func PostActivity(w http.ResponseWriter, r *http.Request) {
 	if !CheckAdmin(w, r) {
 		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))

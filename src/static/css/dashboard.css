@@ -1,61 +1,51 @@
 body {
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif;
-  border-color: #000000;
-  border-style: solid;
-  border-width: 1px;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
-
-.htmx-indicator{
-  display:none;
-}
-
-.htmx-request .htmx-indicator{
-  display:inline-block;
-}
-
-.htmx-request.verify-email-button{
-  display:none;
-}
-
-.atividades {
+#available-activities, #registered-activities {
   display: flex;
   flex-direction: column;
 }
-
-.atividade {
+.activity {
   display: flex;
   flex-direction: row;
+  border: 1px solid black;
+  padding: 15px 0;
+  margin-bottom: 15px;
 }
-
 .info {
-  display: flex;
-  flex-direction: column;
+  flex: 0 0 100px;
+  margin-right: 20px;
 }
-
 .content {
-  display: flex;
-  flex-direction: column;
+  flex: 1;
 }
-
 .upper_content {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 10px;
 }
-
-.upper_content {
-  display: flex;
-  flex-direction: column;
-}
-
 .a_title {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
-
 .sub_header {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  color: #666;
+  font-size: 0.9em;
 }
-
+.descricao {
+  margin-top: 10px;
+}
+button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0056b3;
+}
