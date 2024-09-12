@@ -1,200 +1,201 @@
 {{ define "dashboard" }}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
     <title>SCTI - Dashboard</title>
-  </head>
-  <body>
-    <div class="title">Painel do Usuário</div>
+</head>
+<body>
+    <header>
+        <h2>Painel do Usuário</h2>
+    </header>
 
-    {{ if not .IsVerified }}
-      <div>
-        <button hx-post="/send-verification-email"
-                hx-trigger="click"
-                hx-target="#email_message"
-                hx-swap="innerHTML"
-                hx-indicator="#loading-indicator"
-                hx-refresh="true">
-          Verificar Email
-        </button>
-        <div id="loading-indicator" class="htmx-indicator">
-          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <style>
-              .spinner_P7sC{animation:spinner_YpZS .8s linear infinite;animation-delay:-.8s}
-              .spinner_MJg4{animation-delay:-.65s}
-              .spinner_riZA{animation-delay:-.5s}
-              @keyframes spinner_YpZS{
-                0%{r:1.5px}
-                94%,100%{r:3px}
-              }
-            </style>
-            <circle class="spinner_P7sC" cx="4" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_MJg4" cx="12" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_riZA" cx="20" cy="12" r="3"/>
-          </svg>
-        </div>
-      </div>
-      <div id="email_message"></div>
-    {{ end }}
+    <main>
+        <section id="user-actions">
+            {{ if not .IsVerified }}
+                <div id="email-verification">
+                    <button hx-post="/send-verification-email"
+                            hx-trigger="click"
+                            hx-target="#email_message"
+                            hx-swap="innerHTML"
+                            hx-indicator="#loading-indicator"
+                            hx-refresh="true">
+                        Verificar Email
+                    </button>
+                    <div id="loading-indicator" class="htmx-indicator">
+                        <!-- SVG spinner code here -->
+                    </div>
+                    <div id="email_message"></div>
+                </div>
+            {{ end }}
+            <nav>
+                <a href="/ingresso"><button>Comprar</button></a>
+                <a href="/logoff"><button>Logoff</button></a>
+            </nav>
+        </section>
 
-    <a href="/ingresso"><button>comprar</button></a>
-    <a href="/logoff"><button>logoff</button></a>
+        <section id="registered-activities">
+            <h2>Atividades Registradas</h2>
+            {{ range .RegisteredActivities }}
+                <article class="activity registered" id="registrada_{{ .Activity_id }}">
+                    <div class="info">
+                        <div class="id">ID: {{ .Activity_id }}</div>
+                        <div class="tipo">{{ .Activity_type }}</div>
+                    </div>
+                    <div class="content">
+                        <div class="upper_content">
+                            <div class="a_title">
+                                <div class="topico">{{ .Topic }}</div>
+                                <div class="palestrante">{{ .Speaker }}</div>
+                            </div>
+                            <div class="sub_header">
+                                <div class="dia">{{ .Day }}</div>
+                                <div class="hora">{{ .Time }}</div>
+                                <div class="sala">{{ .Room }}</div>
+                                <div class="vagas">{{ .Spots }}</div>
+                            </div>
+                        </div>
+                        <div class="descricao">{{ .Description }}</div>
+                    </div>
+                    <button class="unregister" hx-refresh="true"
+                                               hx-post="/descadastrar"
+                                               hx-trigger="click"
+                                               hx-target="#registered_{{ .Activity_id }}"
+                                               hx-swap="innerHTML"
+                                               hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+                        Sair
+                    </button>
+                    <div class="response" id="registered_{{ .Activity_id }}"></div>
+                </article>
+            {{ end }}
+        </section>
 
-    <div class="atividades_registradas">
-    {{ range .RegisteredActivities }}
-      <div class="response" id="registered_{{ .Activity_id }}"></div>
-      <div class="atividade_registrada" id="registrada_{{ .Activity_id }}">
-        <div class="info">
-          <div class="id">ID: {{ .Activity_id }}</div>
-          <div class="tipo">{{ .Activity_type }}</div>
-        </div>
-        <div class="content">
-          <div class="upper_content">
-            <div class="a_title">
-              <div class="topico">{{ .Topic }}</div>
-              <div class="palestrante">{{ .Speaker }}</div>
+        <section id="available-activities">
+          <h2>Atividades Disponíveis</h2>
+          {{ range .Activities }}
+          <article class="activity" id="activity_{{ .Activity_id }}">
+            <div class="info">
+              <div class="id">ID: {{ .Activity_id }}</div>
+              <div class="tipo">{{ .Activity_type }}</div>
             </div>
-            <div class="sub_header">
-              <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
-              <div class="sala">{{ .Room }}</div>
-              <div class="vagas">{{ .Spots }}</div>
+            <div class="content">
+              <div class="upper_content">
+                <div class="a_title">
+                  <div class="topico">{{ .Topic }}</div>
+                  <div class="palestrante">{{ .Speaker }}</div>
+                </div>
+                <div class="sub_header">
+                  <div class="dia">Dia {{ .Day }}</div>
+                  <div class="hora">{{ .Time }}</div>
+                  <div class="sala">{{ .Room }}</div>
+                  <div class="vagas">Vagas: {{ .Spots }}</div>
+                </div>
+              </div>
+              <div class="descricao">{{ .Description }}</div>
             </div>
+            <button class="register" hx-refresh="true"
+                                     hx-post="/cadastrar"
+                                     hx-trigger="click"
+                                     hx-target="#hx-return-{{ .Activity_id }}"
+                                     hx-swap="innerHTML"
+                                     hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+              Cadastrar
+            </button>
+            <div class="response" id="hx-return-{{ .Activity_id }}"></div>
+          </article>
+          {{ end }}        </section>
+
+        {{ if .IsAdmin }}
+        <section id="admin-panel">
+          <h2>Painel de Administração</h2>
+          <div id="add-activity">
+            <h2>Adicionar Atividade</h2>
+            <form hx-post="/add_activity" hx-trigger="submit" hx-target="#admatividade" hx-swap="innerHTML">
+              <label for="spots">Vagas</label>
+              <input name="spots" type="number" id="spots"><br>
+
+              <label for="type">Tipo</label>
+              <input name="type" type="text" id="type"><br>
+
+              <label for="room">Sala</label>
+              <input name="room" type="text" id="room"><br>
+
+              <label for="speaker">Palestrante</label>
+              <input name="speaker" type="text" id="speaker"><br>
+
+              <label for="topic">Tópico</label>
+              <input name="topic" type="text" id="topic"><br>
+
+              <label for="description">Descrição</label>
+              <input name="description" type="text" id="description"><br>
+
+              <label for="time">Hora</label>
+              <input name="time" type="time" id="time"><br>
+
+              <label for="day">Dia</label>
+              <input name="day" type="number" id="day"><br>
+
+              <button type="submit">Enviar</button>
+            </form>
+            <div id="admatividade"></div>
           </div>
-          <div class="descricao">{{ .Description }}</div>
-        </div>
-        <button class="cadastrar" hx-refresh="true"
-                                  hx-post="/descadastrar"
-                                  hx-trigger="click"
-                                  hx-target="#registered_{{ .Activity_id }}"
-                                  hx-swap="innerHTML"
-                                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
-          Sair
-        </button>
 
-      </div>
-    {{ end }}
-    </div>
+          <div id="user-management">
+            <h2>Gerenciamento de Usuários</h2>
+            <form id="user-admin-form">
+              <label for="user-email">E-mail do usuário:</label>
+              <input type="email" id="user-email" name="Email" required><br>
 
-    <div class="atividades">
-    {{ range .Activities }}
-      <div class="response" id="hx-return-{{ .Activity_id }}"></div>
-      <div class="atividade" id="activity_{{ .Activity_id }}">
-        <div class="info">
-          <div class="id">ID: {{ .Activity_id }}</div>
-          <div class="tipo">{{ .Activity_type }}</div>
-        </div>
-        <div class="content">
-          <div class="upper_content">
-            <div class="a_title">
-              <div class="topico">{{ .Topic }}</div>
-              <div class="palestrante">{{ .Speaker }}</div>
-            </div>
-            <div class="sub_header">
-              <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
-              <div class="sala">{{ .Room }}</div>
-              <div class="vagas">{{ .Spots }}</div>
-            </div>
+              <button type="button" hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML" hx-include="#user-email">
+                Transformar usuário em admin
+              </button>
+              <div id="admcriar"></div>
+
+              <button type="button" hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML" hx-include="#user-email">
+                Remover admin do usuário
+              </button>
+              <div id="admtirar"></div>
+            </form>
           </div>
-          <div class="descricao">{{ .Description }}</div>
-        </div>
-        <button class="cadastrar" hx-refresh="true"
-                                  hx-post="/cadastrar"
-                                  hx-trigger="click"
-                                  hx-target="#hx-return-{{ .Activity_id }}"
-                                  hx-swap="innerHTML"
-                                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
-          Cadastrar
-        </button>
-      </div>
-      {{ end }}
-    </div>
 
-    {{ if .IsAdmin }}
-      <div>
-        <form>
-          <label for="spots">Vagas</label><br>
-          <input name="spots" type="number"><br>
+          <div id="ticket-management">
+            <h2>Gerenciamento de Ingressos</h2>
+            <form id="ticket-management-form">
+              <label for="ticket-email">E-mail do usuário:</label>
+              <input type="email" id="ticket-email" name="Email" required><br>
 
-          <label for="type">Tipo</label><br>
-          <input name="type" type="text"><br>
+              <button type="button" hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML" hx-include="#ticket-email">
+                Validar Ingresso
+              </button>
+              <div id="markpaid"></div>
+          </div>
 
-          <label for="room">Sala</label><br>
-          <input name="room" type="text"><br>
+          <div id="qr-code-management">
+            <button type="button" hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML" hx-include="#ticket-email">
+              Enviar QR Code para o usuário
+            </button>
+            <div id="qrcodeuser"></div>
+            </form>
 
-          <label for="speaker">Palestrante</label><br>
-          <input name="speaker" type="text"><br>
+            <button hx-post="/qr-all"
+                    hx-trigger="click"
+                    hx-target="#qrcodeall"
+                    hx-swap="innerHTML"
+                    hx-indicator="#loading-indicator">
+              Enviar QR para todos
+            </button>
+            <div id="qrcodeall"></div>
+          </div>
+        </section>
+        {{ end }}
+    </main>
 
-          <label for="topic">Tópico</label><br>
-          <input name="topic" type="text"><br>
-
-          <label for="description">Descrição</label><br>
-          <input name="description" type="text"><br>
-
-          <label for="time">Hora</label><br>
-          <input name="time" type="time"><br>
-
-          <label for="day">Dia</label><br>
-          <input name="day" type="number"><br>
-
-          <button hx-post="/add_activity" hx-trigger="click" hx-target="#admatividade" hx-swap="innerHTML">
-            Enviar
-          </button>
-          <div id="admatividade"></div>
-        </form>
-      </div>
-      <br>
-      <div>
-        <form>
-          <label for="Email">Transformar usuário em admin</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="admcriar"></div>
-        <form>
-          <label for="Email">Remover admin do usuário</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="admtirar"></div>
-
-      </div>
-      <div>
-        <form>
-          <label for="Email">Validar Ingresso:</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="markpaid"></div>
-        <form>
-          <label for="Email">Enviar QR Code para o usuário</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="qrcodeuser"></div>
-        <button hx-post="/qr-all"
-                hx-trigger="click"
-                hx-target="#qrcodeall"
-                hx-swap="innerHTML"
-                hx-indicator="#loading-indicator">
-          Enviar QR para todos
-        </button>
-        <div id="qrcodeall"></div>
-      </div>
-    {{ end }}
-  </body>
+    <footer>
+      <!-- Footer content if needed -->
+    </footer>
+</body>
 </html>
 {{ end }}
