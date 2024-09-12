@@ -50,6 +50,10 @@
       <div class="response" id="hx-return-{{ .Activity_id }}"></div>
     {{ end }}
 
+    {{ range .RegisteredActivities }}
+      <div class="response" id="registered_{{ .Activity_id }}"></div>
+    {{ end }}
+
     <div class="main-content">
       <h1 class="title">Select your Courses</h1>
       <div class="days-container">
@@ -80,8 +84,32 @@
           <span id="activity-type" class="type">MiniCursos</span>
           <img class="back" src="/static/assets/home/bottom_container.svg" />
           <img class="fore" src="/static/assets/home/container.svg" />
-          <div id="available-courses" class="available-courses">
+          <div id="available-courses" class="available-courses"></div>
+        </div>
+      </div>
 
+      <div class="activity-container" id="selected-programation">
+        <div class="activity">
+          <span id="activity-type" class="type">Meus MiniCursos</span>
+          <img class="back" src="/static/assets/home/bottom_container.svg" />
+          <img class="fore" src="/static/assets/home/container.svg" />
+          <div id="registered-courses" class="available-courses">
+            {{ range $index, $activity := .RegisteredActivities }}
+              <div class="registered-course">
+                <span class="topic truncate">{{ .Topic }}</span>
+                <span class="day">{{ .Day }}</span>
+                <span class="time">{{ .Time }}</span>
+                <button class="cadastrar" hx-refresh="true"
+                  hx-post="/descadastrar"
+                  hx-trigger="click"
+                  hx-target="#registered_{{ .Activity_id }}"
+                  hx-swap="innerHTML"
+                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'
+                >
+                  Sair
+                </button>
+              </div>
+            {{ end }}
           </div>
         </div>
       </div>
@@ -240,12 +268,11 @@
 
             li.appendChild(detailsHolder)
             li.innerHTML += btn
-            // li.innerHTML += `<div class="response" id="hx-return-${activity.Activity_id}"></div>`
             ul.appendChild(li)
           })
           availableCourses.appendChild(ul)
           htmx.process(availableCourses)
-        } else availableCourses.textContent = "Não há nenhuma atividade programada nesse dia"
+        } else availableCourses.textContent = "Não há nenhuma atividade disponível nesse dia"
         if(day > 0 && day < 6) HighlightButton(day)
       }
 
@@ -262,15 +289,34 @@
       }
       
       FilterActivities(1)
+
+      function DayToString(day) {
+        switch (day) {
+          case "1": return "Segunda"
+          case "2": return "Terça"
+          case "3": return "Quarta"
+          case "4": return "Quinta"
+          default:  return "Sexta"
+        }
+      }
+
+      function AdjustCourses() {
+        // {{.RegisteredActivities}}
+        const daysList = document.querySelectorAll('#registered-courses .day')
+        const timeList = document.querySelectorAll('#registered-courses .time')
+        daysList.forEach((item) => item.textContent = DayToString(item.textContent))
+        timeList.forEach((item) => item.textContent = `às ${item.textContent.substring(0, 5)}`)
+      }
+      AdjustCourses()
+
+      // Adjust indices after HTMX request
+      document.body.addEventListener('htmx:afterSwap', (event) => {
+        console.log("test")
+        if (event.detail.target.id === 'registered-courses') {
+          AdjustCourses()
+        }
+      })
     </script>
   </body>
 </html>
 {{ end }}
-<!-- <button class="cadastrar" hx-refresh="true"
-hx-post="/cadastrar"
-hx-trigger="click"
-hx-target="#hx-return-{{ .Activity_id }}"
-hx-swap="innerHTML"
-hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
-Cadastrar
-</button> -->

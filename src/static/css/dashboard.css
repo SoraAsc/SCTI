@@ -13,7 +13,7 @@ h1 {
   font-size: min(2em, 5vw);
 }
 
-.header-nav a, .main-content .activity-container .activity .available-courses .course-container button {
+.header-nav a, .main-content .activity-container .activity .available-courses button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +34,7 @@ h1 {
   margin-right: 15px;
 }
 
-.main-content .activity-container .activity .available-courses .course-container button {
+.main-content .activity-container .activity .available-courses button {
   cursor: pointer;
 }
 
@@ -48,13 +48,15 @@ h1 {
 .main-content .activity-container .activity .available-courses {
   position: absolute;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   top: 20%;
   width: 100%;
   height: 66%;
   color: rgba(255, 0, 199, 1);
   font-family: "Joystix";
   margin-top: 2em;
+  row-gap: 2em;
 }
 
 .main-content .activity-container .activity .available-courses .course-container {
@@ -72,6 +74,27 @@ h1 {
   color: black;
 }
 
+.main-content .activity-container .activity .available-courses .registered-course {
+  display: flex;
+  width: 500px;
+  align-items: center;
+  column-gap: 2em;
+}
+
+.main-content .activity-container .activity .available-courses .registered-course .topic {
+  width: 290px;
+}
+.main-content .activity-container .activity .available-courses .registered-course .day {
+  width: 60px;
+  color: black;
+  font-size: 0.6em;
+}
+.main-content .activity-container .activity .available-courses .registered-course .time {
+  width: 100px;
+  color: rgba(0, 0, 0, 0.507);
+  font-size: 0.6em;
+}
+
 li, span {
   font-family: "Joystix";
   font-size: 12px;
@@ -86,15 +109,6 @@ li + li {
   white-space: nowrap;
 }
 
-/* body {
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif;
-  border-color: #000000;
-  border-style: solid;
-  border-width: 1px;
-}
-
 .htmx-indicator{
   display:none;
 }
@@ -106,44 +120,3 @@ li + li {
 .htmx-request.verify-email-button{
   display:none;
 }
-
-.atividades {
-  display: flex;
-  flex-direction: column;
-}
-
-.atividade {
-  display: flex;
-  flex-direction: row;
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
-
-.upper_content {
-  display: flex;
-  flex-direction: column;
-}
-
-.upper_content {
-  display: flex;
-  flex-direction: column;
-}
-
-.a_title {
-  display: flex;
-  flex-direction: row;
-}
-
-.sub_header {
-  display: flex;
-  flex-direction: row;
-}
- */
