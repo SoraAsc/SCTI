@@ -194,8 +194,9 @@ footer {
 }
 
 .close {
-  color: #aaa;
-  font-size: 28px;
+  color: white;
+  font-size: 1.5em;
+  font-family: "Joystix";
   font-weight: bold;
   position: absolute;
   top: 60%;
@@ -206,8 +207,8 @@ footer {
 
 .close:hover,
 .close:focus {
-  color: #000;
-  text-decoration: none;
+  color: #ff00c7;
+  letter-spacing: 1px;
 }
  
   .success-messages {

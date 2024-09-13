@@ -15,7 +15,7 @@ func Failure(w http.ResponseWriter, message string, err error) {
    <span class="close" onclick=" const modals = document.querySelectorAll('.modal');
         if (modals.length > 0) {
             modals[modals.length - 1].style.display = 'none';
-        }">x</span>
+        }">sair</span>
   </div>
 
   `))
@@ -31,7 +31,7 @@ func Success(w http.ResponseWriter, message string) {
   <span class="close" onclick=" const modals = document.querySelectorAll('.modal');
         if (modals.length > 0) {
             modals[modals.length - 1].style.display = 'none';
-        }">x</span>
+        }">sair</span>
   </div>
   `))
 }
