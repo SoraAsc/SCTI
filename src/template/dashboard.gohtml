@@ -43,7 +43,10 @@
 
     <nav class="header-nav">
       <h2 class="nav-title-pixel">scti</h2>
-      <a href="/logoff">Logoff</a>
+      <a href="/logoff" class="pink-pixel-button">
+        <img src="/static/assets/home/button.svg" />
+        <p>Logoff</p>
+      </a>
     </nav>
 
     {{ range .Activities }}
@@ -246,7 +249,7 @@
       </div>
     {{ end }}
     <script>
-      const savedDay = localStorage.getItem('currentDay')
+      const savedDay = localStorage.getItem('dashboard_currentDay')
       let currentDay = savedDay ? parseInt(savedDay, 10) : 1
       let lastWeekDayButtonSelected = null
       const availableCourses = document.getElementById("available-courses")
@@ -260,7 +263,7 @@
 
       const FilterActivities = (day) => {
         currentDay = day
-        localStorage.setItem('currentDay', currentDay)
+        localStorage.setItem('dashboard_currentDay', currentDay)
         availableCourses.innerHTML = ""
         const dayActivities = activities[day] || []
         if(dayActivities.length > 0)
@@ -308,7 +311,7 @@
           case 2: return "Terça"
           case 3: return "Quarta"
           case 4: return "Quinta"
-          default:  return "Sexta"
+          default: return "Sexta"
         }
       }
 
