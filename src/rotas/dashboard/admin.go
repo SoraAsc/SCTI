@@ -2,8 +2,8 @@ package dashboard
 
 import (
 	DB "SCTI/database"
+	Erros "SCTI/erros"
 	HTMX "SCTI/htmx"
-  Erros "SCTI/erros"
 	"fmt"
 	"net/http"
 	"os"
@@ -81,22 +81,22 @@ func PostActivity(w http.ResponseWriter, r *http.Request) {
 	eventStart := os.Getenv("SCTI_START_DATE")
 	hourMin := r.FormValue("time") + ":00"
 	day, err := strconv.Atoi(r.FormValue("day"))
-  if err != nil {
-    HTMX.Failure(w, "Error creating activity", fmt.Errorf("Error parsing day"))
-  }
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", fmt.Errorf("Error parsing day"))
+	}
 
 	eventStartDate, err := time.Parse(time.DateOnly, eventStart)
-  if err != nil {
-    HTMX.Failure(w, "Error creating activity", err)
-  }
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", err)
+	}
 	activityHour, err := time.Parse(time.TimeOnly, hourMin)
-  if err != nil {
-    HTMX.Failure(w, "Error creating activity", err)
-  }
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", err)
+	}
 	activityTime := eventStartDate.AddDate(0, 0, day-1)
-  Erros.LogError("dashboard/admin", fmt.Errorf(" base activityTime %v", activityTime))
+	Erros.LogError("dashboard/admin", fmt.Errorf(" base activityTime %v", activityTime))
 	activityTime = activityTime.Add((time.Hour * time.Duration(activityHour.Hour())) + (time.Hour * 3))
-  Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTime %v", activityTime))
+	Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTime %v", activityTime))
 
 	var a DB.Activity
 	a.Spots, _ = strconv.Atoi(r.FormValue("spots"))
