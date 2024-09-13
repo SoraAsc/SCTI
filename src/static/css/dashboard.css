@@ -61,15 +61,15 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 20%;
+  top: 4em;
   width: 100%;
   height: 66%;
-  max-height: 160px;
+  max-height: 300px;
   overflow-y: auto;
   color: rgba(255, 0, 199, 1);
   font-family: "Joystix";
   margin-top: 1em;
-  row-gap: 2em;
+  row-gap: 1em;
 }
 
 .main-content .activity-container .activity .available-courses .course-container {
