@@ -265,6 +265,33 @@ footer {
   margin-bottom: 6em;
 }
 
+
+.activity-container .left-button {
+  margin-right: 1.2em;
+}
+
+.activity-container .right-button {
+  margin-left: 1.2em;
+  transform: rotateY(180deg);
+}
+
+.activity-container .left-button:not(.disabled),
+.activity-container .right-button:not(.disabled) {
+  cursor: pointer;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.activity-container .left-button:not(.disabled):hover {
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+.activity-container .right-button:not(.disabled):hover {
+  opacity: 0.5;
+  transform: rotateY(180deg) scale(1.1);
+}
+
+
 .activity-container .activity {
   position: relative;
 }

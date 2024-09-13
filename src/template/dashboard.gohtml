@@ -80,12 +80,16 @@
       </div>
 
       <div class="activity-container" id="programation">
+        <img class="left-button" id="left-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
         <div class="activity">
           <span id="activity-type" class="type">MiniCursos</span>
           <img class="back" src="/static/assets/home/bottom_container.svg" />
           <img class="fore" src="/static/assets/home/container.svg" />
           <div id="available-courses" class="available-courses"></div>
         </div>
+        <img class="right-button" id="right-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('right')"/>
       </div>
 
       <div class="activity-container" id="selected-programation">
@@ -242,13 +246,21 @@
       </div>
     {{ end }}
     <script>
+      const savedDay = localStorage.getItem('currentDay')
+      let currentDay = savedDay ? parseInt(savedDay, 10) : 1
       let lastWeekDayButtonSelected = null
       const availableCourses = document.getElementById("available-courses")
       const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
         .push(activity), acc), {})
-      console.log(activities)
+      
+      const navigate = (direction) => {
+        currentDay = ((currentDay - 1 + (direction === "left" ? -1 : 1) + 5) % 5) + 1
+        FilterActivities(currentDay)
+      }
 
       const FilterActivities = (day) => {
+        currentDay = day
+        localStorage.setItem('currentDay', currentDay)
         availableCourses.innerHTML = ""
         const dayActivities = activities[day] || []
         if(dayActivities.length > 0)
@@ -288,34 +300,27 @@
           hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'>Inscreva-se</button>`
       }
       
-      FilterActivities(1)
+      FilterActivities(currentDay)
 
-      function DayToString(day) {
+      const DayToString = (day) => {
         switch (day) {
-          case "1": return "Segunda"
-          case "2": return "Terça"
-          case "3": return "Quarta"
-          case "4": return "Quinta"
+          case 1: return "Segunda"
+          case 2: return "Terça"
+          case 3: return "Quarta"
+          case 4: return "Quinta"
           default:  return "Sexta"
         }
       }
 
-      function AdjustCourses() {
-        // {{.RegisteredActivities}}
+      const AdjustCourses = () => {
+        const registeredActivities = {{.RegisteredActivities}}
         const daysList = document.querySelectorAll('#registered-courses .day')
         const timeList = document.querySelectorAll('#registered-courses .time')
-        daysList.forEach((item) => item.textContent = DayToString(item.textContent))
-        timeList.forEach((item) => item.textContent = `às ${item.textContent.substring(0, 5)}`)
+        daysList.forEach((item, i) => item.textContent = DayToString(registeredActivities[i].Day))
+        timeList.forEach((item, i) => item.textContent = `às ${registeredActivities[i].Time.substring(0, 5)}`)
       }
-      AdjustCourses()
 
-      // Adjust indices after HTMX request
-      document.body.addEventListener('htmx:afterSwap', (event) => {
-        console.log("test")
-        if (event.detail.target.id === 'registered-courses') {
-          AdjustCourses()
-        }
-      })
+      AdjustCourses()
     </script>
   </body>
 </html>

@@ -53,6 +53,8 @@ h1 {
   top: 20%;
   width: 100%;
   height: 66%;
+  max-height: 160px;
+  overflow-y: auto;
   color: rgba(255, 0, 199, 1);
   font-family: "Joystix";
   margin-top: 2em;
