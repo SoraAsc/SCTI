@@ -120,6 +120,75 @@
           </div>
         </div>
       </div>
+
+      {{ if .IsAdmin }}
+        <form>
+          <h2>Cadastrar Atividade</h2>
+          <div>
+            <label for="spots">Vagas</label><br>
+            <input name="spots" type="number">
+          </div>
+
+          <div>
+            <label for="type">Tipo</label><br>
+            <input name="type" type="text">
+          </div>
+
+          <div>
+            <label for="room">Sala</label><br>
+            <input name="room" type="text">
+          </div>
+
+          <div>
+            <label for="speaker">Palestrante</label><br>
+            <input name="speaker" type="text">
+          </div>
+
+          <div>
+            <label for="topic">Tópico</label><br>
+            <input name="topic" type="text">
+          </div>
+
+          <div>
+            <label for="description">Descrição</label><br>
+            <input name="description" type="text">
+          </div>
+
+          <div>
+            <label for="time">Hora</label><br>
+            <input name="time" type="time">
+          </div>
+
+          <div>
+            <label for="day">Dia</label><br>
+            <input name="day" type="number"><br>
+          </div>
+
+          <button class="button-submmit" hx-post="/add_activity" hx-trigger="click" 
+            hx-target="#admatividade" hx-swap="innerHTML">
+            Enviar
+          </button>
+          <div id="admatividade"></div>
+        </form>
+        <form>
+          <h2>Transformar usuário em admin</h2>
+          <input type="email" name="Email">
+          <button class="button-submmit" 
+            hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
+            Enviar
+          </button>
+          <div id="admcriar"></div>
+        </form>
+        <form>
+          <h2>Validar Ingresso</h2>
+          <input type="email" name="Email"><br>
+          <button class="button-submmit" 
+            hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
+            Enviar
+          </button>
+          <div id="markpaid"></div>
+        </form>
+      {{ end }}
     </div>
 
     <!-- <div class="atividades_registradas">
@@ -193,61 +262,6 @@
       {{ end }}
     </div> -->
 
-    {{ if .IsAdmin }}
-      <div>
-        <form>
-          <label for="spots">Vagas</label><br>
-          <input name="spots" type="number"><br>
-
-          <label for="type">Tipo</label><br>
-          <input name="type" type="text"><br>
-
-          <label for="room">Sala</label><br>
-          <input name="room" type="text"><br>
-
-          <label for="speaker">Palestrante</label><br>
-          <input name="speaker" type="text"><br>
-
-          <label for="topic">Tópico</label><br>
-          <input name="topic" type="text"><br>
-
-          <label for="description">Descrição</label><br>
-          <input name="description" type="text"><br>
-
-          <label for="time">Hora</label><br>
-          <input name="time" type="time"><br>
-
-          <label for="day">Dia</label><br>
-          <input name="day" type="number"><br>
-
-          <button hx-post="/add_activity" hx-trigger="click" hx-target="#admatividade" hx-swap="innerHTML">
-            Enviar
-          </button>
-          <div id="admatividade"></div>
-        </form>
-      </div>
-      <br>
-      <div>
-        <form>
-          <label for="Email">Transformar usuário em admin</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="admcriar"></div>
-      </div>
-      <div>
-        <form>
-          <label for="Email">Validar Ingresso:</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="markpaid"></div>
-      </div>
-    {{ end }}
     <script>
       const savedDay = localStorage.getItem('dashboard_currentDay')
       let currentDay = savedDay ? parseInt(savedDay, 10) : 1
