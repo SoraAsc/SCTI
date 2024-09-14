@@ -30,7 +30,10 @@
 
     <nav class="header-nav">
       <h2 class="nav-title-pixel">Painel do Usuário</h2>
-      <a href="/ingresso"><button>Comprar</button></a>
+      <a href="/ingresso" class="pink-pixel-button">
+        <img src="/static/assets/home/button.svg" />
+        <p>Comprar</p>
+      </a>
       <a href="/logoff" class="pink-pixel-button">
         <img src="/static/assets/home/button.svg" />
         <p>Logoff</p>
@@ -111,7 +114,7 @@
 
       {{ if .IsAdmin }}
         <form hx-post="/add_activity" hx-trigger="submit" hx-target="#admatividade" hx-swap="innerHTML">
-          <h2>Cadastrar Atividade</h2>
+          <h2>Adicionar Atividade</h2>
           <div>
             <label for="spots">Vagas</label><br>
             <input name="spots" type="number">
