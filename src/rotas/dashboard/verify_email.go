@@ -1,44 +1,45 @@
 package dashboard
 
 import (
-  DB "SCTI/database"
-  HTMX "SCTI/htmx"
-  "net/http"
-  "net/url"
-  "fmt"
-  "os"
+	DB "SCTI/database"
+	Erros "SCTI/erros"
+	HTMX "SCTI/htmx"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
 
-  gomail "gopkg.in/mail.v2"
+	gomail "gopkg.in/mail.v2"
 )
 
 func VerifyEmail(w http.ResponseWriter, r *http.Request) {
-  cookie, err := r.Cookie("accessToken")
-  if err != nil {
-    // fmt.Println("Error Getting cookie:", err)
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-    return
-  }
+	cookie, err := r.Cookie("accessToken")
+	if err != nil {
+		Erros.LogError("dashboard/verify_email", fmt.Errorf("Error getting cookie: %v", err))
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
 
-  if cookie.Value == "-1" {
-    // fmt.Println("Invalid accessToken")
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
-  }
+	if cookie.Value == "-1" {
+		Erros.LogError("dashboard/verify_email", fmt.Errorf("Invalid access token"))
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	}
 
-  email := DB.GetEmail(cookie.Value)
-  code, err := DB.GetCode(cookie.Value)
-  if err != nil {
-    HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
-    return
-  }
+	email := DB.GetEmail(cookie.Value)
+	code, err := DB.GetCode(cookie.Value)
+	if err != nil {
+		HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
+		return
+	}
 
-  from := os.Getenv("GMAIL_SENDER")
-  pass := os.Getenv("GMAIL_PASS")
+	from := os.Getenv("GMAIL_SENDER")
+	pass := os.Getenv("GMAIL_PASS")
 
-  encodedEmail := url.QueryEscape(email)
-  verificationLink := fmt.Sprintf("http://localhost:8080/verify?code=%s&email=%s", code, encodedEmail)
-  notMeLink := fmt.Sprintf("http://localhost:8080/delete?code=%s&email=%s", code, encodedEmail)
+	encodedEmail := url.QueryEscape(email)
+	verificationLink := fmt.Sprintf("http://localhost:8080/verify?code=%s&email=%s", code, encodedEmail)
+	notMeLink := fmt.Sprintf("http://localhost:8080/delete?code=%s&email=%s", code, encodedEmail)
 
-  htmlBody := `
+	htmlBody := `
     <!DOCTYPE html>
     <html>
     <head>
@@ -73,20 +74,20 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
     </html>
   `
 
-  plainBody := "Clique aqui para verificar seu email:\n" + verificationLink
+	plainBody := "Clique aqui para verificar seu email:\n" + verificationLink
 
-  msg := gomail.NewMessage()
-  msg.SetHeader("From", from)
-  msg.SetHeader("To", email)
-  msg.SetHeader("Subject", "Verificação de email SCTI")
-  msg.SetBody("text/plain", plainBody)
-  msg.AddAlternative("text/html", htmlBody)
+	msg := gomail.NewMessage()
+	msg.SetHeader("From", from)
+	msg.SetHeader("To", email)
+	msg.SetHeader("Subject", "Verificação de email SCTI")
+	msg.SetBody("text/plain", plainBody)
+	msg.AddAlternative("text/html", htmlBody)
 
-  dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
 
-  if err := dialer.DialAndSend(msg); err != nil {
-    HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
-    return
-  }
-  HTMX.Success(w, "Email de verificação enviado com sucesso!")
+	if err := dialer.DialAndSend(msg); err != nil {
+		HTMX.Failure(w, "Falha ao enviar o email de verificação: ", err)
+		return
+	}
+	HTMX.Success(w, "Email de verificação enviado com sucesso!")
 }

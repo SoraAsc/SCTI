@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
     <title>SCTI - Dashboard</title>
   </head>
   <body>
     {{ if not .IsVerified }}
-      <div>
+      <div id="email-verification">
         <button hx-post="/send-verification-email"
                 hx-trigger="click"
                 hx-target="#email_message"
@@ -22,27 +22,15 @@
           Verificar Email
         </button>
         <div id="loading-indicator" class="htmx-indicator">
-          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <style>
-              .spinner_P7sC{animation:spinner_YpZS .8s linear infinite;animation-delay:-.8s}
-              .spinner_MJg4{animation-delay:-.65s}
-              .spinner_riZA{animation-delay:-.5s}
-              @keyframes spinner_YpZS{
-                0%{r:1.5px}
-                94%,100%{r:3px}
-              }
-            </style>
-            <circle class="spinner_P7sC" cx="4" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_MJg4" cx="12" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_riZA" cx="20" cy="12" r="3"/>
-          </svg>
+          <!-- SVG spinner code here -->
         </div>
+        <div id="email_message"></div>
       </div>
-      <div id="email_message"></div>
     {{ end }}
 
     <nav class="header-nav">
-      <h2 class="nav-title-pixel">scti</h2>
+      <h2 class="nav-title-pixel">Painel do Usuário</h2>
+      <a href="/ingresso"><button>Comprar</button></a>
       <a href="/logoff" class="pink-pixel-button">
         <img src="/static/assets/home/button.svg" />
         <p>Logoff</p>
@@ -122,7 +110,7 @@
       </div>
 
       {{ if .IsAdmin }}
-        <form>
+        <form hx-post="/add_activity" hx-trigger="submit" hx-target="#admatividade" hx-swap="innerHTML">
           <h2>Cadastrar Atividade</h2>
           <div>
             <label for="spots">Vagas</label><br>
@@ -161,32 +149,67 @@
 
           <div>
             <label for="day">Dia</label><br>
-            <input name="day" type="number"><br>
+            <input name="day" type="number">
           </div>
 
-          <button class="button-submmit" hx-post="/add_activity" hx-trigger="click" 
-            hx-target="#admatividade" hx-swap="innerHTML">
-            Enviar
-          </button>
+          <button class="button-submmit">Enviar</button>
           <div id="admatividade"></div>
         </form>
-        <form>
-          <h2>Transformar usuário em admin</h2>
-          <input type="email" name="Email">
-          <button class="button-submmit" 
-            hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
-            Enviar
+
+        <form id="user-management">
+
+          <h2>Gerenciamento de Usuários</h2>
+          <div>
+            <label for="Email">Email</label><br>
+            <input id="user-email" type="email" name="Email" required>
+          </div>
+          
+          <button class="button-submmit" type="button"
+            hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML"
+            hx-include="#user-email">
+            Transformar usuário em admin
           </button>
           <div id="admcriar"></div>
+
+          <button class="button-submmit" type="button" 
+            hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML" 
+            hx-include="#user-email">
+            Remover admin do usuário
+          </button>
+          <div id="admtirar"></div>
+
         </form>
-        <form>
-          <h2>Validar Ingresso</h2>
-          <input type="email" name="Email"><br>
+
+        <form id="ticket-manager">
+          <h2>Gerenciamento de ingresso</h2>
+          <div>
+            <label for="ticket-email">E-mail do usuário:</label><br>
+            <input type="email" id="ticket-email" name="Email" required>
+          </div>
           <button class="button-submmit" 
-            hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
-            Enviar
+            hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML" hx-include="#ticket-email">
+            Validar Ingresso
           </button>
           <div id="markpaid"></div>
+
+          <div id="qr-code-management">
+            <button type="button" class="button-submmit"
+              hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML" hx-include="#ticket-email">
+              Enviar QR Code para o usuário
+            </button>
+            <div id="qrcodeuser"></div>
+            </form>
+
+            <button class="button-submmit"
+                    hx-post="/qr-all"
+                    hx-trigger="click"
+                    hx-target="#qrcodeall"
+                    hx-swap="innerHTML"
+                    hx-indicator="#loading-indicator">
+              Enviar QR para todos
+            </button>
+            <div id="qrcodeall"></div>
+          </div>
         </form>
       {{ end }}
     </div>
@@ -259,8 +282,12 @@
           Cadastrar
         </button>
       </div>
-      {{ end }}
+    {{ end }}
     </div> -->
+
+    <footer>
+      <!-- Footer content if needed -->
+    </footer>
 
     <script>
       const savedDay = localStorage.getItem('dashboard_currentDay')
