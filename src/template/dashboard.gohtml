@@ -2,10 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="/static/css/dashboard.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
     <title>SCTI - Dashboard</title>
      <script>
 
@@ -50,10 +52,8 @@ function verifyResponse(){
      </script>
   </head>
   <body>
-    <div class="title">Painel do Usuário</div>
-
     {{ if not .IsVerified }}
-      <div>
+      <div id="email-verification">
         <button hx-post="/send-verification-email"
                 hx-trigger="click"
                 hx-target="#email_message"
@@ -63,29 +63,202 @@ function verifyResponse(){
           Verificar Email
         </button>
         <div id="loading-indicator" class="htmx-indicator">
-          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <style>
-              .spinner_P7sC{animation:spinner_YpZS .8s linear infinite;animation-delay:-.8s}
-              .spinner_MJg4{animation-delay:-.65s}
-              .spinner_riZA{animation-delay:-.5s}
-              @keyframes spinner_YpZS{
-                0%{r:1.5px}
-                94%,100%{r:3px}
-              }
-            </style>
-            <circle class="spinner_P7sC" cx="4" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_MJg4" cx="12" cy="12" r="3"/>
-            <circle class="spinner_P7sC spinner_riZA" cx="20" cy="12" r="3"/>
-          </svg>
+          <!-- SVG spinner code here -->
         </div>
+        <div id="email_message"></div>
       </div>
-      <div id="email_message"></div>
     {{ end }}
 
-    <a href="/ingresso"><button>comprar</button></a>
-    <a href="/logoff"><button>logoff</button></a>
+    <nav class="header-nav">
+      <h2 class="nav-title-pixel">Painel do Usuário</h2>
+      <a href="/ingresso" class="pink-pixel-button">
+        <img src="/static/assets/home/button.svg" />
+        <p>Comprar</p>
+      </a>
+      <a href="/logoff" class="pink-pixel-button">
+        <img src="/static/assets/home/button.svg" />
+        <p>Logoff</p>
+      </a>
+    </nav>
 
-    <div class="atividades_registradas">
+    {{ range .Activities }}
+      <div class="response" id="hx-return-{{ .Activity_id }}"></div>
+    {{ end }}
+
+    {{ range .RegisteredActivities }}
+      <div class="response" id="registered_{{ .Activity_id }}"></div>
+    {{ end }}
+
+    <div class="main-content">
+      <h1 class="title">Select your Courses</h1>
+      <div class="days-container">
+        <button id="button-weekday-1" class="button-weekday" onclick="FilterActivities(1)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Segunda</p>
+        </button>
+        <button id="button-weekday-2" class="button-weekday" onclick="FilterActivities(2)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Terça</p>
+        </button>
+        <button id="button-weekday-3" class="button-weekday" onclick="FilterActivities(3)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quarta</p>
+        </button>
+        <button id="button-weekday-4" class="button-weekday" onclick="FilterActivities(4)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Quinta</p>
+        </button>
+        <button id="button-weekday-5" class="button-weekday" onclick="FilterActivities(5)">
+          <img src="/static/assets/home/button.svg" />
+          <p>Sexta</p>
+        </button>
+      </div>
+
+      <div class="activity-container" id="programation">
+        <img class="left-button" id="left-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('left')"/>
+        <div class="activity">
+          <span id="activity-type" class="type">MiniCursos</span>
+          <img class="back" src="/static/assets/home/bottom_container.svg" />
+          <img class="fore" src="/static/assets/home/container.svg" />
+          <div id="available-courses" class="available-courses"></div>
+        </div>
+        <img class="right-button" id="right-navigation-button"
+          src="/static/assets/home/directional_button.svg" onclick="navigate('right')"/>
+      </div>
+
+      <div class="activity-container" id="selected-programation">
+        <div class="activity">
+          <span id="activity-type" class="type">Meus MiniCursos</span>
+          <img class="back" src="/static/assets/dashboard/long_bottom_container.svg" />
+          <img class="fore" src="/static/assets/dashboard/long_container.svg" />
+          <div id="registered-courses" class="available-courses">
+            {{ range $index, $activity := .RegisteredActivities }}
+              <div class="registered-course">
+                <span class="topic truncate">{{ .Topic }}</span>
+                <span class="day">{{ .Day }}</span>
+                <span class="time">{{ .Time }}</span>
+                <button class="cadastrar" hx-refresh="true"
+                  hx-post="/descadastrar"
+                  hx-trigger="click"
+                  hx-target="#registered_{{ .Activity_id }}"
+                  hx-swap="innerHTML"
+                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'
+                >
+                  Sair
+                </button>
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+
+      {{ if .IsAdmin }}
+        <form hx-post="/add_activity" hx-trigger="submit" hx-target="#admatividade" hx-swap="innerHTML">
+          <h2>Adicionar Atividade</h2>
+          <div>
+            <label for="spots">Vagas</label><br>
+            <input name="spots" type="number">
+          </div>
+
+          <div>
+            <label for="type">Tipo</label><br>
+            <input name="type" type="text">
+          </div>
+
+          <div>
+            <label for="room">Sala</label><br>
+            <input name="room" type="text">
+          </div>
+
+          <div>
+            <label for="speaker">Palestrante</label><br>
+            <input name="speaker" type="text">
+          </div>
+
+          <div>
+            <label for="topic">Tópico</label><br>
+            <input name="topic" type="text">
+          </div>
+
+          <div>
+            <label for="description">Descrição</label><br>
+            <input name="description" type="text">
+          </div>
+
+          <div>
+            <label for="time">Hora</label><br>
+            <input name="time" type="time">
+          </div>
+
+          <div>
+            <label for="day">Dia</label><br>
+            <input name="day" type="number">
+          </div>
+
+          <button class="button-submmit">Enviar</button>
+          <div id="admatividade"></div>
+        </form>
+
+        <form id="user-management">
+
+          <h2>Gerenciamento de Usuários</h2>
+          <div>
+            <label for="Email">Email</label><br>
+            <input id="user-email" type="email" name="Email" required>
+          </div>
+          
+          <button class="button-submmit" type="button"
+            hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML"
+            hx-include="#user-email">
+            Transformar usuário em admin
+          </button>
+          <div id="admcriar"></div>
+
+          <button class="button-submmit" type="button" 
+            hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML" 
+            hx-include="#user-email">
+            Remover admin do usuário
+          </button>
+          <div id="admtirar"></div>
+
+        </form>
+
+        <form id="ticket-manager">
+          <h2>Gerenciamento de ingresso</h2>
+          <div>
+            <label for="ticket-email">E-mail do usuário:</label><br>
+            <input type="email" id="ticket-email" name="Email" required>
+          </div>
+          <button class="button-submmit" 
+            hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML" hx-include="#ticket-email">
+            Validar Ingresso
+          </button>
+          <div id="markpaid"></div>
+
+          <div id="qr-code-management">
+            <button type="button" class="button-submmit"
+              hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML" hx-include="#ticket-email">
+              Enviar QR Code para o usuário
+            </button>
+            <div id="qrcodeuser"></div>
+            </form>
+
+            <button class="button-submmit"
+                    hx-post="/qr-all"
+                    hx-trigger="click"
+                    hx-target="#qrcodeall"
+                    hx-swap="innerHTML"
+                    hx-indicator="#loading-indicator">
+              Enviar QR para todos
+            </button>
+            <div id="qrcodeall"></div>
+          </div>
+        </form>
+      {{ end }}
+    </div>
+
+    <!-- <div class="atividades_registradas">
     {{ range .RegisteredActivities }}
       <div class="response" id="registered_{{ .Activity_id }}"></div>
       <div class="atividade_registrada" id="registrada_{{ .Activity_id }}">
@@ -101,7 +274,7 @@ function verifyResponse(){
             </div>
             <div class="sub_header">
               <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
+							<div class="hora">{{ .Time }}</div>
               <div class="sala">{{ .Room }}</div>
               <div class="vagas">{{ .Spots }}</div>
             </div>
@@ -120,9 +293,9 @@ function verifyResponse(){
 
       </div>
     {{ end }}
-    </div>
+    </div> -->
 
-    <div class="atividades">
+    <!-- <div class="atividades">
     {{ range .Activities }}
       <div class="response" id="hx-return-{{ .Activity_id }}"></div>
       <div class="atividade" id="activity_{{ .Activity_id }}">
@@ -138,7 +311,7 @@ function verifyResponse(){
             </div>
             <div class="sub_header">
               <div class="dia">{{ .Day }}</div>
-              <div class="hora">{{ .Time }}</div>
+							<div class="hora">{{ .Time }}</div>
               <div class="sala">{{ .Room }}</div>
               <div class="vagas">{{ .Spots }}</div>
             </div>
@@ -151,88 +324,105 @@ function verifyResponse(){
                             
                                   hx-target="#hx-return-{{ .Activity_id }}"
                                   hx-swap="innerHTML"
+<<<<<<< HEAD
                                   hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'
                                  
                                   >
+=======
+																	hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+>>>>>>> main
           Cadastrar
         </button>
         <button>show</button>
       </div>
-      {{ end }}
-    </div>
-
-    {{ if .IsAdmin }}
-      <div>
-        <form>
-          <label for="spots">Vagas</label><br>
-          <input name="spots" type="number"><br>
-
-          <label for="type">Tipo</label><br>
-          <input name="type" type="text"><br>
-
-          <label for="room">Sala</label><br>
-          <input name="room" type="text"><br>
-
-          <label for="speaker">Palestrante</label><br>
-          <input name="speaker" type="text"><br>
-
-          <label for="topic">Tópico</label><br>
-          <input name="topic" type="text"><br>
-
-          <label for="description">Descrição</label><br>
-          <input name="description" type="text"><br>
-
-          <label for="time">Hora</label><br>
-          <input name="time" type="time"><br>
-
-          <label for="day">Dia</label><br>
-          <input name="day" type="number"><br>
-
-          <button hx-post="/add_activity" hx-trigger="click" hx-target="#admatividade" hx-swap="innerHTML">
-            Enviar
-          </button>
-          <div id="admatividade"></div>
-        </form>
-      </div>
-      <br>
-      <div>
-        <form>
-          <label for="Email">Transformar usuário em admin</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="admcriar"></div>
-      </div>
-      <div>
-        <form>
-          <label for="Email">Validar Ingresso:</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="markpaid"></div>
-        <form>
-          <label for="Email">Enviar QR Code para o usuário</label><br>
-          <input type="email" name="Email"><br>
-          <button hx-post="/qr-user" hx-trigger="click" hx-target="#qrcodeuser" hx-swap="innerHTML">
-             Enviar
-          </button>
-        </form>
-        <div id="qrcodeuser"></div>
-        <button hx-post="/qr-all"
-                hx-trigger="click"
-                hx-target="#qrcodeall"
-                hx-swap="innerHTML"
-                hx-indicator="#loading-indicator">
-          Enviar QR para todos
-        </button>
-        <div id="qrcodeall"></div>
-      </div>
     {{ end }}
+<<<<<<< HEAD
    
+=======
+    </div> -->
+
+    <footer>
+      <!-- Footer content if needed -->
+    </footer>
+
+    <script>
+      const savedDay = localStorage.getItem('dashboard_currentDay')
+      let currentDay = savedDay ? parseInt(savedDay, 10) : 1
+      let lastWeekDayButtonSelected = null
+      const availableCourses = document.getElementById("available-courses")
+      const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
+        .push(activity), acc), {})
+      
+      const navigate = (direction) => {
+        currentDay = ((currentDay - 1 + (direction === "left" ? -1 : 1) + 5) % 5) + 1
+        FilterActivities(currentDay)
+      }
+
+      const FilterActivities = (day) => {
+        currentDay = day
+        localStorage.setItem('dashboard_currentDay', currentDay)
+        availableCourses.innerHTML = ""
+        const dayActivities = activities[day] || []
+        if(dayActivities.length > 0)
+        {
+          const ul = document.createElement("ul")
+          dayActivities.forEach((activity, i) => {
+            const li = document.createElement("li")
+            const detailsHolder = document.createElement("div")
+            const btn = createButton(activity.Activity_id, activity.Timestamp)
+
+            li.classList.add("course-container")
+            detailsHolder.classList.add("truncate", "details")
+
+            const type = activity.Activity_type === "MC" ? "Minicurso" : "Palestra"
+
+            detailsHolder.innerHTML = `<span>${type} ${i+1} - </span><span>${activity.Topic}</span>`
+
+            li.appendChild(detailsHolder)
+            li.innerHTML += btn
+            ul.appendChild(li)
+          })
+          availableCourses.appendChild(ul)
+          htmx.process(availableCourses)
+        } else availableCourses.textContent = "Não há nenhuma atividade disponível nesse dia"
+        if(day > 0 && day < 6) HighlightButton(day)
+      }
+
+      const HighlightButton = (day) => {
+        lastWeekDayButtonSelected?.classList.remove('selected')
+        lastWeekDayButtonSelected = document.getElementById('button-weekday-' + day)
+        lastWeekDayButtonSelected.classList.add('selected')
+      }
+
+      const createButton = (id, timestamp) => {
+        return `<button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
+          hx-target="#hx-return-${id}" hx-swap="innerHTML" 
+          hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'>Inscreva-se</button>`
+      }
+      
+      FilterActivities(currentDay)
+
+      const DayToString = (day) => {
+        switch (day) {
+          case 1: return "Segunda"
+          case 2: return "Terça"
+          case 3: return "Quarta"
+          case 4: return "Quinta"
+          default: return "Sexta"
+        }
+      }
+
+      const AdjustCourses = () => {
+        const registeredActivities = {{.RegisteredActivities}}
+        const daysList = document.querySelectorAll('#registered-courses .day')
+        const timeList = document.querySelectorAll('#registered-courses .time')
+        daysList.forEach((item, i) => item.textContent = DayToString(registeredActivities[i].Day))
+        timeList.forEach((item, i) => item.textContent = `às ${registeredActivities[i].Time.substring(0, 5)}`)
+      }
+
+      AdjustCourses()
+    </script>
+>>>>>>> main
   </body>
 </html>
 {{ end }}

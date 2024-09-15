@@ -24,6 +24,7 @@ func PostValidateEmail(w http.ResponseWriter, r *http.Request) {
 
 func PostCadastros(w http.ResponseWriter, r *http.Request) {
 	current_time := time.Now().Unix()
+	Erros.LogError("dashboard/cadastros", fmt.Errorf("Current time: %v", current_time))
 	cookie, err := r.Cookie("accessToken")
 	if err != nil {
 		Erros.LogError("dashboard/cadastros", err)
@@ -54,6 +55,7 @@ func PostCadastros(w http.ResponseWriter, r *http.Request) {
 	}
 
 	timestamp, err := strconv.ParseInt(r.FormValue("timestamp"), 10, 64)
+	Erros.LogError("dashboard/cadastros", fmt.Errorf("%v", timestamp))
 	if err != nil {
 		HTMX.Failure(w, "Falha ao se cadastrar: ", err)
 		return

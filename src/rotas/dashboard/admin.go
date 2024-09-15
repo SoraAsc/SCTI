@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	DB "SCTI/database"
+	Erros "SCTI/erros"
 	HTMX "SCTI/htmx"
 	"fmt"
 	"net/http"
@@ -55,6 +56,22 @@ func SetAdmin(w http.ResponseWriter, r *http.Request) {
 	HTMX.Success(w, "Admin criado com sucesso")
 }
 
+func RemoveAdmin(w http.ResponseWriter, r *http.Request) {
+	if !CheckAdmin(w, r) {
+		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
+		return
+	}
+
+	email := r.FormValue("Email")
+	err := DB.SetAdmin(DB.GetUUID(email), false)
+	if err != nil {
+		HTMX.Failure(w, "Falha ao remover o Admin: ", err)
+		return
+	}
+
+	HTMX.Success(w, "Admin removido com sucesso")
+}
+
 func PostActivity(w http.ResponseWriter, r *http.Request) {
 	if !CheckAdmin(w, r) {
 		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
@@ -63,12 +80,23 @@ func PostActivity(w http.ResponseWriter, r *http.Request) {
 
 	eventStart := os.Getenv("SCTI_START_DATE")
 	hourMin := r.FormValue("time") + ":00"
-	day, _ := strconv.Atoi(r.FormValue("day"))
+	day, err := strconv.Atoi(r.FormValue("day"))
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", fmt.Errorf("Error parsing day"))
+	}
 
-	eventStartDate, _ := time.Parse(time.DateOnly, eventStart)
-	activityHour, _ := time.Parse(time.TimeOnly, hourMin)
+	eventStartDate, err := time.Parse(time.DateOnly, eventStart)
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", err)
+	}
+	activityHour, err := time.Parse(time.TimeOnly, hourMin)
+	if err != nil {
+		HTMX.Failure(w, "Error creating activity", err)
+	}
 	activityTime := eventStartDate.AddDate(0, 0, day-1)
+	Erros.LogError("dashboard/admin", fmt.Errorf(" base activityTime %v", activityTime))
 	activityTime = activityTime.Add((time.Hour * time.Duration(activityHour.Hour())) + (time.Hour * 3))
+	Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTime %v", activityTime))
 
 	var a DB.Activity
 	a.Spots, _ = strconv.Atoi(r.FormValue("spots"))
@@ -81,7 +109,7 @@ func PostActivity(w http.ResponseWriter, r *http.Request) {
 	a.Day = day
 	a.Timestamp = activityTime.Unix()
 
-	_, err := DB.CreateActivity(a)
+	_, err = DB.CreateActivity(a)
 	if err != nil {
 		HTMX.Failure(w, "Falha ao criar atividade", err)
 		return

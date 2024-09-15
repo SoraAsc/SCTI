@@ -30,9 +30,10 @@ body {
   background-color: #ff00c7b2;
   margin-bottom: 25px;
   transition: 0.5s;
+  cursor: pointer;
+  font-size: 1em;
 }
 .button-submmit:hover {
-  cursor: pointer;
   filter: brightness(1.2);
 }
 footer {
@@ -235,3 +236,133 @@ footer {
     }
 
   }
+
+
+.days-container {
+  margin: 3em 0 1.5em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 3em;
+}
+
+.days-container .button-weekday {
+  width: 7em;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.days-container .button-weekday img {
+  width: 100%;
+  cursor: pointer;
+  fill: #c8ccff;
+  color: #c8ccff;
+  transition: all 0.5s;
+  filter: invert(74%) sepia(15%) saturate(998%) hue-rotate(200deg)
+    brightness(106%) contrast(106%);
+}
+
+.days-container .button-weekday p {
+  position: absolute;
+  cursor: pointer;
+  left: 50%;
+  color: black;
+  font-size: 1em;
+  transform: translate(-50%, -50%);
+  top: calc(50% - 1.5px);
+  font-family: "Joystix";
+  pointer-events: none;
+  transition: all 0.5s;
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0));
+  z-index: 2;
+}
+
+.days-container .button-weekday.selected img,
+.days-container .button-weekday:hover img {
+  filter: invert(15%) sepia(92%) saturate(6078%) hue-rotate(305deg)
+    brightness(98%) contrast(97%);
+}
+
+.days-container .button-weekday.selected p,
+.days-container .button-weekday:hover p {
+  color: rgba(255, 255, 255, 1);
+
+  text-shadow: 2px 0 rgba(255, 0, 199, 1), -2px 0 rgba(255, 0, 199, 1),
+    0 2px rgba(255, 0, 199, 1), 0 -2px rgba(255, 0, 199, 1),
+    1px 1px rgba(255, 0, 199, 1), -1px -1px rgba(255, 0, 199, 1),
+    1px -1px rgba(255, 0, 199, 1), -1px 1px rgba(255, 0, 199, 1);
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+}
+
+.activity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  margin-bottom: 6em;
+}
+
+
+.activity-container .left-button {
+  margin-right: 1.2em;
+}
+
+.activity-container .right-button {
+  margin-left: 1.2em;
+  transform: rotateY(180deg);
+}
+
+.activity-container .left-button:not(.disabled),
+.activity-container .right-button:not(.disabled) {
+  cursor: pointer;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.activity-container .left-button:not(.disabled):hover {
+  opacity: 0.5;
+  transform: scale(1.1);
+}
+
+.activity-container .right-button:not(.disabled):hover {
+  opacity: 0.5;
+  transform: rotateY(180deg) scale(1.1);
+}
+
+
+.activity-container .activity {
+  position: relative;
+}
+
+.activity-container .activity .back {
+  position: absolute;
+  z-index: -2;
+  right: -10px;
+  bottom: 11.5%;
+}
+
+.activity-container .activity .type {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  font-family: "Joystix";
+  font-size: 2em;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0.8em 0 0.4em 0;
+  text-transform: uppercase;
+  color: rgba(255, 0, 199, 1);
+  text-shadow: 2px 0 rgba(217, 217, 217, 1), -2px 0 rgba(217, 217, 217, 1),
+    0 2px rgba(217, 217, 217, 1), 0 -2px rgba(217, 217, 217, 1),
+    1px 1px rgba(217, 217, 217, 1), -1px -1px rgba(217, 217, 217, 1),
+    1px -1px rgba(217, 217, 217, 1), -1px 1px rgba(217, 217, 217, 1);
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

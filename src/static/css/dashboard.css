@@ -1,10 +1,125 @@
+html,
 body {
+  min-height: 100%;
+  color: #eee;
+}
+
+body {
+  min-width: 320px;
+}
+
+h1 {
+  font-family: "Joystix";
+  font-size: min(2em, 5vw);
+}
+
+.main-content .activity-container .activity .available-courses button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  min-width: 90px;
+  color: white;
+  text-decoration: none;
+  background-color: #E30CB4;
+  mask-image: url("/static/assets/home/button.svg");
+  -webkit-mask-image: url("/static/assets/home/button.svg");
+  mask-size: cover;
+  -webkit-mask-size: cover;
+  mask-repeat: no-repeat; 
+  -webkit-mask-repeat: no-repeat;
+  aspect-ratio: 5 / 2; /* 90 / 36 */
+  border: none;
+  font-family: "Joystix";
+  font-size: 0.7em;
+  transition: all 0.5s;
+}
+
+.main-content .activity-container .activity .available-courses button:hover {
+  color: #ff00c7;
+  background: #00000000;
+  transform: scale(1.1);
+}
+
+.header-nav a:last-child {
+  margin-right: 30px;
+}
+
+.main-content .activity-container .activity .available-courses button {
+  cursor: pointer;
+}
+
+.main-content {
   display: flex;
   flex-direction: column;
-  font-family: sans-serif;
-  border-color: #000000;
-  border-style: solid;
-  border-width: 1px;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-content .activity-container .activity .available-courses {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 4em;
+  width: 100%;
+  height: 66%;
+  max-height: 300px;
+  overflow-y: auto;
+  color: rgba(255, 0, 199, 1);
+  font-family: "Joystix";
+  margin-top: 1em;
+  row-gap: 1em;
+}
+
+.main-content .activity-container .activity .available-courses .course-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 3em;
+}
+
+.main-content .activity-container .activity .available-courses .details {
+  width: 400px;
+}
+
+.main-content .activity-container .activity .available-courses ul li span:nth-child(2) {
+  color: black;
+}
+
+.main-content .activity-container .activity .available-courses .registered-course {
+  display: flex;
+  width: 500px;
+  align-items: center;
+  column-gap: 2em;
+}
+
+.main-content .activity-container .activity .available-courses .registered-course .topic {
+  width: 290px;
+}
+.main-content .activity-container .activity .available-courses .registered-course .day {
+  width: 60px;
+  color: black;
+  font-size: 0.6em;
+}
+.main-content .activity-container .activity .available-courses .registered-course .time {
+  width: 100px;
+  color: rgba(0, 0, 0, 0.507);
+  font-size: 0.6em;
+}
+
+li, span {
+  font-family: "Joystix";
+  font-size: 12px;
+  font-weight: 400;
+}
+
+li + li {
+  margin-top: 2em;
+}
+
+.truncate {
+  white-space: nowrap;
 }
 
 .htmx-indicator{
@@ -19,46 +134,47 @@ body {
   display:none;
 }
 
-.atividades {
+form {
+  width: 678px;
+  padding: 1em 0;
   display: flex;
   flex-direction: column;
+  row-gap: 0.5em;
+  align-items: center;
+  background-color: rgba(170, 20, 240, 0.15);
+  box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.70);
+  margin-bottom: 1em;
 }
 
-.atividade {
-  display: flex;
-  flex-direction: row;
+form:last-child {
+  margin-bottom: 5em;
 }
 
-.info {
-  display: flex;
-  flex-direction: column;
+input {
+  width: 303px;
+  height: 45px;
+  margin: 10px 0;
+  color: #696969;
+  font-size: 18px;
+  border: 1px solid #aaa;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
+label {
+  font-family: joystix;
+  color: #FEAEDC;
 }
 
-.upper_content {
-  display: flex;
-  flex-direction: column;
+form h2 {
+  font-size: 1.3em;
+  color: #fff;
+  font-family: joystix;
+  margin-bottom: 1em;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-.upper_content {
-  display: flex;
-  flex-direction: column;
-}
-
-.a_title {
-  display: flex;
-  flex-direction: row;
-}
-
-.sub_header {
-  display: flex;
-  flex-direction: row;
-}
-
+<<<<<<< HEAD
 .error-messages .success-messages{
   position: fixed;
   top: 20px;
@@ -190,3 +306,8 @@ letter-spacing: 1px;
 .error-messages button:hover, .success-messages button:hover{
   background-color: #666;
 }
+=======
+form input {
+  width: 450px;
+}
+>>>>>>> main
