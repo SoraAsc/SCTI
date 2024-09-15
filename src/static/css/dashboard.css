@@ -59,3 +59,134 @@ body {
   flex-direction: row;
 }
 
+.error-messages .success-messages{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background-color: #333;
+  color: #fff;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+  display: block !important;
+}
+
+.toast.hide {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.hidden{
+  display: none !important;
+}
+
+.error-messages  {
+  background-color: #f8d7da;
+  border-left: 5px solid #f44336;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: #721c24;
+  font-family: Arial, sans-serif;
+  max-width: 90%;
+  text-align: center;
+  width: 220px;
+  align-items: center;
+  margin-bottom: 30px;
+
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px; /* distância do topo da tela */
+  right: 10px; /* distância do lado direito da tela */
+  transform: none; /* remover a transformação que empurra o elemento */
+  
+
+
+}
+.modal{
+
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.close {
+color: white;
+font-size: 1.5em;
+font-family: "Joystix";
+font-weight: bold;
+position: absolute;
+top: 60%;
+left: 50%;
+transform: translate(-50%, -50%);
+cursor: pointer;
+}
+
+
+.close:hover,
+.close:focus {
+color: #ff00c7;
+letter-spacing: 1px;
+}
+.success-messages {
+  background-color: #e2f0d9;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: #155724;
+  font-family: Arial, sans-serif;
+  max-width: 90%;
+  text-align: center;
+  width: 220px;
+  align-items: center;
+  margin: 15px 0;
+
+
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.error-messages button, .success-messages button {
+  position: absolute;    
+  top: 10px;            
+  left: 90%;      
+  font-size: 16px;      
+  font-weight: bold;   
+  background-color: #eee;
+  color: #000;       
+  border: none;          
+  border-radius: 5px;    
+  cursor: pointer;      
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transition: background-color 0.3s ease; 
+}
+
+.error-messages button:hover, .success-messages button:hover{
+  background-color: #666;
+}

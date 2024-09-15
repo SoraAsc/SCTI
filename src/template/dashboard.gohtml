@@ -7,6 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <title>SCTI - Dashboard</title>
+     <script>
+
+   function showToast(duration = 3000) {
+    const toast = document.querySelectorAll('.error-messages');
+
+    // Mostrar a notificação
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+    
+    // Remover a notificação após a duração especificada
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        setTimeout(() => {
+            toastContainer.removeChild(toast);
+        }, 300); // Deve ser igual ao tempo de transição no CSS
+    }, duration);
+}
+
+function callToast(){
+    const btns = document.querySelectorAll(".cadastrar")
+    btns.forEach(function(btn) {
+        btn.onclick = function() {
+            verifyResponse();
+        };
+    });
+
+}
+
+function verifyResponse(){
+    const responses = document.querySelectorAll(".response")
+    responses.forEach(function(response) {
+        if (response.textContent.trim() !== "") {
+            // Chama uma função se o conteúdo não for vazio
+            showToast(response.textContent.trim(),5000 );
+        }
+    });
+}
+
+     </script>
   </head>
   <body>
     <div class="title">Painel do Usuário</div>
@@ -72,6 +113,7 @@
                                   hx-trigger="click"
                                   hx-target="#registered_{{ .Activity_id }}"
                                   hx-swap="innerHTML"
+                                  onclick = "showToast(5000)"
                                   hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
           Sair
         </button>
@@ -106,11 +148,15 @@
         <button class="cadastrar" hx-refresh="true"
                                   hx-post="/cadastrar"
                                   hx-trigger="click"
+                            
                                   hx-target="#hx-return-{{ .Activity_id }}"
                                   hx-swap="innerHTML"
-                                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
+                                  hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'
+                                 
+                                  >
           Cadastrar
         </button>
+        <button>show</button>
       </div>
       {{ end }}
     </div>
@@ -186,6 +232,7 @@
         <div id="qrcodeall"></div>
       </div>
     {{ end }}
+   
   </body>
 </html>
 {{ end }}
