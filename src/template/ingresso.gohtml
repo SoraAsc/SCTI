@@ -31,15 +31,39 @@
           </div>
         </div>
       </div>
-      <button class="pink-pixel-button" id="confirm-button" type="submit">
+      <button class="pink-pixel-button" id="confirm-button" type="submit" onclick="toggleMessageModal()">
         <img src="/static/assets/home/button.svg" />
         <p>confirmar</p>
       </button>
+      <div class="sent-message-modal hidden">
+        <div class="more-info">
+          <img class="outer" src="/static/assets/home/chat_bubble.svg">
+          <img class="inner" src="/static/assets/home/chat_bubble.svg">
+          <div class="text">
+            <p>Você acaba de adquirir um ingresso para 14º SCTI.
+              Entre em contato com um de nossos organizadores para confirmar seu pagamento e liberar seu acesso já! </p>
+          </div>
+          <button class="pink-pixel-button" id="sent-message-button" type="submit">
+            <img src="/static/assets/home/button.svg" />
+            <p>enviar mensagem</p>
+          </button>
+          <button class="pink-pixel-button" id="cancel-message-button" type="submit" onclick="toggleMessageModal()">
+            <img src="/static/assets/home/button.svg" />
+            <p>cancelar</p>
+          </button>
+        </div>
+      </div>
     </main>
+
   </body>
 </html>
 
 <script>
+
+
+  toggleMessageModal = () =>{
+    messageModal.classList.toggle("hidden")
+  }
 
   getCurrentRadio =  () =>{
     currentRadio = document.querySelector("input[type=\"radio\"]:checked")
@@ -68,5 +92,7 @@
   barCodeText = document.createTextNode("lorem impsum lorem lorem lorem")
   barCode.appendChild(barCodeText)
   barCode.classList.add("response")
+
+  messageModal = document.querySelector(".sent-message-modal")
 
 </script>
