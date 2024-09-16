@@ -212,3 +212,66 @@ label{
   display: none;
   transition: ease-in all 1s;
 }
+
+@media (max-width: 768px) and (min-width: 577px){
+
+  .form-container{
+    flex-direction: column;
+    align-items: center;
+    gap: 4em;
+  }
+
+  .more-info .outer {
+    width: 490px;
+  }
+
+  .text{
+    position: absolute;
+    left: 5%;
+    top: 10%;
+  }
+
+}
+
+@media (max-width: 576px){
+
+  .form-container{
+    flex-direction: column;
+    align-items: center;
+    gap: 4.5em;
+  }
+
+  #confirm-button p{
+    font-size: .9em;
+  }
+
+  #confirm-button img{
+    width: 150px;
+    height: 50px;
+  }
+
+  .more-info .outer {
+    width: 340px;
+  }
+
+  .text{
+    position: absolute;
+    left: 5%;
+    top: 7%;
+    font-size: .75em;
+  }
+
+  #sent-message-button{
+    position: absolute;
+    bottom: 22%;
+    left: 20%;
+    font-size: .5em;
+  }
+
+  #cancel-message-button{
+    position: absolute;
+    bottom: 22%;
+    right: 20%;
+    font-size: .5em;
+  }
+}

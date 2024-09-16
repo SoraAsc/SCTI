@@ -446,10 +446,6 @@ header .main-title:last-child {
     width: 45px;
   }
 
-
-  #contact .outer {
-    width: 560px;
-  }
 }
 /*Responsividade Celular*/
 @media (max-width: 576px) {
@@ -608,10 +604,6 @@ header .main-title:last-child {
 
   .home-activities .activity-container .activity .details .info .description {
     font-size: 0.7em;
-  }
-
-  #contact .outer {
-    width: 420px;
   }
 }
 

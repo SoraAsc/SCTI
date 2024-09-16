@@ -356,6 +356,11 @@ footer {
     width: 24px;
   }
 
+
+  .more-info .outer {
+    width: 560px;
+  }
+
   }
 
   @media (max-width: 576px) {
@@ -425,6 +430,10 @@ footer {
 
   .more-info .details .right .info img{
     width: 18px;
+  }
+
+  .more-info .outer {
+    width: 420px;
   }
 
   }
