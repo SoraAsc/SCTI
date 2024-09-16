@@ -16,20 +16,19 @@
       <div class="form-container">
         <form>
           <label class="form-control">
-            <input type="radio" name="payment" id="pix" checked/>
+            <input type="radio" name="payment" id="pix" onclick="switchResponse()" checked/>
            PIX
           </label>
 
           <label class="form-control">
-            <input type="radio" name="payment" id="bar-code" />
+            <input type="radio" name="payment" id="bar-code" onclick="switchResponse()"/>
             Código de Barras
           </label>
         </form>
-        <div class="response-container">
-          <span class="response">
-            <img src="/static/assets/placeholder.jpg" alt="" />
-
-          </span>
+        <div class="response-out">
+          <div class="response-container">
+          <span class="response"></span>
+          </div>
         </div>
       </div>
       <button class="pink-pixel-button" id="confirm-button" type="submit">
@@ -39,3 +38,35 @@
     </main>
   </body>
 </html>
+
+<script>
+
+  getCurrentRadio =  () =>{
+    currentRadio = document.querySelector("input[type=\"radio\"]:checked")
+    console.log(currentRadio.id)
+  }
+
+  switchResponse = () => {
+    response = document.querySelector(".response")
+
+    getCurrentRadio()
+
+    if(currentRadio.id == "pix"){
+      responseContainer.replaceChild(img, response)
+    }else{
+      responseContainer.replaceChild(barCode, response)
+    }
+  }
+
+  responseContainer = document.querySelector(".response-container")
+
+  img = document.createElement("img")
+  img.setAttribute("src", "/static/assets/placeholder.jpg")
+  img.classList.add("response")
+
+  barCode = document.createElement("p")
+  barCodeText = document.createTextNode("lorem impsum lorem lorem lorem")
+  barCode.appendChild(barCodeText)
+  barCode.classList.add("response")
+
+</script>
