@@ -7,6 +7,7 @@ import (
 	"SCTI/rotas/auth"
 	"SCTI/rotas/dashboard"
 	"SCTI/rotas/home"
+	"SCTI/rotas/ingresso"
 	"SCTI/rotas/lncc"
 	"SCTI/rotas/loja"
 	"SCTI/rotas/patrocinadores"
@@ -21,4 +22,5 @@ func LoadRoutes(mux *http.ServeMux) {
 	lncc.RegisterRoutes(mux)
 	loja.RegisterRoutes(mux)
 	patrocinadores.RegisterRoutes(mux)
+	ingresso.RegisterRoutes(mux)
 }

@@ -1,18 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/credentials.css">
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/payment.css" />
 
     <title>SCTI - Comprar</title>
   </head>
   <body>
-    <div>
-      Compre seu ingresso com PIX!
-    </div>
+    <main>
+      <h2 class="main-title">scti</h2>
+      <div class="form-container">
+        <form>
+          <label class="form-control">
+            <input type="radio" name="payment" id="pix" onclick="switchResponse()" checked/>
+           PIX
+          </label>
+
+          <label class="form-control">
+            <input type="radio" name="payment" id="bar-code" onclick="switchResponse()"/>
+            Código de Barras
+          </label>
+        </form>
+        <div class="response-out">
+          <div class="response-container">
+          <span class="response"></span>
+          </div>
+        </div>
+      </div>
+      <button class="pink-pixel-button" id="confirm-button" type="submit" onclick="toggleMessageModal()">
+        <img src="/static/assets/home/button.svg" />
+        <p>confirmar</p>
+      </button>
+      <div class="sent-message-modal  hidden">
+        <div class="more-info">
+          <img class="outer" src="/static/assets/home/chat_bubble.svg">
+          <img class="inner" src="/static/assets/home/chat_bubble.svg">
+          <div class="text">
+            <p>Você acaba de adquirir um ingresso para 14º SCTI.
+              Entre em contato com um de nossos organizadores para confirmar seu pagamento e liberar seu acesso já! </p>
+          </div>
+          <button class="pink-pixel-button" id="sent-message-button" type="submit" onclick="sentMessage()">
+            <img src="/static/assets/home/button.svg" />
+            <p>enviar mensagem</p>
+          </button>
+          <button class="pink-pixel-button" id="cancel-message-button" type="submit" onclick="toggleMessageModal()">
+            <img src="/static/assets/home/button.svg" />
+            <p>cancelar</p>
+          </button>
+        </div>
+      </div>
+    </main>
+
   </body>
 </html>
+
+<script>
+
+  const phoneNumber = "5522992558278"
+
+  let message = `Olá! Meu ingresso já foi comprado!`
+
+  sentMessage = () => {
+    encMessage = encodeURIComponent(message)
+
+    redirectAndSend()
+  }
+
+  redirectAndSend = () => {
+    window.open(`https://wa.me/${phoneNumber}?text=${encMessage}`)
+  }
+
+  toggleMessageModal = () =>{
+    messageModal.classList.toggle("hidden")
+  }
+
+  getCurrentRadio =  () =>{
+    currentRadio = document.querySelector("input[type=\"radio\"]:checked")
+  }
+
+  switchResponse = () => {
+    response = document.querySelector(".response")
+
+    getCurrentRadio()
+
+    if(currentRadio.id == "pix"){
+      responseContainer.replaceChild(img, response)
+    }else{
+      responseContainer.replaceChild(barCode, response)
+    }
+  }
+
+  responseContainer = document.querySelector(".response-container")
+
+  img = document.createElement("img")
+  img.setAttribute("src", "/static/assets/placeholder.jpg")
+  img.classList.add("response")
+
+  barCode = document.createElement("p")
+  barCodeText = document.createTextNode("lorem impsum lorem lorem lorem")
+  barCode.appendChild(barCodeText)
+  barCode.classList.add("response")
+
+  messageModal = document.querySelector(".sent-message-modal")
+
+</script>
