@@ -35,7 +35,7 @@
         <img src="/static/assets/home/button.svg" />
         <p>confirmar</p>
       </button>
-      <div class="sent-message-modal hidden">
+      <div class="sent-message-modal  hidden">
         <div class="more-info">
           <img class="outer" src="/static/assets/home/chat_bubble.svg">
           <img class="inner" src="/static/assets/home/chat_bubble.svg">
@@ -43,7 +43,7 @@
             <p>Você acaba de adquirir um ingresso para 14º SCTI.
               Entre em contato com um de nossos organizadores para confirmar seu pagamento e liberar seu acesso já! </p>
           </div>
-          <button class="pink-pixel-button" id="sent-message-button" type="submit">
+          <button class="pink-pixel-button" id="sent-message-button" type="submit" onclick="sentMessage()">
             <img src="/static/assets/home/button.svg" />
             <p>enviar mensagem</p>
           </button>
@@ -60,6 +60,19 @@
 
 <script>
 
+  const phoneNumber = "5522992558278"
+
+  let message = `Olá! Meu ingresso já foi comprado!`
+
+  sentMessage = () => {
+    encMessage = encodeURIComponent(message)
+
+    redirectAndSend()
+  }
+
+  redirectAndSend = () => {
+    window.open(`https://wa.me/${phoneNumber}?text=${encMessage}`)
+  }
 
   toggleMessageModal = () =>{
     messageModal.classList.toggle("hidden")
