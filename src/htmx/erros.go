@@ -8,8 +8,10 @@ func Failure(w http.ResponseWriter, message string, err error) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Write([]byte(`
 
-  <div class="error-messages">
-  <button onclick="this.parentElement.style.display = 'none';">x</button>
+
+</style>
+  <div class="error-messages" >
+  <button  onclick="this.parentElement.style.display = 'none';">x</button>
   ` + message + `
   ` + err.Error() + `
   
