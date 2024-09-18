@@ -85,9 +85,6 @@ header .main-title:last-child {
   line-height: 64px;
 }
 
-.caption {
-  font-size: 1.5em;
-}
 
 #main-infos {
   display: flex;
@@ -363,10 +360,6 @@ header .main-title:last-child {
     font-size: 2.3em;
   }
 
-  .home-top .top-info .caption {
-    font-size: 1.3em;
-  }
-
   #main-infos {
     width: 100%;
   }
@@ -468,9 +461,6 @@ header .main-title:last-child {
     font-size: 1.7em;
   }
 
-  .home-top .top-info .caption {
-    font-size: 1em;
-  }
 
   #start-button {
     cursor: default;
