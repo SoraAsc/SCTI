@@ -333,109 +333,6 @@ header .main-title:last-child {
   overflow: hidden;
 }
 
-/* Estilização Fale Conosco */
-
-.home-more-info {
-  position: relative;
-  width: fit-content;
-  margin: 5em auto 12em;
-}
-
-.home-more-info .title {
-  position: absolute;
-  color: black;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "joystix";
-  font-size: 1.2em;
-  z-index: 1;
-  margin-top: 1em;
-}
-
-.home-more-info .outer {
-  filter: invert(5%) sepia(93%) saturate(3608%) hue-rotate(238deg)
-    brightness(98%) contrast(90%);
-}
-
-.home-more-info .inner {
-  position: absolute;
-  left: 50%;
-  top: 49%;
-  transform: translate(-50%, -50%);
-  width: 97%;
-  filter: invert(79%) sepia(8%) saturate(1207%) hue-rotate(199deg)
-    brightness(100%) contrast(104%);
-}
-
-.home-more-info .details {
-  position: absolute;
-
-  display: flex;
-  align-items: center;
-  column-gap: 1em;
-  height: 50%;
-  width: 100%;
-  top: 25%;
-  color: black;
-}
-
-.home-more-info .details ul {
-  list-style: square;
-  font-size: 0.6em;
-}
-
-.home-more-info .details li {
-  font-family: "Joystix";
-}
-
-.home-more-info .details li + li {
-  margin-top: 1em;
-}
-
-.home-more-info .details .left {
-  width: 49%;
-  margin: 0 0 1.5em 4em;
-}
-
-.home-more-info .details .right {
-  width: 49%;
-  margin-right: 4em;
-}
-
-.home-more-info .details .right .info {
-  display: flex;
-  align-items: center;
-  font-family: "Inter";
-  font-size: 0.55em;
-  column-gap: 1em;
-  margin-bottom: 1em;
-}
-
-.home-more-info .details .right .info p,
-.home-more-info .details .right .info a {
-  font-family: "Inter";
-  font-weight: 600;
-  text-decoration: none;
-  color: black;
-  transition: color 0.3s;
-}
-
-.home-more-info .details .right .info:last-child a {
-  text-decoration: underline;
-}
-
-.home-more-info .details .right .info a:hover {
-  color: rgba(255, 0, 199, 1);
-}
-
-.home-more-info .astronaut {
-  position: absolute;
-  top: 92%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 /* Estilização Genêrico */
 
 .details .vertical-line {
@@ -549,37 +446,6 @@ header .main-title:last-child {
     width: 45px;
   }
 
-
-  #contact .outer {
-    width: 560px;
-  }
-
-  .home-more-info .title {
-    font-size: 1.1em;
-    margin-top: .7em;
-  }
-
-  .home-more-info .details ul {
-    list-style: square;
-    font-size: 0.6em;
-  }
-
-  .home-more-info .details .left {
-    margin-left: 2.5em;
-  }
-
-  .home-more-info .details .right {
-    width: 55%;
-    margin-right: 2em;
-  }
-
-  .home-more-info .details .right .info {
-    font-size: .5em;
-  }
-
-  .home-more-info .details .right .info img{
-    width: 24px;
-  }
 }
 /*Responsividade Celular*/
 @media (max-width: 576px) {
@@ -738,37 +604,6 @@ header .main-title:last-child {
 
   .home-activities .activity-container .activity .details .info .description {
     font-size: 0.7em;
-  }
-
-  #contact .outer {
-    width: 420px;
-  }
-
-  .home-more-info .title {
-    font-size: 0.9em;
-    margin-top: .5em;
-  }
-
-  .home-more-info .details ul {
-    list-style: square;
-    font-size: 0.45em;
-  }
-
-  .home-more-info .details .left {
-    margin-left: 2.5em;
-  }
-
-  .home-more-info .details .right {
-    width: 55%;
-    margin-right: 2em;
-  }
-
-  .home-more-info .details .right .info {
-    font-size: .4em;
-  }
-
-  .home-more-info .details .right .info img{
-    width: 18px;
   }
 }
 

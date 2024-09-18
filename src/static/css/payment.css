@@ -1,0 +1,277 @@
+:root {
+  --form-control-color: #ff00c7b2;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+
+
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: 1.7em;
+  font-weight: 600;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+.form-control + .form-control {
+  margin-top: 1em;
+}
+
+.form-control:focus-within {
+  color: var(--form-control-color);
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--form-background);
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1em;
+  height: 1em;
+  border: 0.1em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+
+
+
+.main-title{
+  text-align: center;
+  font-size: 3em;
+  font-family: "joystix";
+  -webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+  filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+  background: linear-gradient(to bottom, white 56%, #feb0dc 56%);
+  background-clip: text;
+  padding: 0.5em 0 0.5em 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+main{
+  position: relative;
+  max-width: 1000px;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction:column ;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(170, 20, 240, 0.15);
+  box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.7);
+  border-radius: 3%;
+  padding: 1.2em 0;
+  gap: 4em;
+}
+
+.form-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 2em;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+  align-items: start;
+  justify-content: center;
+}
+
+
+label{
+  text-align: center;
+  font-size: 1.5em;
+  font-family: "joystix";
+  -webkit-text-stroke: 0.06px rgba(0, 0, 0, 1);
+  filter: drop-shadow(0 0.06em rgba(93, 10, 157, 1));
+  background: linear-gradient(to bottom, white 56%, #feb0dc 56%);
+  background-clip: text;
+  padding: 0.5em 0 0.5em 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: -1.1em;
+}
+
+.response-out{
+  height: 45%;
+  width: 40%;
+}
+
+.response-container{
+  width: 100%;
+  height: 100%;
+}
+
+.response-container img{
+  width: 100%;
+  transition: width 2s, height 4s;
+}
+
+.response-container  p{
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  line-height: 1em;
+  transition: width 2s, height 4s;
+}
+
+#confirm-button img{
+  width: 180px;
+  height: 60px;
+}
+
+#confirm-button p {
+  font-size: 1.1em;
+}
+
+.sent-message-modal{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.text{
+  position: absolute;
+  left: 5%;
+  top: 25%;
+}
+
+#sent-message-button{
+  position: absolute;
+  bottom: 30%;
+  left: 25%;
+  font-size: .6em;
+}
+
+#cancel-message-button{
+  position: absolute;
+  bottom: 30%;
+  right: 25%;
+  font-size: .6em;
+}
+
+#cancel-message-button img{
+  filter: invert(99%) sepia(1%) saturate(3276%) hue-rotate(277deg) brightness(125%) contrast(87%);
+}
+
+#cancel-message-button p{
+  color: #ff00c7;
+}
+
+#cancel-message-button:hover p{
+  color: #e652fa;
+  opacity: 1;
+}
+
+.hidden{
+  display: none;
+  transition: ease-in all 1s;
+}
+
+@media (max-width: 768px) and (min-width: 577px){
+
+  .form-container{
+    flex-direction: column;
+    align-items: center;
+    gap: 4em;
+  }
+
+  .more-info .outer {
+    width: 490px;
+  }
+
+  .text{
+    position: absolute;
+    left: 5%;
+    top: 10%;
+  }
+
+}
+
+@media (max-width: 576px){
+
+  .form-container{
+    flex-direction: column;
+    align-items: center;
+    gap: 4.5em;
+  }
+
+  #confirm-button p{
+    font-size: .9em;
+  }
+
+  #confirm-button img{
+    width: 150px;
+    height: 50px;
+  }
+
+  .more-info .outer {
+    width: 340px;
+  }
+
+  .text{
+    position: absolute;
+    left: 5%;
+    top: 7%;
+    font-size: .75em;
+  }
+
+  #sent-message-button{
+    position: absolute;
+    bottom: 22%;
+    left: 20%;
+    font-size: .5em;
+  }
+
+  #cancel-message-button{
+    position: absolute;
+    bottom: 22%;
+    right: 20%;
+    font-size: .5em;
+  }
+}
