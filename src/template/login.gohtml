@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="/static/css/credentials.css">
 
     <title>SCTI - Login</title>
+
+  
   </head>
   <body>
     <div class="container-form">
       <form hx-post="/login" hx-target="#error-messages" hx-swap="innerHTML">
        <p > <a class="logo-form" href="/"> SCTI</a> </p>
-        <div id="error-messages"></div>
+        <div id="error-messages" class=""></div>
         <table>
           <tr>
             <td><label>Email</label></td>
@@ -33,4 +35,6 @@
       </form>
     </div>
   </body>
+
+
 </html>
