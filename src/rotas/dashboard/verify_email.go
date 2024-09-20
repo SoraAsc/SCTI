@@ -36,8 +36,8 @@ func VerifyEmail(w http.ResponseWriter, r *http.Request) {
 	pass := os.Getenv("GMAIL_PASS")
 
 	encodedEmail := url.QueryEscape(email)
-	verificationLink := fmt.Sprintf("%s/verify?code=%s&email=%s",os.Getenv("URL"), code, encodedEmail)
-	notMeLink := fmt.Sprintf("%s/delete?code=%s&email=%s",os.Getenv("URL"), code, encodedEmail)
+	verificationLink := fmt.Sprintf("%s/verify?code=%s&email=%s", os.Getenv("URL"), code, encodedEmail)
+	notMeLink := fmt.Sprintf("%s/delete?code=%s&email=%s", os.Getenv("URL"), code, encodedEmail)
 
 	htmlBody := `
     <!DOCTYPE html>

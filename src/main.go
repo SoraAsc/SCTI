@@ -30,10 +30,10 @@ func main() {
 	LoadRoutes(mux)
 
 	server := http.Server{
-    Addr:    ":8080", // adicione :xx na URL do .env se a porta não for a padrão do protocolo
+		Addr:    ":8080", // adicione :xx na URL do .env se a porta não for a padrão do protocolo
 		Handler: middleware.EndpointLogging(mux),
 	}
 
-  fmt.Printf("Server Started at: %s\n", os.Getenv("URL"))
+	fmt.Printf("Server Started at: %s\n", os.Getenv("URL"))
 	log.Fatal(server.ListenAndServe())
 }
