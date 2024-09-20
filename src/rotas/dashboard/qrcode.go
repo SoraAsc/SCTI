@@ -82,7 +82,7 @@ func sendQRToUser(user DB.User) error {
 	}
 
 	encodedEmail := url.QueryEscape(user.Email)
-	qrContent := fmt.Sprintf("http://192.168.91.113:8080/presenca?email=%v&code=%v", encodedEmail, code)
+	qrContent := fmt.Sprintf("%s/presenca?email=%v&code=%v",os.Getenv("URL"), encodedEmail, code)
 
 	qr, err := qrcode.Encode(qrContent, qrcode.Medium, 256)
 	if err != nil {

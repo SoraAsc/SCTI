@@ -28,7 +28,7 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
 	}
 
 	encodedEmail := url.QueryEscape(r.FormValue("Email"))
-	verificationLink := fmt.Sprintf("http://localhost:8080/trocar?email=%s", encodedEmail)
+	verificationLink := fmt.Sprintf("%s/trocar?email=%s", os.Getenv("URL"), encodedEmail)
 
 	htmlBody := `
   <!DOCTYPE html>
