@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <title>SCTI - Dashboard</title>
+
   </head>
   <body>
     {{ if not .IsVerified }}
@@ -284,6 +285,7 @@
 																	hx-vals='{"id": "{{ .Activity_id }}", "timestamp": "{{ .Timestamp }}"}'>
           Cadastrar
         </button>
+        <button>show</button>
       </div>
     {{ end }}
     </div> -->
@@ -344,7 +346,7 @@
       const createButton = (id, timestamp) => {
         return `<button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
           hx-target="#hx-return-${id}" hx-swap="innerHTML" 
-          hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'>Inscreva-se</button>`
+          hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'> Inscreva-se</button>`
       }
       
       FilterActivities(currentDay)
