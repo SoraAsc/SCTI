@@ -17,12 +17,12 @@
         <form>
           <label class="form-control">
             <input type="radio" name="payment" id="pix" onclick="switchResponse()" checked/>
-           PIX
+           qr code
           </label>
 
           <label class="form-control">
             <input type="radio" name="payment" id="bar-code" onclick="switchResponse()"/>
-            Código de Barras
+            copia e cola
           </label>
         </form>
         <div class="response-out">
@@ -97,11 +97,11 @@
   responseContainer = document.querySelector(".response-container")
 
   img = document.createElement("img")
-  img.setAttribute("src", "/static/assets/placeholder.jpg")
+  img.setAttribute("src", "/static/assets/qrcodepix.png")
   img.classList.add("response")
 
   barCode = document.createElement("p")
-  barCodeText = document.createTextNode("lorem impsum lorem lorem lorem")
+  barCodeText = document.createTextNode("00020126590014br.gov.bcb.pix0114+\n55289880925090219INSCRICAO SCTI 2024520400005303986540555.005802BR5925PABLO HENRIQUE CHAVES VAL6015CAMPOS DOS GOYT62290525A9TOdpg7XGEXXdXP1uYpEwqBy6304EC5A")
   barCode.appendChild(barCodeText)
   barCode.classList.add("response")
 
