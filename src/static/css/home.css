@@ -528,7 +528,7 @@ header .main-title:last-child {
   }
 
   .home-activities .main-title{
-    font-size: 3em;
+    font-size: 2.5em;
   }
 
 
@@ -546,15 +546,15 @@ header .main-title:last-child {
 
   .home-activities .activity-container .activity,
   .fore {
-    width: 330px;
-    height: 280px;
+    width: 290px;
+    height: 240px;
   }
 
   .home-activities .activity-container .activity .back {
-    width: 345px;
-    height: 280px;
-    bottom: 1em;
-    right: -7.5px;
+    width: 305px;
+    height: 240px;
+    bottom: .7em;
+    right: -8px;
   }
 
   img#left-navigation-button.left-button{
@@ -568,8 +568,8 @@ header .main-title:last-child {
   }
 
   .home-activities .activity-container .activity .type {
-    font-size: 1.5em;
-    margin-top: 2.4em;
+    font-size: 1.2em;
+    margin-top: 2.6em;
   }
 
   .home-activities .activity-container .activity .details {
@@ -585,15 +585,15 @@ header .main-title:last-child {
     width: 50%;
   }
   .home-activities .activity-container .activity .details .info .topic {
-    font-size: 0.8em;
+    font-size: 0.7em;
   }
 
   .home-activities .activity-container .activity .details .info .time {
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   .home-activities .activity-container .activity .details .info .description {
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 }
 
