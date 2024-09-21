@@ -108,6 +108,7 @@ func PostActivity(w http.ResponseWriter, r *http.Request) {
 	a.Time = hourMin
 	a.Day = day
 	a.Timestamp = activityTime.Unix()
+  a.Image = r.FormValue("image")
 
 	_, err = DB.CreateActivity(a)
 	if err != nil {
