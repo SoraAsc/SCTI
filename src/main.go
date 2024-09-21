@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -29,10 +30,10 @@ func main() {
 	LoadRoutes(mux)
 
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":8080", // adicione :xx na URL do .env se a porta não for a padrão do protocolo
 		Handler: middleware.EndpointLogging(mux),
 	}
 
-	fmt.Println("Server Started at: 127.0.0.1:8080")
+	fmt.Printf("Server Started at: %s\n", os.Getenv("URL"))
 	log.Fatal(server.ListenAndServe())
 }
