@@ -19,7 +19,7 @@ type Activity struct {
 	Time          string
 	Day           int
 	Timestamp     int64
-  Image         string
+	Image         string
 }
 
 func GetAllActivities() (activities []Activity, err error) {
@@ -81,7 +81,7 @@ func GetActivity(id int) (a Activity, err error) {
 		&a.Time,
 		&a.Day,
 		&a.Timestamp,
-    &a.Image,
+		&a.Image,
 	)
 
 	if err != nil {
@@ -114,7 +114,7 @@ func CreateActivity(a Activity) (int, error) {
 }
 
 func (a Activity) String() string {
-  return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v | timestamp: %v | Image: %v",
+	return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v | timestamp: %v | Image: %v",
 		a.Activity_id,
 		a.Spots,
 		a.Day,
@@ -125,7 +125,7 @@ func (a Activity) String() string {
 		a.Topic,
 		a.Description,
 		a.Timestamp,
-    a.Image,
+		a.Image,
 	)
 }
 
@@ -355,7 +355,7 @@ func GetUserAttendedActivities(uuid string) ([]Activity, error) {
 			&activity.Time,
 			&activity.Day,
 			&activity.Timestamp,
-      &activity.Image,
+			&activity.Image,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan activity: %v", err)
