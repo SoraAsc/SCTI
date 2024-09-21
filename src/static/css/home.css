@@ -231,7 +231,6 @@ header .main-title:last-child {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 0.7em;
 }
 
 .home-activities
@@ -589,20 +588,25 @@ header .main-title:last-child {
     height: 80%;
   }
 
+  
+  .home-activities .activity-container .activity .details .speaker-container .speaker {
+    font-size: 0.5em;
+  }
+
   .home-activities .activity-container .activity .details .info {
     width: 50%;
-    /* gap: 0.5em; */
   }
+
   .home-activities .activity-container .activity .details .info .topic {
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 
   .home-activities .activity-container .activity .details .info .time {
-    font-size: 1em;
+    font-size: 0.7em;
   }
 
   .home-activities .activity-container .activity .details .info .description {
-    font-size: 0.6em;
+    font-size: 0.5em;
   }
 }
 

@@ -201,7 +201,7 @@ footer {
 .more-info {
   position: relative;
   width: fit-content;
-  margin: 5em auto 12em;
+  margin: 0 auto 12em;
 }
 
 .more-info .title {
@@ -235,7 +235,7 @@ footer {
   position: absolute;
   display: flex;
   align-items: center;
-  column-gap: 1em;
+  column-gap: 1vw;
   height: 50%;
   width: 100%;
   top: 25%;
@@ -421,7 +421,7 @@ footer {
   }
 
   .more-info .details .right .info {
-    font-size: 0.4em;
+    font-size: 0.3em;
   }
 
   .more-info .details .right .info img {
@@ -434,7 +434,7 @@ footer {
 }
 
 .days-container {
-  margin: 3em 0 1.5em 0;
+  margin: 2vw 0 1.5em 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -496,8 +496,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 350px;
-  margin-bottom: 6em;
+  margin-bottom: 2em;
 }
 
 .activity-container .left-button {
