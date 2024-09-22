@@ -12,25 +12,30 @@
 
   </head>
   <body>
-    {{ if not .IsVerified }}
-      <div id="email-verification">
-        <button hx-post="/send-verification-email"
-                hx-trigger="click"
-                hx-target="#email_message"
-                hx-swap="innerHTML"
-                hx-indicator="#loading-indicator"
-                hx-refresh="true">
-          Verificar Email
-        </button>
-        <div id="loading-indicator" class="htmx-indicator">
-          <!-- SVG spinner code here -->
-        </div>
-        <div id="email_message"></div>
-      </div>
-    {{ end }}
-
     <nav class="header-nav">
       <h2 class="nav-title-pixel">Painel do Usuário</h2>
+      {{ if not .IsVerified }}
+        <div id="email-verification">
+          <button class="pink-pixel-button" hx-post="/send-verification-email"
+                  hx-trigger="click"
+                  hx-target="#email_message"
+                  hx-swap="innerHTML"
+                  hx-indicator="#loading-indicator"
+                  hx-refresh="true">
+            <img src="/static/assets/home/button.svg" />
+            <p>Verificar Email</p>
+          </button>
+          <div id="loading-indicator" class="loading-indicator">
+            <svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+              <circle cx="50" cy="50" r="35" stroke-width="10" stroke-dasharray="164.93361431346415 56.97787143782138">
+                  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+              </circle>
+            </svg>
+            <!-- SVG spinner code here -->
+          </div>
+          <div id="email_message"></div>
+        </div>
+      {{ end }}
       <a href="/ingresso" class="pink-pixel-button">
         <img src="/static/assets/home/button.svg" />
         <p>Comprar</p>
