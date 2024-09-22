@@ -122,12 +122,28 @@ li + li {
   white-space: nowrap;
 }
 
-.htmx-indicator{
+
+.loading-indicator{
   display:none;
 }
 
-.htmx-request .htmx-indicator{
-  display:inline-block;
+.htmx-request {
+  /* display:inline-block; */
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #000000ab;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.htmx-request svg {
+  width: 50%;
+  height: auto;
 }
 
 .htmx-request.verify-email-button{

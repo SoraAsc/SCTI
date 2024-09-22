@@ -70,6 +70,7 @@ footer {
 }
 
 .header-nav .nav-title-pixel {
+  height: 30px;
   font-size: 1.6em;
   font-family: "Joystix";
   margin-left: 15px;
@@ -110,12 +111,10 @@ footer {
 
 #last-nav {
   width: 140px;
-  height: 80px;
 }
 
 #last-nav p {
   font-size: 1.1em;
-  top: 35%;
 }
 
 .pink-pixel-button {
