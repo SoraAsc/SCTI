@@ -49,7 +49,6 @@ func AllUsersSentQR(w http.ResponseWriter, r *http.Request) {
 	for _, user := range users {
 		qrSent, err := DB.IsUserQR(user.Email)
 		if err != nil {
-			fmt.Printf("Erro ao verificar status do QR para usuário %s: %v\n", user.Email, err)
 			Erros.LogError("dashboard/qrcode.go", fmt.Errorf("Erro ao verificar status do QR para usuário %s: %v\n", user.Email, err))
 			failedCount++
 			continue

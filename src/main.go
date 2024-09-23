@@ -29,11 +29,14 @@ func main() {
 	mux := http.NewServeMux()
 	LoadRoutes(mux)
 
+	certFile := "/etc/letsencrypt/live/sctiuenf.com.br/fullchain.pem"
+	keyFile := "/etc/letsencrypt/live/sctiuenf.com.br/privkey.pem"
+
 	server := http.Server{
-		Addr:    ":8080", // adicione :xx na URL do .env se a porta não for a padrão do protocolo
+		Addr:    ":443",
 		Handler: middleware.EndpointLogging(mux),
 	}
 
-	fmt.Printf("Server Started at: %s\n", os.Getenv("URL"))
-	log.Fatal(server.ListenAndServe())
+	fmt.Printf("Server started at: %s\n", os.Getenv("URL"))
+	log.Fatal(server.ListenAndServeTLS(certFile, keyFile))
 }
