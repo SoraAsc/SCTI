@@ -102,7 +102,7 @@ func CreateActivity(a Activity) (int, error) {
 	query := `
   INSERT INTO activities
   (spots, activity_type, room, speaker, topic, description, time, day, time_stamp, image)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
   RETURNING id
   `
 	var id int
