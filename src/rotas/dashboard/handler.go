@@ -76,6 +76,6 @@ func RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /remover-admin", RemoveAdmin)
 	mux.HandleFunc("POST /add_activity", PostActivity)
 	mux.HandleFunc("POST /markpaid", PostValidateEmail)
-	mux.HandleFunc("POST /qr-all", SendQRToAllUsers)
-	mux.HandleFunc("POST /qr-user", sendQRToUser)
+	mux.HandleFunc("POST /qr-all", AllUsersSentQR)
+	mux.HandleFunc("POST /qr-user", UserSentQR)
 }
