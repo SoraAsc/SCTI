@@ -2,8 +2,8 @@ package auth
 
 import (
 	DB "SCTI/database"
+	Erros "SCTI/erros"
 	HTMX "SCTI/htmx"
-  Erros "SCTI/erros"
 	"fmt"
 	"html/template"
 	"net/http"
