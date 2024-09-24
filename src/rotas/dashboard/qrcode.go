@@ -6,6 +6,7 @@ import (
 	HTMX "SCTI/htmx"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,22 +20,17 @@ func UserSentQR(w http.ResponseWriter, r *http.Request) {
 		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
 		return
 	}
-
 	email := r.FormValue("Email")
 	code, err := DB.GetCodeByEmail(email)
-
 	if err != nil {
 		HTMX.Failure(w, "Falha ao validar código: ", err)
 		return
 	}
-
 	user := DB.User{
 		Code:  code,
 		Email: email,
 	}
-
 	sendQRToUser(user)
-
 	HTMX.Success(w, "QR Code Enviado!")
 }
 
@@ -43,25 +39,20 @@ func AllUsersSentQR(w http.ResponseWriter, r *http.Request) {
 		HTMX.Failure(w, "Endpoint exclusivo de admins", fmt.Errorf("Acesso proibido a usuários não admin"))
 		return
 	}
-
 	users, err := DB.GetAllUsers()
 	if err != nil {
 		HTMX.Failure(w, "Falha ao obter lista de usuários: ", err)
 		return
 	}
-
 	sentCount := 0
 	failedCount := 0
-
 	for _, user := range users {
 		qrSent, err := DB.IsUserQR(user.Email)
 		if err != nil {
-			fmt.Printf("Erro ao verificar status do QR para usuário %s: %v\n", user.Email, err)
 			Erros.LogError("dashboard/qrcode.go", fmt.Errorf("Erro ao verificar status do QR para usuário %s: %v\n", user.Email, err))
 			failedCount++
 			continue
 		}
-
 		if !qrSent {
 			err := sendQRToUser(user)
 			if err != nil {
@@ -80,27 +71,21 @@ func sendQRToUser(user DB.User) error {
 	if err != nil {
 		return fmt.Errorf("falha ao obter código para %s: %v", user.Email, err)
 	}
-
 	encodedEmail := url.QueryEscape(user.Email)
 	qrContent := fmt.Sprintf("%s/presenca?email=%v&code=%v", os.Getenv("URL"), encodedEmail, code)
-
 	qr, err := qrcode.Encode(qrContent, qrcode.Medium, 256)
 	if err != nil {
 		return fmt.Errorf("falha ao gerar QR para %s: %v", user.Email, err)
 	}
-
 	qrBase64 := base64.StdEncoding.EncodeToString(qr)
-
 	err = sendEmail(user.Email, qrBase64)
 	if err != nil {
 		return fmt.Errorf("falha ao enviar e-mail para %s: %v", user.Email, err)
 	}
-
 	err = DB.SetSentQR(user.Email)
 	if err != nil {
 		return fmt.Errorf("falha ao atualizar status de envio para %s: %v", user.Email, err)
 	}
-
 	return nil
 }
 
@@ -108,24 +93,35 @@ func sendEmail(email, qrBase64 string) error {
 	from := os.Getenv("GMAIL_SENDER")
 	pass := os.Getenv("GMAIL_PASS")
 
-	htmlBody := fmt.Sprintf(`
+	m := gomail.NewMessage()
+	m.SetHeader("From", from)
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "Verificação de email SCTI")
+
+	// Corpo HTML com referência à imagem anexada
+	htmlBody := `
   <!DOCTYPE html>
   <html>
   <body>
-  <img src="data:image/png;base64,%s" alt="QR code">
+  <p>Este e-mail contém um QR code para verificação.</p>
+  <img src="cid:qrcode.png" alt="QR code">
   </body>
   </html>
-  `, qrBase64)
+  `
+	m.SetBody("text/html", htmlBody)
 
-	plainBody := "Este e-mail contém um QR code para verificação. Por favor, visualize em um cliente de e-mail que suporte HTML."
+	// Decodifica a string base64 para bytes
+	qrBytes, err := base64.StdEncoding.DecodeString(qrBase64)
+	if err != nil {
+		return fmt.Errorf("falha ao decodificar QR code: %v", err)
+	}
 
-	msg := gomail.NewMessage()
-	msg.SetHeader("From", from)
-	msg.SetHeader("To", email)
-	msg.SetHeader("Subject", "Verificação de email SCTI")
-	msg.SetBody("text/plain", plainBody)
-	msg.AddAlternative("text/html", htmlBody)
+	// Anexa o QR code como um arquivo
+	m.Embed("qrcode.png", gomail.SetCopyFunc(func(w io.Writer) error {
+		_, err := w.Write(qrBytes)
+		return err
+	}))
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
-	return dialer.DialAndSend(msg)
+	d := gomail.NewDialer("smtp.gmail.com", 587, from, pass)
+	return d.DialAndSend(m)
 }
