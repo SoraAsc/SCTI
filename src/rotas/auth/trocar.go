@@ -3,6 +3,7 @@ package auth
 import (
 	DB "SCTI/database"
 	HTMX "SCTI/htmx"
+  Erros "SCTI/erros"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -14,11 +15,33 @@ type TrocarData struct {
 }
 
 func GetTrocar(w http.ResponseWriter, r *http.Request) {
-	email, err := url.QueryUnescape(r.URL.Query().Get("email"))
+	code := r.URL.Query().Get("code")
+	encodedEmail := r.URL.Query().Get("email")
 
-	fmt.Println(email)
+	if code == "" || encodedEmail == "" {
+		Erros.HttpError(w, "auth/verify", fmt.Errorf("Code or Email parameter is missing"))
+		return
+	}
 
+	email, err := url.QueryUnescape(encodedEmail)
 	if err != nil {
+		Erros.HttpError(w, "auth/verify", fmt.Errorf("Invalid Email format"))
+		return
+	}
+
+	DB_Code, err := DB.GetCodeByEmail(email)
+	if err != nil {
+		Erros.HttpError(w, "auth/verify", fmt.Errorf("Database error"))
+		return
+	}
+
+	if DB_Code == "" {
+		Erros.HttpError(w, "auth/verify", fmt.Errorf("User didn't have a verification code"))
+		return
+	}
+
+	if DB_Code != code {
+		Erros.HttpError(w, "auth/verify", fmt.Errorf("Invalid verification code"))
 		return
 	}
 
