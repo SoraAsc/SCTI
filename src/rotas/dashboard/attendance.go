@@ -26,28 +26,42 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 	encodedEmail := r.URL.Query().Get("email")
 
-	fmt.Println(code, encodedEmail)
-
 	if code == "" || encodedEmail == "" {
-		Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Código ou email do usuário ausentes!\nCódigo: %v\nEmail: %v", code, encodedEmail))
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Code or Email parameter is missing"))
+		return
 	}
 
 	email, err := url.QueryUnescape(encodedEmail)
 	if err != nil {
-		Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Invalid email format: %v", err.Error()))
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Invalid Email format"))
 		return
 	}
-	fmt.Println(email)
+
+	DB_Code, err := DB.GetCodeByEmail(email)
+	if err != nil {
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Database error"))
+		return
+	}
+
+	if DB_Code == "" {
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("User didn't have a verification code"))
+		return
+	}
+
+	if DB_Code != code {
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Invalid verification code"))
+		return
+	}
 
 	uuid := DB.GetUUID(email)
 	fmt.Println(uuid)
 	userActivities, err := DB.GetUserActivities(uuid)
 	if err != nil {
-		Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Não foi possivel recuperar os cadastros do usuário!\n%v", err.Error()))
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Não foi possivel recuperar os cadastros do usuário!\n%v", err.Error()))
 	}
 	attendedActivities, err := DB.GetUserAttendedActivities(uuid)
 	if err != nil {
-		Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Não foi possivel recuperar as presenças do usuário!\n%v", err.Error()))
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Não foi possivel recuperar as presenças do usuário!\n%v", err.Error()))
 	}
 	userActivities = RemoveAttendedActivities(userActivities, attendedActivities)
 
@@ -68,7 +82,7 @@ func GetAttendance(w http.ResponseWriter, r *http.Request) {
 
 func PostAttendance(w http.ResponseWriter, r *http.Request) {
 	if !CheckAdmin(w, r) {
-		Erros.HttpError(w, "dashboard/attendance", fmt.Errorf("Endpoint exclusiva de Admins"))
+		Erros.HttpError(w, "dashboard/attendance.go", fmt.Errorf("Endpoint exclusiva de Admins"))
 		HTMX.Failure(w, "Acesso proibido", fmt.Errorf("Não foi encontrado ou não é valido o cookie de admin"))
 		return
 	}
