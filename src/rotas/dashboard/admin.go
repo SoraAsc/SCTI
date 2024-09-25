@@ -96,7 +96,9 @@ func PostActivity(w http.ResponseWriter, r *http.Request) {
 	activityTime := eventStartDate.AddDate(0, 0, day-1)
 	Erros.LogError("dashboard/admin", fmt.Errorf(" base activityTime %v", activityTime))
 	activityTime = activityTime.Add((time.Hour * time.Duration(activityHour.Hour())) + (time.Hour * 3))
-	Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTime %v", activityTime))
+	Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTimeHour %v", activityTime))
+	activityTime = activityTime.Add(time.Minute * time.Duration(activityHour.Minute()))
+	Erros.LogError("dashboard/admin", fmt.Errorf(" added activityTimeMinute %v", activityTime))
 
 	var a DB.Activity
 	a.Spots, _ = strconv.Atoi(r.FormValue("spots"))

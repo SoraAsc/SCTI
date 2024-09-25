@@ -21,14 +21,14 @@ func PostSenha(w http.ResponseWriter, r *http.Request) {
 	from := os.Getenv("GMAIL_SENDER")
 	pass := os.Getenv("GMAIL_PASS")
 
-	_, err := DB.GetCodeByEmail(r.FormValue("Email"))
+	code, err := DB.GetCodeByEmail(r.FormValue("Email"))
 	if err != nil {
 		HTMX.Failure(w, "Nenhum usuário encontrado com este email: ", err)
 		return
 	}
 
 	encodedEmail := url.QueryEscape(r.FormValue("Email"))
-	verificationLink := fmt.Sprintf("%s/trocar?email=%s", os.Getenv("URL"), encodedEmail)
+	verificationLink := fmt.Sprintf("%s/trocar?email=%s&code=%s", os.Getenv("URL"), encodedEmail, code)
 
 	htmlBody := `
   <!DOCTYPE html>
