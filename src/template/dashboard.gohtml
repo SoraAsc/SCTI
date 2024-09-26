@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <link rel="stylesheet" href="/static/css/reset.css">
@@ -30,15 +31,19 @@
     {{ end }}
 
     <nav class="header-nav">
-      <h2 class="nav-title-pixel">Painel do Usuário</h2>
-      <a href="/ingresso" class="pink-pixel-button">
-        <img src="/static/assets/home/button.svg" />
-        <p>Comprar</p>
+      <a href="/" class="outer-home-link">
+        <h2 class="nav-title-pixel">SCTI</h2>
       </a>
-      <a href="/logoff" class="pink-pixel-button">
-        <img src="/static/assets/home/button.svg" />
-        <p>Logoff</p>
-      </a>
+      <div class="navs-container">
+        <a href="/ingresso" class="pink-pixel-button" id="buy-button">
+          <img src="/static/assets/home/button.svg" />
+          <p>Comprar</p>
+        </a>
+        <a href="/logoff" class="pink-pixel-button" id="logoff-button">
+          <img src="/static/assets/home/button.svg" />
+          <p>Logoff</p>
+        </a>
+      </div>
     </nav>
 
     {{ range .Activities }}
@@ -167,7 +172,7 @@
             <label for="Email">Email</label><br>
             <input id="user-email" type="email" name="Email" required>
           </div>
-          
+
           <button class="button-submmit" type="button"
             hx-post="/set-admin" hx-trigger="click" hx-target="#admcriar" hx-swap="innerHTML"
             hx-include="#user-email">
@@ -175,8 +180,8 @@
           </button>
           <div id="admcriar"></div>
 
-          <button class="button-submmit" type="button" 
-            hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML" 
+          <button class="button-submmit" type="button"
+            hx-post="/remover-admin" hx-trigger="click" hx-target="#admtirar" hx-swap="innerHTML"
             hx-include="#user-email">
             Remover admin do usuário
           </button>
@@ -190,7 +195,7 @@
             <label for="ticket-email">E-mail do usuário:</label><br>
             <input type="email" id="ticket-email" name="Email" required>
           </div>
-          <button class="button-submmit" 
+          <button class="button-submmit"
             hx-post="/markpaid" hx-trigger="click" hx-target="#markpaid" hx-swap="innerHTML" hx-include="#ticket-email">
             Validar Ingresso
           </button>
@@ -301,7 +306,7 @@
       const availableCourses = document.getElementById("available-courses")
       const activities = {{.Activities}}.reduce((acc, activity) => ((acc[activity.Day] ||= [])
         .push(activity), acc), {})
-      
+
       const navigate = (direction) => {
         currentDay = ((currentDay - 1 + (direction === "left" ? -1 : 1) + 5) % 5) + 1
         FilterActivities(currentDay)
@@ -345,10 +350,10 @@
 
       const createButton = (id, timestamp) => {
         return `<button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
-          hx-target="#hx-return-${id}" hx-swap="innerHTML" 
+          hx-target="#hx-return-${id}" hx-swap="innerHTML"
           hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'> Inscreva-se</button>`
       }
-      
+
       FilterActivities(currentDay)
 
       const DayToString = (day) => {

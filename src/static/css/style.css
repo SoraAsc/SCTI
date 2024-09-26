@@ -108,6 +108,20 @@ footer {
   opacity: 0.8;
 }
 
+.outer-home-link,
+.outer-home-link:active,
+.outer-home-link:visited{
+  text-decoration: none;
+  font-style: normal;
+  color: #eee;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.outer-home-link:hover{
+  opacity: .8;
+}
+
 #last-nav {
   width: 140px;
   height: 80px;
