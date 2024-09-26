@@ -179,7 +179,7 @@
                   class="inner"
                   src="/static/assets/home/image_container.svg"
                 />
-                <img class="placeholder" src="/static/assets/placeholder.jpg" />
+                <div id="ativity-speaker-image" class="speaker-image" src="/static/assets/placeholder.jpg"></div>
               </div>
               <p id="activity-speaker" class="truncate speaker"></p>
             </div>
@@ -308,6 +308,7 @@
 
     <script>
       const activityType = document.getElementById('activity-type')
+      const activityImage = document.getElementById('ativity-speaker-image')
       const activitySpeaker = document.getElementById('activity-speaker')
       const activityTopic = document.getElementById('activity-topic')
       const activityTime = document.getElementById('activity-time')
@@ -355,6 +356,7 @@
 
         activityType.innerText = activity.Activity_type === "MC" ? "MiniCursos" : "Palestras"
         activitySpeaker.innerText = activity.Speaker
+        activityImage.style.backgroundImage = `url(${activity.Image})`;
         activityTopic.innerText = activity.Topic
         activityTime.innerText = activity.Time.substring(0, 5)
         activityDescription.innerText = activity.Description

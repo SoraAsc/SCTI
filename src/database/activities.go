@@ -19,6 +19,7 @@ type Activity struct {
 	Time          string
 	Day           int
 	Timestamp     int64
+	Image         string
 }
 
 func GetAllActivities() (activities []Activity, err error) {
@@ -46,6 +47,7 @@ func GetAllActivities() (activities []Activity, err error) {
 			&a.Time,
 			&a.Day,
 			&a.Timestamp,
+			&a.Image,
 		)
 
 		if err != nil {
@@ -79,6 +81,7 @@ func GetActivity(id int) (a Activity, err error) {
 		&a.Time,
 		&a.Day,
 		&a.Timestamp,
+		&a.Image,
 	)
 
 	if err != nil {
@@ -98,12 +101,12 @@ func CreateActivity(a Activity) (int, error) {
 
 	query := `
   INSERT INTO activities
-  (spots, activity_type, room, speaker, topic, description, time, day, time_stamp)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  (spots, activity_type, room, speaker, topic, description, time, day, time_stamp, image)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
   RETURNING id
   `
 	var id int
-	err := DB.QueryRow(query, a.Spots, a.Activity_type, a.Room, a.Speaker, a.Topic, a.Description, a.Time, a.Day, a.Timestamp).Scan(&id)
+	err := DB.QueryRow(query, a.Spots, a.Activity_type, a.Room, a.Speaker, a.Topic, a.Description, a.Time, a.Day, a.Timestamp, a.Image).Scan(&id)
 	if err != nil {
 		return 0, fmt.Errorf("could not create activity: %v", err)
 	}
@@ -111,7 +114,7 @@ func CreateActivity(a Activity) (int, error) {
 }
 
 func (a Activity) String() string {
-	return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v | timestamp: %v",
+	return fmt.Sprintf("id: %v | spots: %v | day: %v | time: %v\nroom: %v | type: %v\nspeaker: %v | topic %v\ndescription: %v | timestamp: %v | Image: %v",
 		a.Activity_id,
 		a.Spots,
 		a.Day,
@@ -122,6 +125,7 @@ func (a Activity) String() string {
 		a.Topic,
 		a.Description,
 		a.Timestamp,
+		a.Image,
 	)
 }
 
@@ -260,7 +264,7 @@ func UnregisterUserFromActivity(uuid string, activityID int) error {
 
 func GetUserActivities(userUUID string) ([]Activity, error) {
 	query := `
-  SELECT a.id, a.activity_type, a.room, a.speaker, a.topic, a.description, a.time, a.day, a.spots, a.time_stamp
+  SELECT a.id, a.activity_type, a.room, a.speaker, a.topic, a.description, a.time, a.day, a.spots, a.time_stamp, a.image
   FROM activities a
   JOIN registrations r ON a.id = r.activity_id
   WHERE r.user_id = $1
@@ -276,7 +280,7 @@ func GetUserActivities(userUUID string) ([]Activity, error) {
 	var activities []Activity
 	for rows.Next() {
 		var a Activity
-		err := rows.Scan(&a.Activity_id, &a.Activity_type, &a.Room, &a.Speaker, &a.Topic, &a.Description, &a.Time, &a.Day, &a.Spots, &a.Timestamp)
+		err := rows.Scan(&a.Activity_id, &a.Activity_type, &a.Room, &a.Speaker, &a.Topic, &a.Description, &a.Time, &a.Day, &a.Spots, &a.Timestamp, &a.Image)
 		if err != nil {
 			return nil, err
 		}
@@ -325,7 +329,7 @@ func MarkUserAttendance(uuid string, activityID int) error {
 
 func GetUserAttendedActivities(uuid string) ([]Activity, error) {
 	query := `
-  SELECT a.id, a.spots, a.activity_type, a.room, a.speaker, a.topic, a.description, a.time, a.day, a.time_stamp
+  SELECT a.id, a.spots, a.activity_type, a.room, a.speaker, a.topic, a.description, a.time, a.day, a.time_stamp, a.image
   FROM activities a
   JOIN registrations r ON a.id = r.activity_id
   WHERE r.user_id = $1 AND r.has_attended = TRUE
@@ -351,6 +355,7 @@ func GetUserAttendedActivities(uuid string) ([]Activity, error) {
 			&activity.Time,
 			&activity.Day,
 			&activity.Timestamp,
+			&activity.Image,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan activity: %v", err)

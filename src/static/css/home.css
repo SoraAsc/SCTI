@@ -231,7 +231,6 @@ header .main-title:last-child {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 0.7em;
 }
 
 .home-activities
@@ -267,7 +266,7 @@ header .main-title:last-child {
   top: calc(50% - 2.5px);
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 95%;
+  width: calc(100% - 10px);
   filter: invert(99%) sepia(21%) saturate(477%) hue-rotate(111deg)
     brightness(122%) contrast(100%);
 }
@@ -278,12 +277,21 @@ header .main-title:last-child {
   .details
   .speaker-container
   .perfil
-  .placeholder {
-  position: absolute;
-  top: calc(50% - 2.5px);
-  left: 50%;
-  width: 70%;
-  transform: translate(-50%, -50%);
+  .speaker-image {
+    position: absolute;
+    top: calc(50% - 2.5px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-repeat: no-repeat;
+    mask-image: url("/static/assets/home/image_container.svg");
+    background-size: cover;
+    background-position: center;
+    mask-size: cover;
+    width: calc(100% - 15px);
+    height: calc(100% - 15px);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    background-color: white;
 }
 
 .home-activities
@@ -547,14 +555,13 @@ header .main-title:last-child {
   .home-activities .activity-container .activity,
   .fore {
     width: 290px;
-    height: 240px;
   }
 
   .home-activities .activity-container .activity .back {
     width: 305px;
-    height: 240px;
     bottom: .7em;
     right: -8px;
+    padding-bottom: 0.6em;
   }
 
   img#left-navigation-button.left-button{
@@ -569,7 +576,7 @@ header .main-title:last-child {
 
   .home-activities .activity-container .activity .type {
     font-size: 1.2em;
-    margin-top: 2.6em;
+    margin-top: 0.5em;
   }
 
   .home-activities .activity-container .activity .details {
@@ -581,19 +588,25 @@ header .main-title:last-child {
     height: 80%;
   }
 
+  
+  .home-activities .activity-container .activity .details .speaker-container .speaker {
+    font-size: 0.5em;
+  }
+
   .home-activities .activity-container .activity .details .info {
     width: 50%;
   }
+
   .home-activities .activity-container .activity .details .info .topic {
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 
   .home-activities .activity-container .activity .details .info .time {
-    font-size: 1em;
+    font-size: 0.7em;
   }
 
   .home-activities .activity-container .activity .details .info .description {
-    font-size: 0.6em;
+    font-size: 0.5em;
   }
 }
 

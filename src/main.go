@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -28,11 +29,14 @@ func main() {
 	mux := http.NewServeMux()
 	LoadRoutes(mux)
 
+	certFile := "/etc/letsencrypt/live/sctiuenf.com.br/fullchain.pem"
+	keyFile := "/etc/letsencrypt/live/sctiuenf.com.br/privkey.pem"
+
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":443",
 		Handler: middleware.EndpointLogging(mux),
 	}
 
-	fmt.Println("Server Started at: 127.0.0.1:8080")
-	log.Fatal(server.ListenAndServe())
+	fmt.Printf("Server started at: %s\n", os.Getenv("URL"))
+	log.Fatal(server.ListenAndServeTLS(certFile, keyFile))
 }
