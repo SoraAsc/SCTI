@@ -30,11 +30,11 @@
       </div>
     {{ end }}
 
-    <nav class="header-nav">
+    <div class="header-nav" id="dashboard-nav-container">
       <a href="/" class="outer-home-link">
         <h2 class="nav-title-pixel">SCTI</h2>
       </a>
-      <div class="navs-container">
+      <div class="dashboard-buttons-container">
         <a href="/ingresso" class="pink-pixel-button" id="buy-button">
           <img src="/static/assets/home/button.svg" />
           <p>Comprar</p>
@@ -44,7 +44,7 @@
           <p>Logoff</p>
         </a>
       </div>
-    </nav>
+    </div>
 
     {{ range .Activities }}
       <div class="response" id="hx-return-{{ .Activity_id }}"></div>
