@@ -32,6 +32,9 @@ h1 {
 #logoff-button{
   width: 90px;
   height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #buy-button p,
