@@ -632,7 +632,7 @@ header .main-title:last-child {
   }
 
   25% {
-    font-size: 2.5em;
+    font-size: 2em;
     opacity: 1;
     color: white;
     letter-spacing: 0px;
@@ -644,7 +644,7 @@ header .main-title:last-child {
   }
 
   75% {
-    font-size: 2.5em;
+    font-size: 2em;
     opacity: 1;
     letter-spacing: 0px;
     color: white;
@@ -666,11 +666,11 @@ header .main-title:last-child {
 
   25% {
     opacity: 1;
-    width: 230px;
+    width: 260px;
   }
 
   75% {
-    width: 230px;
+    width: 260px;
     opacity: 1;
   }
 
@@ -716,7 +716,7 @@ header .main-title:last-child {
   }
 
   25% {
-    font-size: 1.6em;
+    font-size: 1.5em;
     opacity: 1;
     color: white;
     letter-spacing: 0px;
@@ -728,7 +728,7 @@ header .main-title:last-child {
   }
 
   75% {
-    font-size: 1.6em;
+    font-size: 1.5em;
     opacity: 1;
     letter-spacing: 0px;
     color: white;

@@ -30,7 +30,7 @@ h1 {
 
 #buy-button,
 #logoff-button{
-  width: 90px;
+  width:110px;
   height: 40px;
   display: flex;
   align-items: center;
