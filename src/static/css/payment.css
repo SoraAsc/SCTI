@@ -271,6 +271,20 @@ label{
     height: 250px;
   }
 
+  #sent-message-button{
+    position: absolute;
+    bottom: 24%;
+    left: 20%;
+    font-size: .6em;
+  }
+
+  #cancel-message-button{
+    position: absolute;
+    bottom: 24%;
+    right: 20%;
+    font-size: .6em;
+  }
+
 }
 
 @media (max-width: 576px){
@@ -302,17 +316,23 @@ label{
     font-size: .75em;
   }
 
+  #sent-message-button img,
+  #cancel-message-button img{
+    width: 80px;
+    height: 35px;
+  }
+
   #sent-message-button{
     position: absolute;
     bottom: 22%;
-    left: 20%;
+    left: 18%;
     font-size: .5em;
   }
 
   #cancel-message-button{
     position: absolute;
     bottom: 22%;
-    right: 20%;
+    right: 18%;
     font-size: .5em;
   }
 
@@ -346,4 +366,6 @@ label{
     font-size: .5em;
     margin-left: -30px;
   }
+
+
 }
