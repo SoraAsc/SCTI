@@ -13,6 +13,35 @@ h1 {
   font-size: min(2em, 5vw);
 }
 
+#dashboard-nav-container{
+  margin-top: 8px;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2.5rem;
+}
+
+.dashboard-buttons-container{
+  width: 33%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+#buy-button,
+#logoff-button{
+  width:110px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#buy-button p,
+#logoff-button p{
+  font-size: .85em;
+}
+
 .main-content .activity-container .activity .available-courses button {
   display: flex;
   align-items: center;
@@ -26,7 +55,7 @@ h1 {
   -webkit-mask-image: url("/static/assets/home/button.svg");
   mask-size: cover;
   -webkit-mask-size: cover;
-  mask-repeat: no-repeat; 
+  mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   aspect-ratio: 5 / 2; /* 90 / 36 */
   border: none;
@@ -244,10 +273,10 @@ form h2 {
   border: none;
   font-size: 18px;
   font-weight: bold;
-  top: 10px; 
-  right: 10px; 
-  transform: none; 
-  
+  top: 10px;
+  right: 10px;
+  transform: none;
+
 
 
 }
@@ -271,22 +300,22 @@ form h2 {
   position: fixed;
   z-index: 5;
   top: 10px;
-  right: 10px; 
+  right: 10px;
   transform: none;
 }
 .error-messages button, .success-messages button {
-  position: absolute;    
-  top: 10px;            
-  left: 90%;      
-  font-size: 16px;      
-  font-weight: bold;   
+  position: absolute;
+  top: 10px;
+  left: 90%;
+  font-size: 16px;
+  font-weight: bold;
   background-color: #eee;
-  color: #000;       
-  border: none;          
-  border-radius: 5px;    
-  cursor: pointer;      
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  transition: background-color 0.3s ease; 
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .error-messages button:hover, .success-messages button:hover{

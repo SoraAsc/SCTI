@@ -43,10 +43,6 @@ body {
 	gap: 20px;
 }
 
-p, li {
-  font-family: "Inter";
-}
-
 .sponsors-type-header h3{
 	font-family: "Joystix";
 	font-size: 2.2em;
