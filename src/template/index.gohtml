@@ -43,7 +43,7 @@
 
     <div class="home-top">
       <div class="top-info">
-        <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
+        <h1>14° Semana de Ciência da Computação e Tecnologia da Informação</h1>
       </div>
       <button class="pink-pixel-button" id="start-button">
         <img src="/static/assets/home/button.svg" />
@@ -187,7 +187,7 @@
             <div class="info">
               <p id="activity-topic" class="topic truncate"></p>
               <p id="activity-time" class="time truncate"></p>
-              <p id="activity-description" class="description truncate"></p>
+              <p id="activity-description" class="description"></p>
             </div>
           </div>
         </div>
@@ -352,11 +352,20 @@
         const activity = activities[currentDay][currentIndex]
 
         activityType.innerText = activity.Activity_type === "MC" ? "MiniCursos" : "Palestras"
+
         activitySpeaker.innerText = activity.Speaker
+        activitySpeaker.title = activity.Speaker
+
         activityImage.style.backgroundImage = `url(${activity.Image})`;
+
         activityTopic.innerText = activity.Topic
-        activityTime.innerText = activity.Time.substring(0, 5)
+        activityTopic.title = activity.Topic
+
+        activityTime.innerText = activity.Room + " às "+ activity.Time.substring(0, 5)
+        activityTime.title = activity.Room + " às "+ activity.Time.substring(0, 5)
+
         activityDescription.innerText = activity.Description
+        activityDescription.title = activity.Description
       }
 
       const navigate = (direction) => {
