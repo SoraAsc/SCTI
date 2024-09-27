@@ -14,25 +14,17 @@
     />
   </head>
   <body>
-    <div class="header_style_form"></div>
-    <!-- Your content her -->
     <div class="header-nav">
-      <h2 class="nav-title-pixel">scti</h2>
-      <div class="navs-container">
-        <nav>
+      <h2 class="nav-title-pixel">SCTI</h2>
+      <nav class="navs-container">
           <a href="/#about"> Sobre </a>
-        </nav>
-        <nav>
           <a href="/#sponsors-buttons-container"> Programação </a>
-        </nav>
-        <nav>
           <a href="/#contact"> Contato </a>
-        </nav>
-        <a href="/login" class="pink-pixel-button" id="last-nav">
-          <img src="/static/assets/home/button.svg" />
-          <p>Entrar</p>
-        </a>
-      </div>
+          <a href="/login" class="pink-pixel-button" id="last-nav">
+            <img src="/static/assets/home/button.svg" />
+            <p>Entrar</p>
+          </a>
+      </nav>
     </div>
     <header>
       <div class="welcome-container">
@@ -43,7 +35,7 @@
 
     <div class="home-top">
       <div class="top-info">
-        <h1>11° Semana de Ciência da Computação e Tecnologia da Informação</h1>
+        <h1>14° Semana de Ciência da Computação e Tecnologia da Informação</h1>
       </div>
       <button class="pink-pixel-button" id="start-button">
         <img src="/static/assets/home/button.svg" />
@@ -187,7 +179,7 @@
             <div class="info">
               <p id="activity-topic" class="topic truncate"></p>
               <p id="activity-time" class="time truncate"></p>
-              <p id="activity-description" class="description truncate"></p>
+              <p id="activity-description" class="description"></p>
             </div>
           </div>
         </div>
@@ -352,11 +344,20 @@
         const activity = activities[currentDay][currentIndex]
 
         activityType.innerText = activity.Activity_type === "MC" ? "MiniCursos" : "Palestras"
+
         activitySpeaker.innerText = activity.Speaker
+        activitySpeaker.title = activity.Speaker
+
         activityImage.style.backgroundImage = `url(${activity.Image})`;
+
         activityTopic.innerText = activity.Topic
-        activityTime.innerText = activity.Time.substring(0, 5)
+        activityTopic.title = activity.Topic
+
+        activityTime.innerText = activity.Room + " às "+ activity.Time.substring(0, 5)
+        activityTime.title = activity.Room + " às "+ activity.Time.substring(0, 5)
+
         activityDescription.innerText = activity.Description
+        activityDescription.title = activity.Description
       }
 
       const navigate = (direction) => {

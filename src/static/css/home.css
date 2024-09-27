@@ -5,7 +5,7 @@ body {
 }
 
 body {
-  min-width: 320px;
+  min-width: 375px;
 }
 
 /* Estilização Header */
@@ -83,6 +83,7 @@ header .main-title:last-child {
   font-size: 3em;
   font-weight: 600;
   line-height: 48px;
+  padding: 0 1em;
 }
 
 
@@ -231,7 +232,6 @@ header .main-title:last-child {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 0.7em;
 }
 
 .home-activities
@@ -263,13 +263,12 @@ header .main-title:last-child {
   .speaker-container
   .perfil
   .inner {
-  position: absolute;
-  top: calc(50% - 2.5px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 95%;
-  filter: invert(99%) sepia(21%) saturate(477%) hue-rotate(111deg)
-    brightness(122%) contrast(100%);
+    position: absolute;
+    top: calc(50% - 2.5px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 10px);
+    filter: invert(99%) sepia(21%) saturate(477%) hue-rotate(111deg) brightness(122%) contrast(100%);
 }
 
 .home-activities
@@ -284,6 +283,23 @@ header .main-title:last-child {
   left: 50%;
   width: 70%;
   transform: translate(-50%, -50%);
+}
+
+.home-activities .activity-container .activity .details .speaker-container .perfil .speaker-image {
+  position: absolute;
+  top: calc(50% - 2.5px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  mask-image: url(/static/assets/home/image_container.svg);
+  background-size: cover;
+  background-position: center;
+  mask-size: cover;
+  width: calc(100% - 15px);
+  height: calc(100% - 15px);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  background-color: white;
 }
 
 .home-activities
@@ -303,6 +319,7 @@ header .main-title:last-child {
   flex-direction: column;
   height: 90%;
   width: 60%;
+  gap: 0.1em;
 }
 .home-activities .activity-container .activity .details .info .topic {
   flex: 0 0 20%;
@@ -321,6 +338,13 @@ header .main-title:last-child {
 .home-activities .activity-container .activity .details .info .description {
   flex: 1;
   font-size: 0.8em;
+  overflow-y: auto;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.home-activities .activity-container .activity .details .info .description::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }
 
 .home-activities .activity-container .activity .details .info p {
@@ -396,6 +420,11 @@ header .main-title:last-child {
 
   .home-activities .days-container {
     column-gap: 2em;
+  }
+
+  .home-activities .activity-container .activity .details .info {
+    height: 80%;
+    width: 55%;
   }
 
   .home-activities .days-container .button-weekday {
@@ -498,6 +527,11 @@ header .main-title:last-child {
     opacity: 0.8;
   }
 
+  .main-container-text h2 {
+    font-size: 1.7em;
+    text-align: center;
+  }
+
   #local {
     flex-direction: column-reverse;
   }
@@ -547,14 +581,13 @@ header .main-title:last-child {
   .home-activities .activity-container .activity,
   .fore {
     width: 290px;
-    height: 240px;
   }
 
   .home-activities .activity-container .activity .back {
     width: 305px;
-    height: 240px;
     bottom: .7em;
     right: -8px;
+    padding-bottom: 0.6em;
   }
 
   img#left-navigation-button.left-button{
@@ -567,9 +600,13 @@ header .main-title:last-child {
     margin-left: .9em;
   }
 
+  .home-activities .activity-container .activity .details .speaker-container .speaker {
+    font-size: 0.5em;
+  }
+
   .home-activities .activity-container .activity .type {
     font-size: 1.2em;
-    margin-top: 2.6em;
+    margin-top: 0.5em;
   }
 
   .home-activities .activity-container .activity .details {
@@ -585,15 +622,15 @@ header .main-title:last-child {
     width: 50%;
   }
   .home-activities .activity-container .activity .details .info .topic {
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 
   .home-activities .activity-container .activity .details .info .time {
-    font-size: 1em;
+    font-size: 0.7em;
   }
 
   .home-activities .activity-container .activity .details .info .description {
-    font-size: 0.6em;
+    font-size: 0.5em;
   }
 }
 
