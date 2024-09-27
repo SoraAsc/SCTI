@@ -74,6 +74,7 @@ footer {
   font-size: 1.6em;
   font-family: "Joystix";
   margin-left: 15px;
+  height: 100%;
 }
 
 .header-nav .navs-container {
@@ -86,25 +87,24 @@ footer {
   margin: 0 20px;
 }
 
-.header-nav .navs-container nav {
+.header-nav .navs-container {
   font-size: 1.3em;
-  cursor: pointer;
 }
 
-.header-nav .navs-container nav a {
+.header-nav .navs-container a {
   text-decoration: none;
   color: #eee;
   transition: 0.5s;
 }
 
-.header-nav .navs-container nav a:active {
+.header-nav .navs-container a:active {
   font-size: 1.3em;
   cursor: pointer;
   font-style: none;
   color: #eee;
 }
 
-.header-nav .navs-container nav a:hover {
+.header-nav .navs-container a:hover {
   color: #ff00c7;
   opacity: 0.8;
 }
@@ -398,19 +398,18 @@ footer {
     margin: 0 20px;
   }
 
-  .header-nav .navs-container nav {
-    font-size: 0.9em;
+  .header-nav .navs-container a {
+    font-size: 0.7em;
     cursor: pointer;
   }
 
   #last-nav {
     width: 85px;
-    height: 42px;
+    /* height: 42px; */
     margin-right: -10px;
   }
 
   #last-nav p {
-    top: 60%;
     font-size: 0.7em;
   }
 
