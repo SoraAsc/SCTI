@@ -107,6 +107,7 @@
             {{ range $index, $activity := .RegisteredActivities }}
               <div class="registered-course">
                 <span class="topic truncate">{{ .Topic }}</span>
+                <span class="speaker truncate">{{ .Speaker }} - {{ .Room }}</span>
                 <span class="day">{{ .Day }}</span>
                 <span class="time">{{ .Time }}</span>
                 <button class="cadastrar" hx-refresh="true"
@@ -322,6 +323,16 @@
         FilterActivities(currentDay)
       }
 
+      const DayToString = (day) => {
+        switch (day) {
+          case 1: return "Segunda"
+          case 2: return "Terça"
+          case 3: return "Quarta"
+          case 4: return "Quinta"
+          default: return "Sexta"
+        }
+      }
+
       const FilterActivities = (day) => {
         currentDay = day
         localStorage.setItem('dashboard_currentDay', currentDay)
@@ -329,24 +340,35 @@
         const dayActivities = activities[day] || []
         if(dayActivities.length > 0)
         {
-          const ul = document.createElement("ul")
           dayActivities.forEach((activity, i) => {
-            const li = document.createElement("li")
-            const detailsHolder = document.createElement("div")
+            const course = document.createElement("div")
+            course.classList.add("registered-course")
+
+            const topicSpan = document.createElement("span")
+            topicSpan.classList.add("topic", "truncate")
+            topicSpan.innerHTML = activity.Topic
+            topicSpan.title = activity.Topic
+            course.appendChild(topicSpan)
+
+            const speakerSpan = document.createElement("span")
+            speakerSpan.classList.add("speaker", "truncate")
+            speakerSpan.innerHTML = `${activity.Speaker} - ${activity.Room}`
+            course.appendChild(speakerSpan)
+
+            const daySpan = document.createElement("span")
+            daySpan.classList.add("day")
+            daySpan.innerHTML = DayToString(activity.Day)
+            course.appendChild(daySpan)
+
+            const timeSpan = document.createElement("span")
+            timeSpan.classList.add("time")
+            timeSpan.innerHTML = `às ${activity.Time.substring(0, 5)}`
+            course.appendChild(timeSpan)
+
             const btn = createButton(activity.Activity_id, activity.Timestamp)
-
-            li.classList.add("course-container")
-            detailsHolder.classList.add("truncate", "details")
-
-            const type = activity.Activity_type === "MC" ? "Minicurso" : "Palestra"
-
-            detailsHolder.innerHTML = `<span>${type} ${i+1} - </span><span>${activity.Topic}</span>`
-
-            li.appendChild(detailsHolder)
-            li.innerHTML += btn
-            ul.appendChild(li)
+            course.innerHTML += btn
+            availableCourses.appendChild(course)
           })
-          availableCourses.appendChild(ul)
           htmx.process(availableCourses)
         } else availableCourses.textContent = "Não há nenhuma atividade disponível nesse dia"
         if(day > 0 && day < 6) HighlightButton(day)
@@ -359,22 +381,12 @@
       }
 
       const createButton = (id, timestamp) => {
-        return `<button class="cadastrar" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
+        return `<button class="cadastrar course" hx-refresh="true" hx-post="/cadastrar" hx-trigger="click"
           hx-target="#hx-return-${id}" hx-swap="innerHTML"
           hx-vals='{"id": "${id}", "timestamp": "${timestamp}"}'> Inscreva-se</button>`
       }
 
       FilterActivities(currentDay)
-
-      const DayToString = (day) => {
-        switch (day) {
-          case 1: return "Segunda"
-          case 2: return "Terça"
-          case 3: return "Quarta"
-          case 4: return "Quinta"
-          default: return "Sexta"
-        }
-      }
 
       const AdjustCourses = () => {
         const registeredActivities = {{.RegisteredActivities}}

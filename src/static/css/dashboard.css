@@ -117,6 +117,7 @@ h1 {
 }
 
 .main-content .activity-container .activity .available-courses .registered-course {
+  position: relative;
   display: flex;
   width: 500px;
   align-items: center;
@@ -126,6 +127,16 @@ h1 {
 .main-content .activity-container .activity .available-courses .registered-course .topic {
   width: 290px;
 }
+
+.main-content .activity-container .activity .available-courses .registered-course .speaker {
+  position: absolute;
+  width: 290px;
+  left: 2px;
+  top: 30px;
+  font-size: 10px;
+  color: #0000008c;
+}
+
 .main-content .activity-container .activity .available-courses .registered-course .day {
   width: 60px;
   color: black;
@@ -135,6 +146,10 @@ h1 {
   width: 100px;
   color: rgba(0, 0, 0, 0.507);
   font-size: 0.6em;
+}
+
+.main-content .activity-container .activity .available-courses .registered-course .cadastrar.course {
+  font-size: 0.5em;
 }
 
 li, span {
